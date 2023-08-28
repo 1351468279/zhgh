@@ -1,41 +1,32 @@
 <template>
-  <view class="content">
-    <image class="logo" src="/static/logo.png" />
-    <view class="text-area">
-      <text class="title">{{ title }}</text>
-    </view>
+  <view class="home">
+    <CustomNavbar></CustomNavbar>
+    <ClassSwiper></ClassSwiper>
+    <CategoryPanel></CategoryPanel>
+    <FunctionCard></FunctionCard>
+    <ArticleRead></ArticleRead>
   </view>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-const title = ref('Hello')
+
+import CustomNavbar from './components/CustomNavbar.vue'
+import ClassSwiper from './components/ClassSwiper.vue'
+import CategoryPanel from './components/CategoryPanel.vue'
+import FunctionCard from './components/FunctionCard.vue'
+import ArticleRead from './components/ArticleRead.vue'
+import { onPullDownRefresh } from '@dcloudio/uni-app'
+// 下拉刷新
+onPullDownRefresh(() => {
+  console.log('下拉刷新')
+  setTimeout(() => {
+    uni.stopPullDownRefresh()
+  }, 1000)
+})
 </script>
 
-<style>
-.content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.logo {
-  height: 200rpx;
-  width: 200rpx;
-  margin-top: 200rpx;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 50rpx;
-}
-
-.text-area {
-  display: flex;
-  justify-content: center;
-}
-
-.title {
-  font-size: 36rpx;
-  color: #8f8f94;
+<style lang="scss">
+.home {
+  background-color: rgb(245, 241, 241);
 }
 </style>

@@ -9,5 +9,9 @@ onShow(() => {
 onHide(() => {
   console.log("App Hide");
 });
+
 </script>
-<style></style>
+<style>
+@import url("static/iconfont/iconfont.css");
+@import url("static/iconfont/iconimg.css");
+</style>

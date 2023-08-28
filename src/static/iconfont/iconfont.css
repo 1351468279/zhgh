@@ -1,0 +1,133 @@
+@font-face {
+  font-family: "iconfont";
+  /* Project id 4225353 */
+  /* Color fonts */
+  src:
+    url('//at.alicdn.com/t/c/font_4225353_wh20t86gwis.woff2?t=1693204678965') format('woff2'),
+    url('//at.alicdn.com/t/c/font_4225353_wh20t86gwis.woff?t=1693204678965') format('woff'),
+    url('//at.alicdn.com/t/c/font_4225353_wh20t86gwis.ttf?t=1693204678965') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-jian:before {
+  content: "\e602";
+}
+
+.icon-add:before {
+  content: "\e661";
+}
+
+.icon-tiaozhuan:before {
+  content: "\e637";
+}
+
+.icon-search:before {
+  content: "\e6ac";
+}
+
+.icon-yijianfankui:before {
+  content: "\e685";
+}
+
+.icon-bangzhuguanyuwomen:before {
+  content: "\e649";
+}
+
+.icon-fuli:before {
+  content: "\e618";
+}
+
+.icon-shoucang:before {
+  content: "\e65e";
+}
+
+.icon-wode:before {
+  content: "\e600";
+}
+
+.icon-xinwenzixun:before {
+  content: "\e8a6";
+}
+
+.icon-zhuanhuan:before {
+  content: "\e60d";
+}
+
+.icon-xinwen:before {
+  content: "\e67f";
+}
+
+.icon-wodedamaijihuo:before {
+  content: "\e656";
+}
+
+.icon-huodong:before {
+  content: "\e61e";
+}
+
+.icon-yijianfankui1:before {
+  content: "\e665";
+}
+
+.icon-yaoqing:before {
+  content: "\e61b";
+}
+
+.icon-zhishi:before {
+  content: "\e686";
+}
+
+.icon-zhishichanquan:before {
+  content: "\e61a";
+}
+
+.icon-shoucang1:before {
+  content: "\e69e";
+}
+
+.icon-yijianfankui2:before {
+  content: "\e640";
+}
+
+.icon-appAuthorize:before {
+  content: "\e601";
+}
+
+.icon-ruzhu:before {
+  content: "\e765";
+}
+
+.icon-electronic_code:before {
+  content: "\e677";
+}
+
+.icon-yonghuxieyi-xianxing:before {
+  content: "\e669";
+}
+
+.icon-peixun:before {
+  content: "\e6cf";
+}
+
+.icon-shouquanshu:before {
+  content: "\e615";
+}
+
+.icon-dingyuefuliliwu:before {
+  content: "\e747";
+}
+
+.icon-bianminfuwudating:before {
+  content: "\e663";
+}
+
+.icon-zhuanhuan1:before {
+  content: "\e607";
+}

@@ -1,9 +1,84 @@
 {
+	// 组件自动导入
+	"easycom": {
+		"autoscan": true,
+		"custom": {
+			// uni-ui 规则如下配置  
+			"^uni-(.*)": "@dcloudio/uni-ui/lib/uni-$1/uni-$1.vue"
+		}
+	},
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationStyle": "custom", // 默认显示导航
+				"navigationBarTitleText": "首页",
+				"navigationBarTextStyle": "white",
+				"navigationBarBackgroundColor": "#d81e06",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/news/index",
+			"style": {
+				"navigationStyle": "default",
+				"navigationBarTitleText": "新闻",
+				"navigationBarTextStyle": "black",
+				"navigationBarBackgroundColor": "#ffffff"
+			}
+		},
+		{
+			"path": "pages/hotel/index",
+			"style": {
+				"navigationStyle": "default",
+				"navigationBarTitleText": "服务大厅",
+				"navigationBarTextStyle": "black",
+				"navigationBarBackgroundColor": "#ffffff"
+			}
+		},
+		{
+			"path": "pages/welfare/index",
+			"style": {
+				"navigationStyle": "default",
+				"navigationBarTitleText": "福利",
+				"navigationBarTextStyle": "black",
+				"navigationBarBackgroundColor": "#ffffff"
+			}
+		},
+		{
+			"path": "pages/my/index",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "我的",
+				"navigationBarTextStyle": "black",
+				"navigationBarBackgroundColor": "#ffffff"
+			}
+		},
+		{
+			"path": "pages/index/loopdown",
+			"style": {
+				"navigationStyle": "default",
+				"navigationBarTitleText": "跳转页",
+				"navigationBarTextStyle": "black",
+				"navigationBarBackgroundColor": "#ffffff"
+			}
+		},
+		{
+			"path": "pages/hotel/detail/index",
+			"style": {
+				"navigationStyle": "default",
+				"navigationBarTitleText": "服务大厅跳转页",
+				"navigationBarTextStyle": "black",
+				"navigationBarBackgroundColor": "#ffffff"
+			}
+		},
+		{
+			"path": "pages/hotel/components/search",
+			"style": {
+				"navigationStyle": "default",
+				"navigationBarTitleText": "服务大厅搜索应用",
+				"navigationBarTextStyle": "black",
+				"navigationBarBackgroundColor": "#ffffff"
 			}
 		}
 	],
@@ -12,5 +87,40 @@
 		"navigationBarTitleText": "uni-app",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+		"selectedColor": "#d81e06",
+		"list": [
+			{
+				"pagePath": "pages/index/index",
+				"text": "首页",
+				"iconPath": "static/tabs/shouye_default.png",
+				"selectedIconPath": "static/tabs/shouye_selected.png"
+			},
+			{
+				"pagePath": "pages/news/index",
+				"text": "新闻",
+				"iconPath": "static/tabs/xinwen_default.png",
+				"selectedIconPath": "static/tabs/xinwen_selected.png"
+			},
+			{
+				"pagePath": "pages/hotel/index",
+				"text": "服务大厅",
+				"iconPath": "static/tabs/fuwu_default.png",
+				"selectedIconPath": "static/tabs/fuwu_selected.png"
+			},
+			{
+				"pagePath": "pages/welfare/index",
+				"text": "福利",
+				"iconPath": "static/tabs/huodong_default.png",
+				"selectedIconPath": "static/tabs/huodong_selected.png"
+			},
+			{
+				"pagePath": "pages/my/index",
+				"text": "我的",
+				"iconPath": "static/tabs/wode_default.png",
+				"selectedIconPath": "static/tabs/wode_selected.png"
+			}
+		]
 	}
 }
