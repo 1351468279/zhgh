@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { hotelData } from '@/composible/hotel'
 import { computed, ref } from 'vue';
-const hotelDataList = computed(() => hotelData.filter(item => item.mine))
+const hotelDataList = computed(() => hotelData.value.filter(item => item.mine))
 const editStatus = ref(false)
 const edit = () => {
     console.log('编辑')
@@ -11,7 +11,7 @@ const edit = () => {
 const reduce = (id: number) => {
     if (editStatus.value) {
         console.log(`减少${id}`)
-        hotelData.forEach(item => {
+        hotelData.value.forEach(item => {
             if (item.id === id) {
                 item.mine = false
             }
@@ -27,7 +27,7 @@ const reduce = (id: number) => {
 const add = (id: number) => {
     if (editStatus.value) {
         console.log(`增加${id}`)
-        hotelData.forEach(item => {
+        hotelData.value.forEach(item => {
             if (item.id === id) {
                 item.mine = true
             }
@@ -51,14 +51,13 @@ const add = (id: number) => {
         </navigator>
         <view class="mine">
             <view class="mineTittle">
-                <view class="tittle">我的应用</view>
+                <view class="tittle">我的应用 </view>
                 <view class="edit" @click="edit">{{ editStatus ? '完成' : '编辑' }}</view>
             </view>
             <view class="appBox">
                 <view class="app" :class="{ editicon: editStatus }" v-for=" item  in hotelDataList" :key="item.id"
                     hover-class="navigator-hover" @click="reduce(item.id)">
                     <image class="appimg" :src="item.src" mode="scaleToFill" />
-                    <!-- <view class="iconfont icon-xuexi" style="width: 50rpx;"></view> -->
                     <view class="apptext">{{ item.content }}</view>
                     <view class="iconfont icon-jian" v-if="editStatus"></view>
                 </view>
@@ -139,7 +138,7 @@ const add = (id: number) => {
 
         .appBox {
             display: flex;
-            justify-content: start;
+            justify-content: flex-start;
             flex-wrap: wrap;
             margin-top: 20rpx;
 
@@ -148,8 +147,8 @@ const add = (id: number) => {
 
                 .icon-jian {
                     position: absolute;
-                    top: -15rpx;
-                    right: 0;
+                    top: -8rpx;
+                    right: 8rpx;
                     width: 30rpx;
                     height: 30rpx;
                     background-color: #f1f1f1;
@@ -157,6 +156,7 @@ const add = (id: number) => {
                     display: flex;
                     justify-content: center;
                     align-items: center;
+                    font-size: 28rpx;
                 }
             }
 
@@ -170,8 +170,8 @@ const add = (id: number) => {
                 margin: 15rpx 0;
 
                 .appimg {
-                    width: 50%;
-                    height: 50%;
+                    width: 40%;
+                    height: 40%;
                     background-color: #ffffff;
                     border-radius: 10rpx;
                 }
@@ -179,7 +179,7 @@ const add = (id: number) => {
                 .apptext {
                     width: 100%;
                     text-align: center;
-                    font-size: 30rpx;
+                    font-size: 28rpx;
                     color: #666666;
                 }
             }
@@ -203,7 +203,7 @@ const add = (id: number) => {
 
         .appBox {
             display: flex;
-            justify-content: start;
+            justify-content: flex-start;
             flex-wrap: wrap;
             margin-top: 20rpx;
 
@@ -212,8 +212,8 @@ const add = (id: number) => {
 
                 .iconfont {
                     position: absolute;
-                    top: -15rpx;
-                    right: 0;
+                    top: -8rpx;
+                    right: 8rpx;
                     width: 30rpx;
                     height: 30rpx;
                     background-color: #f1f1f1;
@@ -221,6 +221,7 @@ const add = (id: number) => {
                     display: flex;
                     justify-content: center;
                     align-items: center;
+                    font-size: 30rpx;
                 }
             }
 
@@ -234,8 +235,8 @@ const add = (id: number) => {
                 margin: 15rpx 0;
 
                 .appimg {
-                    width: 50%;
-                    height: 50%;
+                    width: 40%;
+                    height: 40%;
                     border-radius: 10rpx;
 
                     background-color: #ffffff;
@@ -244,7 +245,7 @@ const add = (id: number) => {
                 .apptext {
                     width: 100%;
                     text-align: center;
-                    font-size: 30rpx;
+                    font-size: 28rpx;
                     color: #666666;
                 }
             }

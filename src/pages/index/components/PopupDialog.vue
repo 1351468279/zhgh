@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { reactive } from 'vue'
 import type { unionType } from '@/types/index'
-import { defineEmits } from 'vue'
 const emits = defineEmits(['onClose'])
 const unionlist = reactive([
     { id: 1, name: '郑州市总工会' },

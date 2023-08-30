@@ -100,7 +100,7 @@ const menuSuggestData = reactive([
 
         .pubinfo {
             display: flex;
-            justify-content: start;
+            justify-content: flex-start;
             align-items: center;
             flex-direction: row;
             overflow: hidden;
@@ -123,7 +123,7 @@ const menuSuggestData = reactive([
 
             .userinfo {
                 display: flex;
-                justify-content: start;
+                justify-content: flex-start;
                 align-items: center;
                 flex-direction: column;
                 color: #fff;
@@ -145,7 +145,7 @@ const menuSuggestData = reactive([
 
                 .username {
                     display: flex;
-                    justify-content: start;
+                    justify-content: flex-start;
                     align-items: center;
                     margin: 20rpx 0;
 
@@ -156,7 +156,7 @@ const menuSuggestData = reactive([
 
                 .userlevel {
                     display: flex;
-                    justify-content: start;
+                    justify-content: flex-start;
                     align-items: center;
 
                     .cardarea {
@@ -179,7 +179,7 @@ const menuSuggestData = reactive([
                 width: 100%;
                 border-bottom: 20rpx solid #f5f5f5;
                 display: flex;
-                justify-content: start;
+                justify-content: flex-start;
                 align-items: center;
                 flex-direction: column;
 

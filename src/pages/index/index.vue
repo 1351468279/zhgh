@@ -9,7 +9,6 @@
 </template>
 
 <script setup lang="ts">
-
 import CustomNavbar from './components/CustomNavbar.vue'
 import ClassSwiper from './components/ClassSwiper.vue'
 import CategoryPanel from './components/CategoryPanel.vue'

@@ -1,7 +1,7 @@
 // 定义服务大厅接口数据
 import type { hotelApp } from '../types/hotel'
-import { reactive } from 'vue'
-export const hotelData: hotelApp[] = reactive([{
+import { ref } from 'vue'
+export const hotelData = ref<hotelApp[]>([{
     src: '/static/images/hotel/meeting.png',
     url: '/pages/index/loopdown',
     content: '办公会议',

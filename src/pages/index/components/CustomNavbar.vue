@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import PopupDialog from './PopupDialog.vue'
 import type { unionType } from '@/types/index'
 const { safeAreaInsets } = uni.getSystemInfoSync()
@@ -29,7 +29,7 @@ const closeDialog = (item: unionType) => {
       <!-- 搜索条 -->
       <view class="searchbar">
         <navigator class="navga" url="/pages/index/loopdown" open-type="navigate" hover-class="navigator-hover">
-          <text class="iconfont">&#xe6ac;搜索</text>
+          <text class="iconfont icon icon-search1">搜索</text>
         </navigator>
       </view>
     </view>
@@ -79,16 +79,11 @@ const closeDialog = (item: unionType) => {
         width: 400rpx;
         text-align: center;
 
-
-      }
-
-      .icon-search {
-        &::before {
-          margin-right: 10rpx;
+        .icon {
+          font-size: 40rpx;
         }
       }
     }
   }
-
 }
 </style>

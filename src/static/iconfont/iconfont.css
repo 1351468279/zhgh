@@ -3,9 +3,9 @@
   /* Project id 4225353 */
   /* Color fonts */
   src:
-    url('//at.alicdn.com/t/c/font_4225353_wh20t86gwis.woff2?t=1693204678965') format('woff2'),
-    url('//at.alicdn.com/t/c/font_4225353_wh20t86gwis.woff?t=1693204678965') format('woff'),
-    url('//at.alicdn.com/t/c/font_4225353_wh20t86gwis.ttf?t=1693204678965') format('truetype');
+    url('//at.alicdn.com/t/c/font_4225353_8e8lj9h0ulh.woff2?t=1693272457840') format('woff2'),
+    url('//at.alicdn.com/t/c/font_4225353_8e8lj9h0ulh.woff?t=1693272457840') format('woff'),
+    url('//at.alicdn.com/t/c/font_4225353_8e8lj9h0ulh.ttf?t=1693272457840') format('truetype');
 }
 
 .iconfont {
@@ -14,6 +14,14 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-search1:before {
+  content: "\e67d";
+}
+
+.icon-search:before {
+  content: "\e741";
 }
 
 .icon-jian:before {
@@ -26,10 +34,6 @@
 
 .icon-tiaozhuan:before {
   content: "\e637";
-}
-
-.icon-search:before {
-  content: "\e6ac";
 }
 
 .icon-yijianfankui:before {

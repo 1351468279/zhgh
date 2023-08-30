@@ -21,7 +21,7 @@
 		{
 			"path": "pages/news/index",
 			"style": {
-				"navigationStyle": "default",
+				"navigationStyle": "custom",
 				"navigationBarTitleText": "新闻",
 				"navigationBarTextStyle": "black",
 				"navigationBarBackgroundColor": "#ffffff"
@@ -39,8 +39,8 @@
 		{
 			"path": "pages/welfare/index",
 			"style": {
-				"navigationStyle": "default",
-				"navigationBarTitleText": "福利",
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "活动",
 				"navigationBarTextStyle": "black",
 				"navigationBarBackgroundColor": "#ffffff"
 			}
@@ -111,7 +111,7 @@
 			},
 			{
 				"pagePath": "pages/welfare/index",
-				"text": "福利",
+				"text": "活动",
 				"iconPath": "static/tabs/huodong_default.png",
 				"selectedIconPath": "static/tabs/huodong_selected.png"
 			},
