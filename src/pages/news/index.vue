@@ -13,7 +13,7 @@ const tittleData = ref([
     { id: 6, name: '历史' },
     { id: 7, name: '人生' },
     { id: 8, name: '生活' },
-    { id: 9, name: '历史' },
+    { id: 9, name: '军事' },
 ])
 const activeValue = ref(1)
 const onClick = (id: number) => {
