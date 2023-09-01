@@ -20,11 +20,10 @@ const closeDialog = (item: unionType) => {
     popup.value.close()
 }
 </script>
-
 <template>
     <!-- 顶部占位 -->
     <view class="navbar">
-        <view class="tittle" :style="{ padding: safeAreaInsets?.top + 'px' }">{{ props.title }}</view>
+        <view class="tittle" :style="{ paddingTop: safeAreaInsets?.top + 'px' }">{{ props.title }}</view>
     </view>
 </template>
 
@@ -37,7 +36,11 @@ const closeDialog = (item: unionType) => {
     overflow: hidden;
 
     .tittle {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         color: black;
+        margin: 20rpx;
     }
 }
 </style>

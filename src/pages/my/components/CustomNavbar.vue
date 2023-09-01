@@ -3,18 +3,18 @@ import { reactive } from 'vue';
 
 const { safeAreaInsets } = uni.getSystemInfoSync()  // 获取系统信息
 const menuMineData = reactive([
-    { tittle: '我参与的活动', icon: '\uE61E' },
-    { tittle: '我的收藏', icon: '\uE65E' },
-    { tittle: '我的核销码', icon: '\uE677' },
+    { tittle: '我参与的活动', icon: '\uE61E', url: '/pages/login/index' },
+    { tittle: '我的收藏', icon: '\uE65E', url: '/pages/login/index' },
+    { tittle: '我的核销码', icon: '\uE677', url: '/pages/login/index' },
 ])
 const menuFunData = reactive([
-    { tittle: '个人资料', icon: '\uE61E' },
-    { tittle: '修改密码', icon: '\uE65E' }
+    { tittle: '个人资料', icon: '\uE61E', url: '/pages/login/index' },
+    { tittle: '修改密码', icon: '\uE65E', url: '/pages/login/index' }
 ])
 const menuSuggestData = reactive([
-    { tittle: '用户反馈', icon: '\uE61E' },
-    { tittle: '关于我们', icon: '\uE65E' },
-    { tittle: '退出登录', icon: '\uE677' },
+    { tittle: '用户反馈', icon: '\uE61E', url: '/pages/login/index' },
+    { tittle: '关于我们', icon: '\uE65E', url: '/pages/login/index' },
+    { tittle: '退出登录', icon: '\uE677', url: '/pages/login/index' },
 ])
 </script>
 
@@ -45,8 +45,8 @@ const menuSuggestData = reactive([
             </view>
             <view class="menu">
                 <view class="menumine">
-                    <navigator class="mineitem" v-for="item in menuMineData" url="/pages/index/loopdown"
-                        open-type="navigate" hover-class="navigator-hover" :key="item.icon">
+                    <navigator class="mineitem" v-for="item in menuMineData" :url="item.url" open-type="navigate"
+                        hover-class="navigator-hover" :key="item.icon">
                         <view class="menuheader">
                             <view class="itemicon iconfont">{{ item.icon }}</view>
                             <view class="itemcontent">{{ item.tittle }}</view>
@@ -55,7 +55,7 @@ const menuSuggestData = reactive([
                     </navigator>
                 </view>
                 <view class="menuuser">
-                    <navigator class="mineitem" v-for="item in menuFunData" url="/pages/index/loopdown" open-type="navigate"
+                    <navigator class="mineitem" v-for="item in menuFunData" :url="item.url" open-type="navigate"
                         hover-class="navigator-hover" :key="item.icon">
                         <view class="menuheader">
                             <view class="itemicon iconfont">{{ item.icon }}</view>
@@ -65,8 +65,8 @@ const menuSuggestData = reactive([
                     </navigator>
                 </view>
                 <view class="menusuggest">
-                    <navigator class="mineitem" v-for="item in menuSuggestData" url="/pages/index/loopdown"
-                        open-type="navigate" hover-class="navigator-hover" :key="item.icon">
+                    <navigator class="mineitem" v-for="item in menuSuggestData" :url="item.url" open-type="navigate"
+                        hover-class="navigator-hover" :key="item.icon">
                         <view class="menuheader">
                             <view class="itemicon iconfont">{{ item.icon }}</view>
                             <view class="itemcontent">{{ item.tittle }}</view>
@@ -91,7 +91,6 @@ const menuSuggestData = reactive([
 
     .tittle {
         margin: 20rpx;
-
     }
 
     .totalinfo {

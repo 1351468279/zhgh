@@ -3,9 +3,9 @@
   /* Project id 4225353 */
   /* Color fonts */
   src:
-    url('//at.alicdn.com/t/c/font_4225353_8e8lj9h0ulh.woff2?t=1693272457840') format('woff2'),
-    url('//at.alicdn.com/t/c/font_4225353_8e8lj9h0ulh.woff?t=1693272457840') format('woff'),
-    url('//at.alicdn.com/t/c/font_4225353_8e8lj9h0ulh.ttf?t=1693272457840') format('truetype');
+    url('//at.alicdn.com/t/c/font_4225353_y4j4orj6cfj.woff2?t=1693538533717') format('woff2'),
+    url('//at.alicdn.com/t/c/font_4225353_y4j4orj6cfj.woff?t=1693538533717') format('woff'),
+    url('//at.alicdn.com/t/c/font_4225353_y4j4orj6cfj.ttf?t=1693538533717') format('truetype');
 }
 
 .iconfont {
@@ -14,6 +14,30 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-yincangmima:before {
+  content: "\e60c";
+}
+
+.icon-weixin:before {
+  content: "\e609";
+}
+
+.icon-zhanghao:before {
+  content: "\e64a";
+}
+
+.icon-mima:before {
+  content: "\e608";
+}
+
+.icon-xianshimima:before {
+  content: "\e60f";
+}
+
+.icon-zhanghao1:before {
+  content: "\e63b";
 }
 
 .icon-search1:before {
