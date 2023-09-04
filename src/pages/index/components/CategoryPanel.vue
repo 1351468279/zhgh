@@ -1,12 +1,12 @@
 <script setup lang="ts">
-//
+//category数据
 </script>
 
 <template>
   <view class="category">
-    <navigator class="category-item" url="/pages/index/loopdown" v-for="item in 10" :key="item">
-      <image class="icon" src="https://pcapi-xiaotuxian-front-devtest.itheima.net/miniapp/images/nav_icon_1.png"></image>
-      <text class="text">点击跳转{{ item }}</text>
+    <navigator class="category-item" url="/pages/index/loopdown" v-for="item in 5" :key="item">
+      <image class="icon" src="@\static\images\unionpicture\campusview.jpg"></image>
+      <text class="text">{{ item }}</text>
     </navigator>
   </view>
 </template>
@@ -17,12 +17,11 @@
   margin: 20rpx 0 0;
   padding: 10rpx 0;
   display: flex;
-  flex-wrap: wrap;
-  min-height: 328rpx;
+  justify-content: space-around;
   background-color: white;
 
   .category-item {
-    width: 150rpx;
+    margin: 20rpx 0;
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -30,8 +29,10 @@
     box-sizing: border-box;
 
     .icon {
-      width: 100rpx;
-      height: 100rpx;
+      width: 70rpx;
+      height: 70rpx;
+      border-radius: 20%;
+      margin-bottom: 10rpx;
     }
 
     .text {

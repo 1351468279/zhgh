@@ -3,7 +3,7 @@
 	"easycom": {
 		"autoscan": true,
 		"custom": {
-			// uni-ui 规则如下配置  
+			// uni-ui 规则如下配置
 			"^uni-(.*)": "@dcloudio/uni-ui/lib/uni-$1/uni-$1.vue"
 		}
 	},
@@ -131,5 +131,18 @@
 				"selectedIconPath": "static/tabs/wode_selected.png"
 			}
 		]
-	}
+	},
+	"subPackages": [
+		{
+			"root": "subpackages/index",
+			"pages": [
+				{
+					"path": "loopdown",
+					"style": {
+						"navigationBarTitleText": "loopdown"
+					}
+				}
+			]
+		}
+	]
 }

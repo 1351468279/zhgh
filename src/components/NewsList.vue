@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
 import { defineProps } from 'vue';
 import type { listData } from '@/types/news'
 
@@ -17,8 +16,7 @@ const props = defineProps({
 
 <template>
     <view class="listItem" v-for=" (item, index)  in props.newsList">
-        <view class="itemImg"><img class="image" :src="item.image">
-        </view>
+        <view class="itemImg"><img class="image" :src="item.image"></view>
         <view class="itemContent">
             <view class="contentTittle">{{ item.content }}</view>
             <view class="contentTag">

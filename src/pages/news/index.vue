@@ -67,7 +67,7 @@ const onScrollTopLower = () => {
 
     .newsScrollLeft {
         white-space: nowrap;
-        width: 90%;
+        width: 100%;
 
         .newsItem {
             display: inline-block;
@@ -85,7 +85,6 @@ const onScrollTopLower = () => {
 
     .newsScrollTop {
         width: 100%;
-        flex: 1;
         overflow-y: auto;
         background-color: #eeeeee;
 

@@ -4,7 +4,7 @@ import PopupDialog from './PopupDialog.vue'
 import type { unionType } from '@/types/index'
 const { safeAreaInsets } = uni.getSystemInfoSync()
 const popup = ref()
-const unionname = ref('郑州市总工会')
+const unionname = ref('总工会')
 const onClick = () => {
   console.log('点击了')
   popup.value.open('center')
@@ -20,34 +20,37 @@ const closeDialog = (item: unionType) => {
   <!-- 顶部占位 -->
   <view class="navbar">
     <view class="tittle" :style="{ paddingTop: safeAreaInsets?.top + 'px' }">首页</view>
-    <view class="search">
-      <view class="areainfo" @click="onClick">{{ unionname }}
+    <!-- <view class="search"> -->
+    <!-- <view class="areainfo" @click="onClick">{{ unionname }}
       </view>
       <uni-popup ref="popup" type="bottom">
         <PopupDialog @on-close="closeDialog"></PopupDialog>
-      </uni-popup>
-      <!-- 搜索条 -->
-      <view class="searchbar">
+      </uni-popup> -->
+    <!-- 搜索条 -->
+    <!-- <view class="searchbar">
         <navigator class="navga" url="/pages/index/loopdown" open-type="navigate" hover-class="navigator-hover">
           <text class="iconfont icon icon-search1">搜索</text>
         </navigator>
-      </view>
-    </view>
+      </view> -->
+    <!-- </view> -->
   </view>
 </template>
 
 <style lang="scss" scoped>
 .navbar {
-  background-color: #d81e06;
+  background-color: red;
   display: flex;
   justify-content: space-around;
   align-items: center;
   flex-direction: column;
   overflow: hidden;
   margin-bottom: 20rpx;
+  width: 100%;
 
   .tittle {
+    width: 100%;
     color: white;
+    text-align: center;
   }
 
   .search {

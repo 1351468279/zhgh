@@ -3,9 +3,9 @@ import { reactive } from 'vue'
 import type { unionType } from '@/types/index'
 const emits = defineEmits(['onClose'])
 const unionlist = reactive([
-    { id: 1, name: '郑州市总工会' },
-    { id: 2, name: '周口市总工会' },
-    { id: 3, name: '许昌市总工会' }
+    { id: 1, name: '1总工会' },
+    { id: 2, name: '2总工会' },
+    { id: 3, name: '3总工会' }
 ])
 const onClick = (item: unionType) => {
     console.log(item)
