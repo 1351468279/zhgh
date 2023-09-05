@@ -1,9 +1,15 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { translateTime } from '@/utils/tool'
-const baseFormData = ref({
+import type { applyUnionType } from "@/types/hotel";
+import {useApplyUnionStore} from '@/store/index'
+import { onLoad } from '@dcloudio/uni-app';
+const props = defineProps(['val'])
+console.log(props.val)
+const store =useApplyUnionStore()
+const baseFormData = ref<applyUnionType>({
   unionName: '',
-  jobId: null,
+  jobId: '',
   name: '',
   idCard: '',
   sex: '',
@@ -11,23 +17,29 @@ const baseFormData = ref({
   educational: '',
   birthday: '',
   phone: NaN,
-  age: NaN,
   email: '',
-  enterTime: ''
+  enterTime: '',
+  status:false
 })
 
 
 const submit = () => {
   console.log(baseFormData.value)
   const date = new Date(baseFormData.value.birthday);
-
-
   console.log(translateTime(date));
+  store.setApplier(baseFormData.value)
+  console.log(store.applier)
 }
+const clear=()=>{
+  store.clearApplier()
+}
+onLoad((val )=>{
+  console.log(val?.val)
+})
 </script>
 <template>
   <view class="container">
-    <uni-section title="填写入会信息" type="line">
+    <uni-section title="填写入会信息" type="line" @click="clear">
       <view class="example">
         <!-- 基础用法，不包含校验规则 -->
         <uni-forms ref="baseForm" :model="baseFormData" labelWidth="80px">

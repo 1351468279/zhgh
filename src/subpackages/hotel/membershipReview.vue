@@ -1,8 +1,11 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
+import type { applyUnionType } from '@/types/hotel';
 import { translateTime } from '@/utils/tool'
+import { useApplyUnionStore } from "@/store/index";
+const store =useApplyUnionStore()
 const baseFormData = ref({
-  unionName: '工会',
+  unionName: '',
   jobId: 19160102039,
   name: '李星宇',
   idCard: '412702199601520145',
@@ -29,129 +32,78 @@ const baseFormDataTwo = ref({
 })
 const data = ref({})
 
-const onClick = (id: number) => {
-  if (id) {
-    uni.navigateTo({
-      url: '/subpackages/hotel/infomation' + '?id=' + id
+// const onClick = (id: number) => {
+//   if (id) {
+//     uni.navigateTo({
+//       url: '/subpackages/hotel/infomation' + '?id=' + id
+//     })
+//   }
+//   else {
+//     uni.navigateTo({
+//       url: '/subpackages/hotel/infomation'
+//     })
+//   }
+// }
+const onClick = (val:applyUnionType) => {
+  uni.navigateTo({
+    url: '/subpackages/hotel/applyUnion'+'?val='+val
     })
-  }
-  else {
-    uni.navigateTo({
-      url: '/subpackages/hotel/infomation'
-    })
-  }
-
 }
 </script>
 
 <template>
   <view class="shenhe">
-    <view class="alredy" @click="onClick(1)">
-      <view class="alredyTittle">
-        <view class="tittle">已审核</view>
+    <view class="card" v-for="item in store.applier" @click="onClick(item)">
+      <view class="tittle" >
+        <view class="main" :class="{await:item.status==false}">{{item.status?'已审核':'待审核'}}</view>
+        <view class="vice">工号：{{item.jobId}}</view>
       </view>
-      <view class="info">
-        <view class="name">{{ baseFormData.name }}</view>
-        <view class="time">入会时间：{{ baseFormData.enterTime }}</view>
-      </view>
-    </view>
-    <view class="wait" @click="onClick(0)">
-      <view class="waitTittle">
-        <view class="tittle">待审核</view>
-      </view>
-      <view class="info">
-        <view class="name">{{ baseFormDataTwo.name }}</view>
-        <view class="time">入会时间：{{ baseFormDataTwo.enterTime }}</view>
-      </view>
+      <view class="extra">姓名：{{ item.name }}</view>
     </view>
   </view>
 </template>
 
 <style lang="scss" scoped>
 .shenhe {
+  width: 100%;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 
-  .alredy {
+  .card {
     width: 90%;
     height: 200rpx;
-    background-color: #ccc;
-    border-radius: 10rpx;
-    margin-top: 20rpx;
-
-    .alredyTittle {
-      width: 100%;
-      height: 50rpx;
+    box-shadow: 0rpx 0rpx 5rpx 2rpx darkgrey;
+    margin: 20rpx;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 20rpx;
+    .tittle{
+      height: 80%;
+      width: 50%;
       display: flex;
-      justify-content: center;
-      align-items: center;
-
-      .tittle {
-        font-size: 30rpx;
-        font-weight: bold;
-      }
-    }
-
-    .info {
-      width: 100%;
-      height: 150rpx;
-      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
       flex-direction: column;
-      justify-content: center;
-      align-items: center;
-
-      .name {
-        font-size: 30rpx;
-        font-weight: bold;
+      margin-left: 50rpx;
+      .main{
+        font-size: larger;
+        color: #3a3a3a;
+        
       }
-
-      .time {
-        font-size: 25rpx;
-        color: #999;
+      .await{
+        color: red;
       }
-    }
+      .vice{
+        color: #909399;
+      }
+     }
+     .extra{
+      margin-right: 50rpx;
+     }
   }
-
-  .wait {
-    width: 90%;
-    height: 200rpx;
-    background-color: #ccc;
-    border-radius: 10rpx;
-    margin-top: 20rpx;
-
-    .waitTittle {
-      width: 100%;
-      height: 50rpx;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      .tittle {
-        font-size: 30rpx;
-        font-weight: bold;
-      }
-    }
-
-    .info {
-      width: 100%;
-      height: 150rpx;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-
-      .name {
-        font-size: 30rpx;
-        font-weight: bold;
-      }
-
-      .time {
-        font-size: 25rpx;
-        color: #999;
-      }
-    }
-  }
+ 
 }
 </style>

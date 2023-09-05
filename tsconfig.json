@@ -1,4 +1,3 @@
-// tsconfig.json
 {
   "extends": "@vue/tsconfig/tsconfig.json",
   "compilerOptions": {
@@ -14,15 +13,14 @@
       "esnext",
       "dom"
     ],
-    // 添加类型声明文件，"miniprogram-api-typings", "@uni-helper/uni-app-types"
-    "types": [
+     "types": [
       "@dcloudio/types",
       "miniprogram-api-typings",
-      "@uni-helper/uni-app-types"
+      "@uni-helper/uni-app-types",
+     "@uni-helper/uni-ui-types"
     ]
   },
-  // vue 编译器类型，校验标签类型
-  "vueCompilerOptions": {
+   "vueCompilerOptions": {
     "nativeTags": [
       "block",
       "component",
