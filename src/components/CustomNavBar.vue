@@ -4,7 +4,7 @@ import type { unionType } from '@/types/index'
 import { defineProps } from 'vue'
 const { safeAreaInsets } = uni.getSystemInfoSync()
 const props = defineProps({
-    title: {
+    tittle: {
         type: String
     }
 })
@@ -23,13 +23,13 @@ const closeDialog = (item: unionType) => {
 <template>
     <!-- 顶部占位 -->
     <view class="navbar">
-        <view class="tittle" :style="{ paddingTop: safeAreaInsets?.top + 'px' }">{{ props.title }}</view>
+        <view class="tittle" :style="{ paddingTop: safeAreaInsets?.top + 'px' }">{{ props.tittle }}</view>
     </view>
 </template>
 
 <style lang="scss" scoped>
 .navbar {
-    background-color: white;
+    background-color: red;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -39,7 +39,7 @@ const closeDialog = (item: unionType) => {
         display: flex;
         justify-content: center;
         align-items: center;
-        color: black;
+        color: white;
         margin: 20rpx;
     }
 }

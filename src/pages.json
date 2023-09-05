@@ -11,7 +11,7 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationStyle": "custom", // 默认显示导航
+				"navigationStyle": "default", // 默认显示导航
 				"navigationBarTitleText": "首页",
 				"navigationBarTextStyle": "white",
 				"navigationBarBackgroundColor": "#d81e06",
@@ -21,10 +21,10 @@
 		{
 			"path": "pages/news/index",
 			"style": {
-				"navigationStyle": "custom",
+				"navigationStyle": "default",
 				"navigationBarTitleText": "新闻",
-				"navigationBarTextStyle": "black",
-				"navigationBarBackgroundColor": "#ffffff"
+				"navigationBarTextStyle": "white",
+				"navigationBarBackgroundColor": "#d81e06"
 			}
 		},
 		{
@@ -32,51 +32,24 @@
 			"style": {
 				"navigationStyle": "default",
 				"navigationBarTitleText": "服务大厅",
-				"navigationBarTextStyle": "black",
-				"navigationBarBackgroundColor": "#ffffff"
+				"navigationBarTextStyle": "white",
+				"navigationBarBackgroundColor": "#d81e06"
 			}
 		},
 		{
 			"path": "pages/welfare/index",
 			"style": {
-				"navigationStyle": "custom",
+				"navigationStyle": "default",
 				"navigationBarTitleText": "活动",
-				"navigationBarTextStyle": "black",
-				"navigationBarBackgroundColor": "#ffffff"
+				"navigationBarTextStyle": "white",
+				"navigationBarBackgroundColor": "#d81e06"
 			}
 		},
 		{
 			"path": "pages/my/index",
 			"style": {
-				"navigationStyle": "custom",
+				"navigationStyle": "default",
 				"navigationBarTitleText": "我的",
-				"navigationBarTextStyle": "black",
-				"navigationBarBackgroundColor": "#ffffff"
-			}
-		},
-		{
-			"path": "pages/index/loopdown",
-			"style": {
-				"navigationStyle": "default",
-				"navigationBarTitleText": "跳转页",
-				"navigationBarTextStyle": "black",
-				"navigationBarBackgroundColor": "#ffffff"
-			}
-		},
-		{
-			"path": "pages/hotel/detail/index",
-			"style": {
-				"navigationStyle": "default",
-				"navigationBarTitleText": "服务大厅跳转页",
-				"navigationBarTextStyle": "black",
-				"navigationBarBackgroundColor": "#ffffff"
-			}
-		},
-		{
-			"path": "pages/hotel/components/search",
-			"style": {
-				"navigationStyle": "default",
-				"navigationBarTitleText": "服务大厅搜索应用",
 				"navigationBarTextStyle": "black",
 				"navigationBarBackgroundColor": "#ffffff"
 			}
@@ -86,6 +59,15 @@
 			"style": {
 				"navigationStyle": "custom",
 				"navigationBarTitleText": "登录",
+				"navigationBarTextStyle": "black",
+				"navigationBarBackgroundColor": "#ffffff"
+			}
+		},
+		{
+			"path": "pages/index/loopdown",
+			"style": {
+				"navigationStyle": "default",
+				"navigationBarTitleText": "跳转页",
 				"navigationBarTextStyle": "black",
 				"navigationBarBackgroundColor": "#ffffff"
 			}
@@ -140,6 +122,41 @@
 					"path": "loopdown",
 					"style": {
 						"navigationBarTitleText": "loopdown"
+					}
+				}
+			]
+		},
+		{
+			"root": "subpackages/hotel",
+			"pages": [
+				{
+					"path": "detail",
+					"style": {
+						"navigationBarTitleText": "详情"
+					}
+				},
+				{
+					"path": "search",
+					"style": {
+						"navigationBarTitleText": "服务大厅应用搜索"
+					}
+				},
+				{
+					"path": "applyUnion",
+					"style": {
+						"navigationBarTitleText": "申请入会"
+					}
+				},
+				{
+					"path": "membershipReview",
+					"style": {
+						"navigationBarTitleText": "入会审核"
+					}
+				},
+				{
+					"path": "infomation",
+					"style": {
+						"navigationBarTitleText": "infomation"
 					}
 				}
 			]

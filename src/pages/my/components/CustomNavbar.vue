@@ -4,8 +4,7 @@ import { reactive } from 'vue';
 const { safeAreaInsets } = uni.getSystemInfoSync()  // 获取系统信息
 const menuMineData = reactive([
     { tittle: '我参与的活动', icon: '\uE61E', url: '/pages/login/index' },
-    { tittle: '我的收藏', icon: '\uE65E', url: '/pages/login/index' },
-    { tittle: '我的核销码', icon: '\uE677', url: '/pages/login/index' },
+    { tittle: '我的收藏', icon: '\uE65E', url: '/pages/login/index' }
 ])
 const menuFunData = reactive([
     { tittle: '个人资料', icon: '\uE61E', url: '/pages/login/index' },
@@ -20,26 +19,26 @@ const menuSuggestData = reactive([
 
 <template>
     <view class="navbar">
-        <view class="tittle" :style="{ paddingTop: safeAreaInsets?.top + 'px' }">个人中心</view>
+        <!-- <view class="tittle" :style="{ paddingTop: safeAreaInsets?.top + 'px' }">个人中心</view> -->
         <view class="totalinfo">
             <view class="pubinfo">
                 <image class="avatar" src="https://img.yzcdn.cn/vant/cat.jpeg" mode="scaleToFill" />
                 <view class="userinfo">
-                    <view class="acceptcard">
+                    <!-- <view class="acceptcard">
                         <view class="cardmark">*</view>
                         <navigator class="cardtittle" url="/pages/index/loopdown" open-type="navigate"
                             hover-class="navigator-hover">
                             绑卡
-                        </navigator>
-                        <!-- <view class="cardtittle"></view> -->
-                    </view>
+                        </navigator> -->
+                    <!-- <view class="cardtittle"></view> -->
+                    <!-- </view> -->
                     <view class="username">
                         <view class="cardnum">会员卡号：</view>
-                        <view class="cardstate">未绑卡</view>
+                        <view class="cardstate">000001</view>
                     </view>
                     <view class="userlevel">
                         <view class="cardarea">所属工会：</view>
-                        <view class="areastate">未绑卡</view>
+                        <view class="areastate">财大工会</view>
                     </view>
                 </view>
             </view>
@@ -87,7 +86,7 @@ const menuSuggestData = reactive([
     flex-direction: column;
     overflow: hidden;
     margin-bottom: 20rpx;
-
+    width: 100%;
 
     .tittle {
         margin: 20rpx;
@@ -170,6 +169,8 @@ const menuSuggestData = reactive([
             background-color: #fff;
             overflow: hidden;
             width: 100%;
+            display: flex;
+            flex-direction: column;
 
 
             .menumine,

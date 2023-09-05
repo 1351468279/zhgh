@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import CustomNavbar from './components/CustomNavbar.vue'
+import CustomNavBar from '@/components/CustomNavBar.vue'
 import ClassSwiper from './components/ClassSwiper.vue'
 import CategoryPanel from './components/CategoryPanel.vue'
 import FunctionCard from './components/FunctionCard.vue'
@@ -34,12 +34,12 @@ const onScrollTop = (e: any) => {
 const onClick = (id: number, index: number) => {
   activeValue.value = id;
   // 计算需要滚动的距离
-  const itemWidth = systemInfo.windowWidth * 0.15; // 假设每个元素宽度为屏幕宽度的 20%
+  const itemWidth = systemInfo.windowWidth * 0.2; // 假设每个元素宽度为屏幕宽度的 20%
   const scrollDistance = index * itemWidth - systemInfo.windowWidth * 0.4; // 滚动到元素中间位置
   scrollLeft.value = scrollDistance < 0 ? 0 : scrollDistance;
 };
 const newsList = computed(() => {
-  return listTotalData.value.filter(item => item.id === activeValue.value)[0].data
+  return listTotalData.value.filter(item => item.articleId === activeValue.value)[0].data
 })
 let timer: any = null
 
@@ -49,25 +49,25 @@ const onScrollTopLower = () => {
   loadingStatus.value = true
   console.log('到底了')
   timer = setTimeout(() => {
-    listTotalData.value[activeValue.value - 1].data.push({ id: 6, image: 'https://pcapi-xiaotuxian-front-devtest.itheima.net/miniapp/uploads/goods_big_1.jpg', area: '新郑市总工会', viewNum: 1212, content: '文章标题阿，萨大sasadad松大打赏撒大' })
+    listTotalData.value[activeValue.value - 1].data.push({ id: 6, image: 'http://cloud.zhgn.cn:808/phone/unionpicture/synodmeetings.png', area: '新郑市总工会', viewNum: 1212, content: '文章内容', tittle: '文章标题', time: '2023-01-02' })
     loadingStatus.value = false
     clearTimeout(timer)
-  }, 2000)
+  }, 200)
 }
 </script>
 
 <template>
   <view class="home" :style="{ height: (systemInfo.windowHeight) + 'px' }">
-    <CustomNavbar class="navbar"></CustomNavbar>
+    <!-- <CustomNavBar class="navbar" :tittle="'首页'"></CustomNavBar> -->
 
-    <scroll-view class="indexScrollTop" scroll-y :scroll-top="scrollTop" @scroll="onScrollTop"
-      @scrolltolower="onScrollTopLower">
+    <scroll-view class="indexScrollTop" refresher-enabled scroll-y :scroll-top="scrollTop" @scroll="onScrollTop"
+      lower-threshold="100" @scrolltolower="onScrollTopLower">
       <ClassSwiper></ClassSwiper>
       <CategoryPanel></CategoryPanel>
       <FunctionCard></FunctionCard>
       <scroll-view class="newsScrollLeft" scroll-x :scroll-left="scrollLeft" scroll-with-animation @scroll="onScrollLeft">
-        <view class="newsItem" :class="{ active: activeValue === item.id }" v-for="(item, index ) in listTotalData"
-          @click="onClick(item.id, index)">
+        <view class="newsItem" :class="{ active: item.articleId === activeValue }" v-for="(item, index ) in listTotalData"
+          @click="onClick(item.articleId, index)">
           {{ item.name }}
         </view>
       </scroll-view>
@@ -83,6 +83,7 @@ const onScrollTopLower = () => {
 .home {
   background-color: white;
   display: flex;
+  justify-content: flex-start;
   flex-direction: column;
   align-items: center;
   width: 100%;
@@ -96,29 +97,31 @@ const onScrollTopLower = () => {
     flex: 1;
     width: 100%;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start;
     flex-direction: column;
+    align-items: center;
     overflow-y: auto;
 
     .newsScrollLeft {
-      white-space: nowrap;
       width: 100%;
-      position: sticky;
-      top: 0;
-      background-color: white;
+      // background-color: skyblue;
+      white-space: nowrap;
 
       .newsItem {
         display: inline-block;
-        width: 15%;
+        width: 20%;
         height: 70rpx;
         line-height: 70rpx;
         text-align: center;
         font-size: 28rpx;
+        color: darkgrey;
       }
 
       .active {
         border-bottom: 3px solid #ff0000;
+        font-weight: bold;
+        font-size: 35rpx;
+        color: black;
       }
     }
 

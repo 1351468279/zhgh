@@ -18,7 +18,7 @@ const props = defineProps({
     <view class="listItem" v-for=" (item, index)  in props.newsList">
         <view class="itemImg"><img class="image" :src="item.image"></view>
         <view class="itemContent">
-            <view class="contentTittle">{{ item.content }}</view>
+            <view class="contentTittle">{{ item.tittle }}</view>
             <view class="contentTag">
                 <view class="area">
                     <view class="iconfont icon">&#xe686;</view>

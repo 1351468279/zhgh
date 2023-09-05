@@ -8,7 +8,7 @@ const edit = () => {
     editStatus.value = !editStatus.value
     console.log(editStatus.value)
 }
-const reduce = (id: number) => {
+const reduce = (id: number, url: string) => {
     if (editStatus.value) {
         console.log(`减少${id}`)
         hotelData.value.forEach(item => {
@@ -19,12 +19,12 @@ const reduce = (id: number) => {
     }
     else {
         uni.navigateTo({
-            url: '/pages/hotel/detail/index?id=' + id
+            url: url + '?id=' + id
         })
     }
 
 }
-const add = (id: number) => {
+const add = (id: number, url: string) => {
     if (editStatus.value) {
         console.log(`增加${id}`)
         hotelData.value.forEach(item => {
@@ -34,7 +34,7 @@ const add = (id: number) => {
         })
     } else {
         uni.navigateTo({
-            url: '/pages/hotel/detail/index?id=' + id
+            url: url + '?id=' + id
         })
     }
 
@@ -44,7 +44,7 @@ const add = (id: number) => {
 
 <template>
     <view class="hotel">
-        <navigator class="search" hover-class="none" url="/pages/hotel/components/search">
+        <navigator class="search" hover-class="none" url="/subpackages/hotel/search">
             <view class="searchbar">
                 <view class="text">搜索应用</view>
             </view>
@@ -56,7 +56,7 @@ const add = (id: number) => {
             </view>
             <view class="appBox">
                 <view class="app" :class="{ editicon: editStatus }" v-for=" item  in hotelDataList" :key="item.id"
-                    hover-class="navigator-hover" @click="reduce(item.id)">
+                    hover-class="navigator-hover" @click="reduce(item.id, item.url)">
                     <image class="appimg" :src="item.src" mode="scaleToFill" />
                     <view class="apptext">{{ item.content }}</view>
                     <view class="iconfont icon-jian" v-if="editStatus"></view>
@@ -67,7 +67,7 @@ const add = (id: number) => {
             <view class="tittle">全部应用</view>
             <view class="appBox">
                 <view class="app" :class="{ editicon: editStatus }" v-for=" item  in hotelData" :key="item.id"
-                    hover-class="navigator-hover" @click="add(item.id)">
+                    hover-class="navigator-hover" @click="add(item.id, item.url)">
                     <image class="appimg" :src="item.src" mode="scaleToFill" />
                     <view class="apptext">{{ item.content }}</view>
                     <view class="iconfont icon-add" v-if="editStatus === true && item.mine === false"></view>

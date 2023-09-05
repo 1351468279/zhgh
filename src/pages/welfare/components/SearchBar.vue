@@ -15,18 +15,18 @@ const participate = (val: string) => {
 
 <template>
     <view class="searchBox">
-        <view class="search" hover-class="navigator-hover">
+        <!-- <view class="search" hover-class="navigator-hover">
             <view class="iconfont icon">&#xe67d;</view>
             <view class="text">搜索</view>
-        </view>
+        </view> -->
     </view>
     <view class="activityBox">
-        <view class="activityNum">
+        <view class="activityNum" v-if="activeTag === 'all'">
             <view class="text">共计</view>
             <view class="num">327</view>
             <view class="text">个普惠活动</view>
         </view>
-        <view class="mineNum">
+        <view class="mineNum" v-else>
             <view class="text">您可参与</view>
             <view class="num">22</view>
             <view class="text">个普惠活动</view>
@@ -58,14 +58,14 @@ const participate = (val: string) => {
         .icon {
             margin-left: 20rpx;
             font-size: 60rpx;
-            color: white;
+            color: black;
         }
 
-        .text {
-            margin-left: 20rpx;
-            font-size: 30rpx;
-            color: white;
-        }
+        // .text {
+        //     margin-left: 20rpx;
+        //     font-size: 30rpx;
+        //     color: white;
+        // }
     }
 }
 
@@ -73,8 +73,8 @@ const participate = (val: string) => {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    height: 100rpx;
-    background-color: #FFBFA9;
+    height: 80rpx;
+    background-color: white;
     width: 100%;
 
     .activityNum {
@@ -82,31 +82,37 @@ const participate = (val: string) => {
         display: flex;
         justify-content: center;
         align-items: center;
-        color: white;
+        color: #949699;
 
         .text {
-            font-size: 30rpx;
+            font-size: 25rpx;
+            color: #949699;
+
         }
 
         .num {
-            font-size: 60rpx;
+            color: #949699;
+
+            font-size: 40rpx;
         }
 
-        border-right: 1px solid white;
     }
 
     .mineNum {
         display: flex;
         justify-content: center;
         align-items: center;
-        color: white;
 
         .text {
-            font-size: 30rpx;
+            font-size: 25rpx;
+            color: #949699;
+
         }
 
         .num {
-            font-size: 60rpx;
+            font-size: 40rpx;
+            color: #949699;
+
         }
 
         .icon {
@@ -119,27 +125,27 @@ const participate = (val: string) => {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    height: 80rpx;
-    background-color: #fff;
+    height: 50rpx;
 
     .available {
         width: 50%;
         font-size: 30rpx;
         text-align: center;
-        line-height: 80rpx;
+        line-height: 60rpx;
     }
 
     .total {
         width: 50%;
         font-size: 30rpx;
         text-align: center;
-        line-height: 80rpx;
+        line-height: 60rpx;
+
     }
 
     .active {
-        background-color: #FFEBB4;
         font-size: large;
         font-weight: bold;
+        border-bottom: 10px solid red;
     }
 }
 </style>

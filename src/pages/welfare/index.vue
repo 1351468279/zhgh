@@ -22,15 +22,16 @@ console.log(nav)
 
 <template>
     <view class="page" :style="{ height: systemInfo?.windowHeight + 'px' }">
-        <CustomNavbar :title="'活动'"></CustomNavbar>
+        <!-- <CustomNavbar :title="'活动'"></CustomNavbar> -->
         <SearchBar class="ceshi"></SearchBar>
-        <scroll-view class="activityList" scroll-y show-scrollbar :scroll-top="scrollTop" @scrolltolower="lower"
-            @scroll="scroll">
+        <scroll-view class="activityList" refresher-enabled scroll-y show-scrollbar :scroll-top="scrollTop"
+            @scrolltolower="lower" @scroll="scroll">
             <view class="listItem" v-for="item in shuju">
-                <view class="itemImg"><img class="image" src="@\static\images\hotel\xuexi.png">
+                <view class="itemImg"><img class="image"
+                        src="http://cloud.zhgn.cn:808/phone/unionpicture/synodmeetings.png">
                 </view>
                 <view class="itemContent">
-                    <view class="contentTittle">文章标题阿，萨大sasadad松大打赏撒大</view>
+                    <view class="contentTittle">文章标题</view>
                     <view class="contentTag">
                         <view class="area">
                             <view class="iconfont icon">&#xe686;</view>

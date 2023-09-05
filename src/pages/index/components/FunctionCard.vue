@@ -11,7 +11,7 @@
             <text class="text">爱心驿站 </text>
         </navigator> -->
         <navigator class="advertiser" url="/pages/index/loopdown" open-type="navigate" hover-class="navigator-hover">
-            <image class="advericon" src="@\static\images\unionpicture\campusview.jpg">
+            <image class="advericon" src="@\static\images\index\xuanchuan.png">
             </image>
         </navigator>
     </view>
@@ -31,10 +31,11 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 20rpx;
+        padding: 20rpx 0;
 
         .advericon {
-            border-radius: 20rpx;
+            transform: scale(1.1);
+            border-radius: 10rpx;
             height: 160rpx;
         }
     }

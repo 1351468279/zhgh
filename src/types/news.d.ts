@@ -3,10 +3,12 @@ export type listData = {
     image: string,
     area: string,
     viewNum: number,
-    content: string
+    tittle: string,
+    content: string,
+    time: string,
 }
 export type newsData = {
-    id: number,
+    articleId: number,
     name: string,
     data: listData[]
 }

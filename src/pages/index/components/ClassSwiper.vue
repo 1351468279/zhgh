@@ -19,27 +19,30 @@ const changeIndicatorDots = (a: any) => {
       indicator-dots :autoplay="true" :interval="3000" @change="changeIndicatorDots">
       <swiper-item class="swiperItem">
         <navigator url="/pages/index/loopdown" hover-class="none" class="navigator">
-          <image mode="aspectFill" class="image" src="@\static\images\unionpicture\campusview.jpg"></image>
+          <image mode="aspectFill" class="image" src="http://cloud.zhgn.cn:808/phone/unionpicture/meeting.jpg"></image>
         </navigator>
       </swiper-item>
       <swiper-item class="swiperItem">
         <navigator url="/pages/index/loopdown" hover-class="none" class="navigator">
-          <image mode="aspectFill" class="image" src="@\static\images\unionpicture\meeting.jpg"></image>
+          <image mode="aspectFill" class="image" src="http://cloud.zhgn.cn:808/phone/unionpicture/campusview.jpg"></image>
         </navigator>
       </swiper-item>
       <swiper-item class="swiperItem">
         <navigator url="/pages/index/loopdown" hover-class="none" class="navigator">
-          <image mode="aspectFill" class="image" src="@\static\images\unionpicture\synodmeetings.png"></image>
+          <image mode="aspectFill" class="image" src="http://cloud.zhgn.cn:808/phone/unionpicture/synodmeetings.png">
+          </image>
         </navigator>
       </swiper-item>
       <swiper-item class="swiperItem">
         <navigator url="/pages/index/loopdown" hover-class="none" class="navigator">
-          <image mode="aspectFill" class="image" src="@\static\images\unionpicture\teachermetting.png"></image>
+          <image mode="aspectFill" class="image" src="http://cloud.zhgn.cn:808/phone/unionpicture/teachermetting.png">
+          </image>
         </navigator>
       </swiper-item>
       <swiper-item class="swiperItem">
         <navigator url="/pages/index/loopdown" hover-class="none" class="navigator">
-          <image mode="aspectFill" class="image" src="@\static\images\unionpicture\valleyball.jpeg"></image>
+          <image mode="aspectFill" class="image" src="http://cloud.zhgn.cn:808/phone/unionpicture/valleyball.jpeg">
+          </image>
         </navigator>
       </swiper-item>
     </swiper>

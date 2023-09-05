@@ -60,7 +60,7 @@ const getPhoneNumber: UniHelper.ButtonOnGetphonenumber = (ev) => {
 
 <template>
     <view class="login" :style="{ height: systemInfo.windowHeight + 'px' }">
-        <CustomNavBar :title="'登录'"></CustomNavBar>
+        <!-- <CustomNavBar :title="'登录'"></CustomNavBar> -->
         <view class="loginBox">
             <view class="welcome">welcome</view>
             <!-- 网页端表单登录 -->

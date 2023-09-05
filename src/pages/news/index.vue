@@ -10,13 +10,13 @@ const activeValue = ref(1)
 const onClick = (id: number, index: number) => {
     activeValue.value = id;
     // 计算需要滚动的距离
-    const itemWidth = systemInfo.windowWidth * 0.15; // 假设每个元素宽度为屏幕宽度的 20%
+    const itemWidth = systemInfo.windowWidth * 0.2; // 假设每个元素宽度为屏幕宽度的 20%
     const scrollDistance = index * itemWidth - systemInfo.windowWidth * 0.4; // 滚动到元素中间位置
     scrollLeft.value = scrollDistance < 0 ? 0 : scrollDistance;
 };
 
 const newsList = computed(() => {
-    return listTotalData.value.filter(item => item.id === activeValue.value)[0].data
+    return listTotalData.value.filter(item => item.articleId === activeValue.value)[0].data
 })
 const onScrollLeft = (e: any) => {
     console.log(e)
@@ -33,24 +33,24 @@ const onScrollTopLower = () => {
     loadingStatus.value = true
     console.log('到底了')
     timer = setTimeout(() => {
-        listTotalData.value[activeValue.value - 1].data.push({ id: 6, image: 'https://pcapi-xiaotuxian-front-devtest.itheima.net/miniapp/uploads/goods_big_1.jpg', area: '新郑市总工会', viewNum: 1212, content: '文章标题阿，萨大sasadad松大打赏撒大' })
+        listTotalData.value[activeValue.value - 1].data.push({ id: 6, image: 'http://cloud.zhgn.cn:808/phone/unionpicture/synodmeetings.png', tittle: '文章标题', area: '新郑市总工会', viewNum: 1212, content: '文章内容', time: '2023-07-16' })
         loadingStatus.value = false
         clearTimeout(timer)
-    }, 2000)
+    }, 200)
 }
 </script>
     
 <template>
-    <view class="news" :style="{ height: systemInfo.windowHeight + 'px' }">
-        <CustomNavBar :title="'新闻'"></CustomNavBar>
+    <view class="news" :style="{ height: (systemInfo.windowHeight) + 'px' }">
+        <!-- <CustomNavBar class="nav" :tittle="'新闻'"></CustomNavBar> -->
         <scroll-view class="newsScrollLeft" scroll-x :scroll-left="scrollLeft" scroll-with-animation @scroll="onScrollLeft">
-            <view class="newsItem" :class="{ active: activeValue === item.id }" v-for="(item, index ) in listTotalData"
-                @click="onClick(item.id, index)">
+            <view class="newsItem" :class="{ active: activeValue === item.articleId }"
+                v-for="(item, index ) in listTotalData" @click="onClick(item.articleId, index)">
                 {{ item.name }}
             </view>
         </scroll-view>
-        <scroll-view class="newsScrollTop" scroll-y :scroll-top="scrollTop" @scroll="onScrollTop"
-            @scrolltolower="onScrollTopLower">
+        <scroll-view class="newsScrollTop" scroll-y refresher-enabled :scroll-top="scrollTop" @scroll="onScrollTop"
+            lower-threshold="80" @scrolltolower="onScrollTopLower">
             <NewsList :newsList="newsList" :loadingStatus="loadingStatus"></NewsList>
         </scroll-view>
     </view>
@@ -64,6 +64,9 @@ const onScrollTopLower = () => {
     align-items: center;
     flex-direction: column;
 
+    .nav {
+        width: 100%;
+    }
 
     .newsScrollLeft {
         white-space: nowrap;
@@ -71,19 +74,24 @@ const onScrollTopLower = () => {
 
         .newsItem {
             display: inline-block;
-            width: 15%;
+            width: 20%;
             height: 70rpx;
             line-height: 70rpx;
             text-align: center;
             font-size: 28rpx;
+            color: gray;
         }
 
         .active {
+            color: black;
+            font-weight: bold;
+            font-size: 35rpx;
             border-bottom: 3px solid #ff0000;
         }
     }
 
     .newsScrollTop {
+        flex: 1;
         width: 100%;
         overflow-y: auto;
         background-color: #eeeeee;
@@ -96,19 +104,6 @@ const onScrollTopLower = () => {
             display: flex;
             justify-content: space-around;
             align-items: center;
-
-            .image {
-                width: 40%;
-                height: 90%;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-
-                .img {
-                    width: 100%;
-                    height: 100%;
-                }
-            }
 
             .itemContent {
                 width: 60%;
@@ -127,48 +122,6 @@ const onScrollTopLower = () => {
                     text-overflow: ellipsis;
                     white-space: nowrap;
                 }
-
-                .contentTag {
-                    width: 100%;
-                    height: 60%;
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    padding: 0 20rpx;
-
-                    .area {
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: center;
-
-                        .icon {
-                            font-size: 30rpx;
-                            color: #ff0000;
-                        }
-
-                        .areaTeam {
-                            font-size: 28rpx;
-                            color: #666666;
-                        }
-                    }
-
-                    .viewNum {
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: center;
-
-                        .icon {
-                            font-size: 30rpx;
-                            color: #ff0000;
-                        }
-
-                        .num {
-                            font-size: 28rpx;
-                            color: #666666;
-                        }
-                    }
-                }
-
             }
         }
     }

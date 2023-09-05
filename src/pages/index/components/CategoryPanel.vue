@@ -1,12 +1,14 @@
 <script setup lang="ts">
 //category数据
+import { ref } from 'vue'
+import { categoryData } from '@/utils/index'
 </script>
 
 <template>
   <view class="category">
-    <navigator class="category-item" url="/pages/index/loopdown" v-for="item in 5" :key="item">
-      <image class="icon" src="@\static\images\unionpicture\campusview.jpg"></image>
-      <text class="text">{{ item }}</text>
+    <navigator class="category-item" url="/pages/index/loopdown" v-for="item in categoryData" :key="item.id">
+      <image class="icon" :src="item.src"></image>
+      <text class="text">{{ item.name }}</text>
     </navigator>
   </view>
 </template>
@@ -29,8 +31,8 @@
     box-sizing: border-box;
 
     .icon {
-      width: 70rpx;
-      height: 70rpx;
+      width: 50rpx;
+      height: 50rpx;
       border-radius: 20%;
       margin-bottom: 10rpx;
     }
