@@ -3,7 +3,7 @@ export interface hotelApp {
 
     src: string,
 
-    content: string,
+    name: string,
 
     id: number,
 
@@ -11,7 +11,7 @@ export interface hotelApp {
 
 }
 // 申请入会成员信息类型
-export type applyUnionType ={
+export type applyUnionType = {
     unionName: string,
     jobId: string,
     name: string,
@@ -19,9 +19,9 @@ export type applyUnionType ={
     sex: string,
     nationality: string,
     educational: string,
-    birthday: string,
+    birthday: Number,
     phone: Number,
     email: string,
-    enterTime: string,
-    status?:boolean
+    enterTime: Number,
+    status?: boolean
 }

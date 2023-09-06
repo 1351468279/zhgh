@@ -76,7 +76,7 @@
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
+		"navigationBarBackgroundColor": "#2174d3",
 		"backgroundColor": "#F8F8F8"
 	},
 	"tabBar": {
@@ -114,6 +114,7 @@
 			}
 		]
 	},
+	"usingComponents": {},
 	"subPackages": [
 		{
 			"root": "subpackages/index",
@@ -151,12 +152,6 @@
 					"path": "membershipReview",
 					"style": {
 						"navigationBarTitleText": "入会审核"
-					}
-				},
-				{
-					"path": "infomation",
-					"style": {
-						"navigationBarTitleText": "infomation"
 					}
 				}
 			]

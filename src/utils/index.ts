@@ -348,15 +348,15 @@ export const listTotalData = ref<newsListData>([
 export const categoryData = ref<categoryType>([
     {
         id: 1,
-        name: '会员入会',
+        name: '申请入会',
         src: 'http://cloud.zhgn.cn:808/phone/index/renzheng.png',
-        url: 'string',
+        url: '/subpackages/hotel/applyUnion',
     },
     {
         id: 2,
         name: '入会审核',
         src: 'http://cloud.zhgn.cn:808/phone/index/shenling.png',
-        url: 'string',
+        url: '/subpackages/hotel/membershipReview',
     },
     {
         id: 3,

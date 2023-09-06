@@ -58,7 +58,7 @@ const add = (id: number, url: string) => {
                 <view class="app" :class="{ editicon: editStatus }" v-for=" item  in hotelDataList" :key="item.id"
                     hover-class="navigator-hover" @click="reduce(item.id, item.url)">
                     <image class="appimg" :src="item.src" mode="scaleToFill" />
-                    <view class="apptext">{{ item.content }}</view>
+                    <view class="apptext">{{ item.name }}</view>
                     <view class="iconfont icon-jian" v-if="editStatus"></view>
                 </view>
             </view>
@@ -69,7 +69,7 @@ const add = (id: number, url: string) => {
                 <view class="app" :class="{ editicon: editStatus }" v-for=" item  in hotelData" :key="item.id"
                     hover-class="navigator-hover" @click="add(item.id, item.url)">
                     <image class="appimg" :src="item.src" mode="scaleToFill" />
-                    <view class="apptext">{{ item.content }}</view>
+                    <view class="apptext">{{ item.name }}</view>
                     <view class="iconfont icon-add" v-if="editStatus === true && item.mine === false"></view>
                 </view>
             </view>
@@ -132,7 +132,8 @@ const add = (id: number, url: string) => {
                 display: flex;
                 justify-content: space-around;
                 align-items: center;
-                color: #007aff;
+                font-size: medium;
+                font-weight: 590;
             }
         }
 
@@ -179,7 +180,7 @@ const add = (id: number, url: string) => {
                 .apptext {
                     width: 100%;
                     text-align: center;
-                    font-size: 28rpx;
+                    font-size: 23rpx;
                     color: #666666;
                 }
             }
@@ -245,7 +246,7 @@ const add = (id: number, url: string) => {
                 .apptext {
                     width: 100%;
                     text-align: center;
-                    font-size: 28rpx;
+                    font-size: 23rpx;
                     color: #666666;
                 }
             }

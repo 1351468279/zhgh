@@ -10,7 +10,7 @@
             </image>
             <text class="text">爱心驿站 </text>
         </navigator> -->
-        <navigator class="advertiser" url="/pages/index/loopdown" open-type="navigate" hover-class="navigator-hover">
+        <navigator class="advertiser" url="" open-type="navigate" hover-class="navigator-hover">
             <image class="advericon" src="@\static\images\index\xuanchuan.png">
             </image>
         </navigator>
@@ -36,7 +36,7 @@
         .advericon {
             transform: scale(1.1);
             border-radius: 10rpx;
-            height: 160rpx;
+            height: 120rpx;
         }
     }
 

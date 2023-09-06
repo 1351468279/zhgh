@@ -18,29 +18,29 @@ const changeIndicatorDots = (a: any) => {
     <swiper class="swiper" indicator-color="white" indicator-active-color="rgba(46, 46, 46)" :circular="true"
       indicator-dots :autoplay="true" :interval="3000" @change="changeIndicatorDots">
       <swiper-item class="swiperItem">
-        <navigator url="/pages/index/loopdown" hover-class="none" class="navigator">
+        <navigator url="" hover-class="none" class="navigator">
           <image mode="aspectFill" class="image" src="http://cloud.zhgn.cn:808/phone/unionpicture/meeting.jpg"></image>
         </navigator>
       </swiper-item>
       <swiper-item class="swiperItem">
-        <navigator url="/pages/index/loopdown" hover-class="none" class="navigator">
+        <navigator url="" hover-class="none" class="navigator">
           <image mode="aspectFill" class="image" src="http://cloud.zhgn.cn:808/phone/unionpicture/campusview.jpg"></image>
         </navigator>
       </swiper-item>
       <swiper-item class="swiperItem">
-        <navigator url="/pages/index/loopdown" hover-class="none" class="navigator">
+        <navigator url="" hover-class="none" class="navigator">
           <image mode="aspectFill" class="image" src="http://cloud.zhgn.cn:808/phone/unionpicture/synodmeetings.png">
           </image>
         </navigator>
       </swiper-item>
       <swiper-item class="swiperItem">
-        <navigator url="/pages/index/loopdown" hover-class="none" class="navigator">
+        <navigator url="" hover-class="none" class="navigator">
           <image mode="aspectFill" class="image" src="http://cloud.zhgn.cn:808/phone/unionpicture/teachermetting.png">
           </image>
         </navigator>
       </swiper-item>
       <swiper-item class="swiperItem">
-        <navigator url="/pages/index/loopdown" hover-class="none" class="navigator">
+        <navigator url="" hover-class="none" class="navigator">
           <image mode="aspectFill" class="image" src="http://cloud.zhgn.cn:808/phone/unionpicture/valleyball.jpeg">
           </image>
         </navigator>
