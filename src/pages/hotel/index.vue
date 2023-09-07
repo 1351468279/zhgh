@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import { hotelData } from '@/composible/hotel'
 import { computed, ref } from 'vue';
+import TabBar from '@/components/TabBar.vue'
+
 const hotelDataList = computed(() => hotelData.value.filter(item => item.mine))
 const editStatus = ref(false)
 const edit = () => {
@@ -37,7 +39,6 @@ const add = (id: number, url: string) => {
             url: url + '?id=' + id
         })
     }
-
 }
 </script>
  
@@ -74,6 +75,8 @@ const add = (id: number, url: string) => {
                 </view>
             </view>
         </view>
+        <TabBar :current-page="2" />
+
     </view>
 </template>
 

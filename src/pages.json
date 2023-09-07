@@ -76,10 +76,13 @@
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#2174d3",
+		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
 	},
 	"tabBar": {
+		"custom": true,
+		"color": "black",
+		"backgroundColor": "#F7F8F8",
 		"selectedColor": "#d81e06",
 		"list": [
 			{
@@ -124,6 +127,12 @@
 					"style": {
 						"navigationBarTitleText": "loopdown"
 					}
+				},
+				{
+					"path": "newsDetail",
+					"style": {
+						"navigationBarTitleText": "文章详情"
+					}
 				}
 			]
 		},
@@ -156,5 +165,6 @@
 				}
 			]
 		}
-	]
+	],
+	"uniIdRouter": {}
 }

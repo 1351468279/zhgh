@@ -3,6 +3,7 @@ import CustomNavBar from '@/components/CustomNavBar.vue'
 import ClassSwiper from './components/ClassSwiper.vue'
 import CategoryPanel from './components/CategoryPanel.vue'
 import FunctionCard from './components/FunctionCard.vue'
+import TabBar from '@/components/TabBar.vue'
 // import ArticleRead from './components/ArticleRead.vue'
 import { onPullDownRefresh } from '@dcloudio/uni-app'
 import { computed, ref } from 'vue'
@@ -38,6 +39,9 @@ const onClick = (id: number, index: number) => {
   const scrollDistance = index * itemWidth - systemInfo.windowWidth * 0.4; // 滚动到元素中间位置
   scrollLeft.value = scrollDistance < 0 ? 0 : scrollDistance;
 };
+// 左右图标及数据
+const lefticon = ref(null)
+const righticon = ref('\uE60F')
 const newsList = computed(() => {
   return listTotalData.value.filter(item => item.articleId === activeValue.value)[0].data
 })
@@ -49,15 +53,15 @@ const onScrollTopLower = () => {
   loadingStatus.value = true
   console.log('到底了')
   timer = setTimeout(() => {
-    listTotalData.value[activeValue.value - 1].data.push({ id: 6, image: 'http://cloud.zhgn.cn:808/phone/unionpicture/synodmeetings.png', area: '新郑市总工会', viewNum: 1212, content: '文章内容', tittle: '文章标题', time: '2023-01-02' })
+    // listTotalData.value[activeValue.value - 1].data.push({ id: 6, image: 'http://cloud.zhgn.cn:808/phone/unionpicture/synodmeetings.png', area: '新郑市总工会', viewNum: 1212, content: '文章内容', tittle: '文章标题', time: '2023-01-02' })
     loadingStatus.value = false
     clearTimeout(timer)
-  }, 200)
+  }, 2000)
 }
 </script>
 
 <template>
-  <view class="home" :style="{ height: (systemInfo.windowHeight) + 'px' }">
+  <view class="home" :style="{ height: (systemInfo.windowHeight - 50) + 'px' }">
     <!-- <CustomNavBar class="navbar" :tittle="'首页'"></CustomNavBar> -->
 
     <scroll-view class="indexScrollTop" refresher-enabled scroll-y :scroll-top="scrollTop" @scroll="onScrollTop"
@@ -71,9 +75,11 @@ const onScrollTopLower = () => {
           {{ item.name }}
         </view>
       </scroll-view>
-      <NewsList class="indexList" :newsList="newsList" :loadingStatus="loadingStatus"></NewsList>
+      <NewsList class="indexList" :newsList="newsList" :righticon="righticon" :loadingStatus="loadingStatus"></NewsList>
     </scroll-view>
   </view>
+  <TabBar :current-page="0" />
+
   <!-- <ArticleRead></ArticleRead> -->
 </template>
 
@@ -106,6 +112,7 @@ const onScrollTopLower = () => {
       width: 100%;
       // background-color: skyblue;
       white-space: nowrap;
+      transition: all 1s;
 
       .newsItem {
         display: inline-block;

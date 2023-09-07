@@ -10,22 +10,35 @@ const props = defineProps({
     loadingStatus: {
         type: Boolean,
         default: false
+    },
+    lefticon: {
+        type: String,
+        default: ''
+    },
+    righticon: {
+        type: String,
+        default: ''
     }
 })
+const onClick = (item: listData) => {
+    uni.navigateTo({
+        url: '/subpackages/index/newsDetail?item=' + encodeURIComponent(JSON.stringify(item))
+    })
+}
 </script>
 
 <template>
-    <view class="listItem" v-for=" (item, index)  in props.newsList">
+    <view class="listItem" v-for=" (item, index)  in props.newsList" :key="item.id" @click="onClick(item)">
         <view class="itemImg"><img class="image" :src="item.image"></view>
         <view class="itemContent">
             <view class="contentTittle">{{ item.tittle }}</view>
             <view class="contentTag">
                 <view class="area">
-                    <view class="iconfont icon">&#xe686;</view>
-                    <view class="areaTeam">{{ item.area }}</view>
+                    <view class="iconfont icon" v-if="props.lefticon">{{ props.lefticon }}</view>
+                    <view class="areaTeam">{{ item.time }}</view>
                 </view>
                 <view class="viewNum">
-                    <view class="iconfont icon">&#xe686;</view>
+                    <view class="iconfont icon" v-if="props.righticon">{{ props.righticon }}</view>
                     <view class="num">{{ item.viewNum }}</view>
                 </view>
             </view>

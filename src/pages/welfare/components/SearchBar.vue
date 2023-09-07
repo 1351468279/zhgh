@@ -20,22 +20,6 @@ const participate = (val: string) => {
             <view class="text">搜索</view>
         </view> -->
     </view>
-    <view class="activityBox">
-        <view class="activityNum" v-if="activeTag === 'all'">
-            <view class="text">共计</view>
-            <view class="num">327</view>
-            <view class="text">个普惠活动</view>
-        </view>
-        <view class="mineNum" v-else>
-            <view class="text">您可参与</view>
-            <view class="num">22</view>
-            <view class="text">个普惠活动</view>
-        </view>
-    </view>
-    <view class="activityOption">
-        <view class="available" :class="{ active: activeTag === 'some' }" @click="participate('some')">可参与</view>
-        <view class="total" :class="{ active: activeTag === 'all' }" @click="participate('all')">全部</view>
-    </view>
 </template>
 
 <style lang="scss" scoped>

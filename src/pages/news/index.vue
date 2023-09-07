@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import CustomNavBar from '@/components/CustomNavBar.vue';
 import NewsList from '@/components/NewsList.vue';
+import TabBar from '@/components/TabBar.vue'
 import { ref, computed } from 'vue';
 import { listTotalData } from '@/utils/index'
 const scrollLeft = ref(0)
@@ -33,15 +34,15 @@ const onScrollTopLower = () => {
     loadingStatus.value = true
     console.log('到底了')
     timer = setTimeout(() => {
-        listTotalData.value[activeValue.value - 1].data.push({ id: 6, image: 'http://cloud.zhgn.cn:808/phone/unionpicture/synodmeetings.png', tittle: '文章标题', area: '新郑市总工会', viewNum: 1212, content: '文章内容', time: '2023-07-16' })
+        // listTotalData.value[activeValue.value - 1].data.push({ id: 6, image: 'http://cloud.zhgn.cn:808/phone/unionpicture/synodmeetings.png', tittle: '文章标题', area: '新郑市总工会', viewNum: 1212, content: '文章内容', time: '2023-07-16' })
         loadingStatus.value = false
         clearTimeout(timer)
-    }, 200)
+    }, 2000)
 }
 </script>
     
 <template>
-    <view class="news" :style="{ height: (systemInfo.windowHeight) + 'px' }">
+    <view class="news" :style="{ height: (systemInfo.windowHeight - 50) + 'px' }">
         <!-- <CustomNavBar class="nav" :tittle="'新闻'"></CustomNavBar> -->
         <scroll-view class="newsScrollLeft" scroll-x :scroll-left="scrollLeft" scroll-with-animation @scroll="onScrollLeft">
             <view class="newsItem" :class="{ active: activeValue === item.articleId }"
@@ -54,6 +55,7 @@ const onScrollTopLower = () => {
             <NewsList :newsList="newsList" :loadingStatus="loadingStatus"></NewsList>
         </scroll-view>
     </view>
+    <TabBar :current-page="1" />
 </template>
 
 <style lang="scss" scoped>
