@@ -3,16 +3,16 @@ import { reactive } from 'vue';
 
 const { safeAreaInsets } = uni.getSystemInfoSync()  // 获取系统信息
 const menuMineData = reactive([
-    { tittle: '我参与的活动', icon: '\uE61E', url: '/pages/login/index' },
-    { tittle: '我的收藏', icon: '\uE65E', url: '/pages/login/index' }
+    { tittle: '我参与的活动', icon: '\uE61E', url: '/subpackages/my/myActivity' },
+    { tittle: '我的收藏', icon: '\uE65E', url: '/subpackages/my/myCollection' }
 ])
 const menuFunData = reactive([
-    { tittle: '个人资料', icon: '\uE61E', url: '/pages/login/index' },
-    { tittle: '修改密码', icon: '\uE65E', url: '/pages/login/index' }
+    { tittle: '个人资料', icon: '\uE61E', url: '/subpackages/my/personalInfo' },
+    { tittle: '修改密码', icon: '\uE65E', url: '/subpackages/my/changePass' }
 ])
 const menuSuggestData = reactive([
-    { tittle: '用户反馈', icon: '\uE61E', url: '/pages/login/index' },
-    { tittle: '关于我们', icon: '\uE65E', url: '/pages/login/index' },
+    { tittle: '用户反馈', icon: '\uE61E', url: '/subpackages/my/userSuggest' },
+    { tittle: '关于我们', icon: '\uE65E', url: '/subpackages/my/aboutUs' },
     { tittle: '退出登录', icon: '\uE677', url: '/pages/login/index' },
 ])
 </script>

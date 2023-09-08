@@ -77,7 +77,7 @@ const onScrollTopLower = () => {
       </scroll-view>
       <NewsList class="indexList" :newsList="newsList" :righticon="righticon" :loadingStatus="loadingStatus"></NewsList>
     </scroll-view>
-  </view>
+  </view>， 
   <TabBar :current-page="0" />
 
   <!-- <ArticleRead></ArticleRead> -->

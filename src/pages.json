@@ -164,6 +164,47 @@
 					}
 				}
 			]
+		},
+		{
+			"root": "subpackages/my",
+			"pages": [
+				{
+					"path": "personalInfo",
+					"style": {
+						"navigationBarTitleText": "基本信息"
+					}
+				},
+				{
+					"path": "changePass",
+					"style": {
+						"navigationBarTitleText": "修改密码"
+					}
+				},
+				{
+					"path": "myActivity",
+					"style": {
+						"navigationBarTitleText": "我的活动"
+					}
+				},
+				{
+					"path": "myCollection",
+					"style": {
+						"navigationBarTitleText": "我的收藏"
+					}
+				},
+				{
+					"path": "userSuggest",
+					"style": {
+						"navigationBarTitleText": "用户反馈"
+					}
+				},
+				{
+					"path": "aboutUs",
+					"style": {
+						"navigationBarTitleText": "关于我们"
+					}
+				}
+			]
 		}
 	],
 	"uniIdRouter": {}

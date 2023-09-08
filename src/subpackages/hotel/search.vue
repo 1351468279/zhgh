@@ -11,7 +11,7 @@ const onkeyDown = (e: InputOnInputEvent) => {
         return
     }
     console.log(e.detail.value)
-    hotelDataList.value = hotelData.value.filter(item => item.content.includes(e.detail.value))
+    hotelDataList.value = hotelData.value.filter(item => item.name.includes(e.detail.value))
     console.log(hotelDataList)
 }
 const onClick = (id: number) => {
@@ -34,7 +34,7 @@ const onClick = (id: number) => {
         <view class="searchbox" v-show="hotelDataList.length > 0">
             <view class="searchlist" v-for="item in hotelDataList" hover-class="navigator-hover" @click="onClick(item.id)">
                 <img class="image" :src="item.src" alt="">
-                <view class="text">{{ item.content }}</view>
+                <view class="text">{{ item.name }}</view>
             </view>
         </view>
 
