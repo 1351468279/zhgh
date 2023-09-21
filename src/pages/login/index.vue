@@ -2,7 +2,16 @@
 import CustomNavBar from '@/components/CustomNavBar.vue'
 import { onLoad } from '@dcloudio/uni-app';
 import type { InputOnBlurEvent } from '@uni-helper/uni-app-types';
+import { postLoginWxMinAPI, getPhoneNum, postLoginAPI } from '@/services/login'
+import { useMemberStore } from '@/store/index'
 import { ref } from 'vue';
+const props = defineProps({
+    actions: {
+        type: String,
+        default: null
+    }
+})
+const memberStore = useMemberStore()
 const systemInfo = uni.getSystemInfoSync();
 const passVistal = ref(false)
 // const passType = ref('password')
@@ -33,29 +42,91 @@ const input = '& #xe60c;';
 const output = convertHtmlEntityToUnicode(input);
 console.log(`'${output}'`); // 输出：\uE60F
 
-// 账号 
-const account = ref()
+// 接收账号 
+const username = ref('')
+// 接收密码
+const password = ref('')
 const validateInput = (e: InputOnBlurEvent) => {
     console.log(e)
-    console.log(account.value)
+    console.log(username.value)
     console.log(typeof (e.detail.value))
 }
 
-// 获取 code 登录凭证
-let code = ''
+//定义code
+const code = ref('')
+// 加载页面的时候自动获取code
 onLoad(async () => {
-    const res = await wx.login()
-    code = res.code
+    code.value = (await wx.login()).code
 })
-
+/* 构造登录参数 */
+const loginParams = ref({
+    code: code,
+    username: username.value,
+    password: password.value
+})
+//点击登录 
+const login = async () => {
+    // console.log(code)
+    // console.log(username.value)
+    // console.log(password.value)
+    // console.log(loginParams.value)
+    const userInfo = (await postLoginAPI({
+        code: code.value,
+        username: username.value,
+        password: password.value
+    }))
+    memberStore.profile = userInfo.data
+    // 成功提示
+    uni.showToast({
+        icon: 'none',
+        title: '登录成功',
+        success: () => {
+            uni.switchTab({ url: '/pages/index/index' })
+        }
+    })
+}
+const userInfo = ref<{ phoneNumber: string }>()
 // 手机号登录
-const getPhoneNumber: UniHelper.ButtonOnGetphonenumber = (ev) => {
-    // const { code, encryptedData, errMsg, iv } = ev.detail
+const getPhoneNumber: UniHelper.ButtonOnGetphonenumber = async (ev) => {
+    // const { code, encryptedData, iv } = ev.detail!
+    // if (!code) return uni.showToast({ icon: 'none', title: '登录失败' })
+    userInfo.value = (await getPhoneNum({ code: ev.detail.code! })).data
+    console.log(userInfo.value)
+    if (!memberStore.profile) return uni.showToast({ icon: 'none', title: '登录失败' })
+    memberStore.profile['phoneNum'] = userInfo.value.phoneNumber
+    if (memberStore.profile?.phoneNum) {
+        uni.showToast({
+            icon: 'none',
+            title: '绑定手机号成功',
+            success: () => {
+                uni.redirectTo({
+                    url: '/subpackages/hotel/applyUnion'
+                })
+            }
+        })
+    }
     // 获取参数
-    const encryptedData = ev.detail.encryptedData!
-    const iv = ev.detail.iv!
+    // const encryptedData = ev.detail.encryptedData!
+    // const iv = ev.detail.iv!
+    // console.log(ev)
 
 }
+// 快捷登录
+const quickLog = async () => {
+    console.log(code)
+    const userInfo = await postLoginWxMinAPI({ code: code.value })
+    console.log(userInfo)
+    memberStore.profile = userInfo.data
+    // 成功提示
+    uni.showToast({
+        icon: 'none',
+        title: '登录成功',
+        success: () => {
+            uni.switchTab({ url: '/pages/index/index' })
+        }
+    })
+}
+
 </script>
 
 <template>
@@ -65,35 +136,49 @@ const getPhoneNumber: UniHelper.ButtonOnGetphonenumber = (ev) => {
             <view class="welcome">welcome</view>
             <!-- 网页端表单登录 -->
             <view class="loginItem">
-                <view class="account">
+                <view class="account" v-if="props.actions !== 'tapPhone'">
                     <view class="accountContent">
                         <view class="iconfont icon">&#xe64a;</view>
                         <view class="accountTittle">账号</view>
                     </view>
-                    <input class="input" type="text" placeholder="请输入账号" @input="validateInput" v-model="account" />
+                    <input class="input" type="text" placeholder="请输入账号" @input="validateInput" v-model="username" />
                 </view>
-                <view class="password">
+                <view class="password" v-if="props.actions !== 'tapPhone'">
                     <view class="passwordContent">
                         <view class="iconfont icon">&#xe608;</view>
                         <view class="passwordTittle">密码</view>
                     </view>
                     <view class="passwordInput">
-                        <input class="input" type="text" :password="passVistal === false" placeholder="请输入密码" />
+                        <input class="input" type="text" :password="passVistal === false" placeholder="请输入密码"
+                            v-model="password" />
                         <view class="iconfont icon" @click="transForm">{{ passVistal ?
                             `${convertHtmlEntityToUnicode('&#xe60c;')}` : `${convertHtmlEntityToUnicode('&#xe60f;')}`
                         }}</view>
                         <!-- <view class="iconfont icon" @click="transForm">{{ passVistal ? '\uE60F' : '\uE60C' }}</view> -->
                     </view>
-
                 </view>
-                <view class="submit">
-                    <button class="button" hover-class="navigator-hover">登录</button>
+                <view class="submit" v-if="props.actions !== 'tapPhone'">
+                    <button class="button" hover-class="navigator-hover" @click="login">登录</button>
                 </view>
                 <view class="extra">
-                    <view class="caption">
-                        <view class="captionText">微信授权登录</view>
+                    <!-- <view class="caption">
+                        <view class="captionText">快捷登录</view>
                         <button class="iconfont quicklyLogin" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
                             &#xe609;</button>
+                    </view> -->
+                    <view class="caption">
+                        <view class="captionText">{{ props.actions === 'tapPhone' ? '绑定手机号' : '快捷登录' }}</view>
+                        <view class="logBox">
+                            <view class="wxlog" v-if="props.actions === 'tapPhone'">
+                                <button class="iconfont quicklyLogin" open-type="getPhoneNumber"
+                                    @getphonenumber="getPhoneNumber">
+                                    &#xe609;</button>
+                            </view>
+                            <view class="quicklyLog" v-if="props.actions !== 'tapPhone'">
+                                <button class="iconfont quicklyLogin" @click="quickLog">
+                                    &#xe656;</button>
+                            </view>
+                        </view>
                     </view>
                     <view class="tip">提示：微信授权登录需要您授权手机号，仅用于后台识别是否本校工会会员，方可查看相关内容</view>
                 </view>
@@ -230,6 +315,13 @@ const getPhoneNumber: UniHelper.ButtonOnGetphonenumber = (ev) => {
                     flex-direction: column;
                     justify-content: center;
                     align-items: center;
+
+                    .logBox {
+                        width: 100%;
+                        display: flex;
+                        justify-content: space-around;
+                        align-items: center;
+                    }
 
                     .captionText {
                         font-size: 28rpx;

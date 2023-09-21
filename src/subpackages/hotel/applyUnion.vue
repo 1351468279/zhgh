@@ -1,38 +1,31 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
 import { translateTime } from '@/utils/tool'
-import type { applyUnionType } from "@/types/hotel";
-import { useApplyUnionStore } from '@/store/index'
-const props = defineProps(['index'])
-console.log(props.index)
-const index = ref(props.index)
+import type { applyUnionType, reviewListType } from "@/types/hotel";
+import { useApplyUnionStore, useMemberStore } from '@/store/index'
+import { onLoad } from '@dcloudio/uni-app';
+import { getOrgName, getReviewInfoById, getReviewStatus, submitReview, passReview, getReviewInfo } from '@/services/applyUnion'
+const props = defineProps(['appId', 'cardId'])
+// 接收审核列表id
+const cardId = ref(props.cardId)
+// 接收大厅列表id
 
-// 根据index设置表单回显数据
-const formData = computed(() => {
-  if (props.index) {
-  }
-})
-console.log(index.value)
-const store = useApplyUnionStore()
-const { applier } = useApplyUnionStore()
+const memberStore = useMemberStore()
 const baseFormData = ref<applyUnionType>({
-  unionName: '',
-  jobId: '',
+  orgId: '',
+  account: '',
   name: '',
-  idCard: '',
-  sex: '',
-  nationality: '',
-  educational: '',
-  birthday: NaN,
-  phone: NaN,
-  email: '',
-  enterTime: NaN,
-  status: false
+  idNumber: '',
+  sex: 1,
+  nation: '',
+  record: '',
+  birthday: '',
+  mobile: '',
+  email: ''
 })
-// 根据index显示标题和设置回显数据
+// 根据cardId显示标题和设置回显数据
 const tittle = computed(() => {
-  if (props.index) {
-    baseFormData.value = applier[index.value]
+  if (cardId.value) {
     uni.setNavigationBarTitle({
       title: '入会审核'
     });
@@ -40,83 +33,212 @@ const tittle = computed(() => {
   }
   return '填写入会信息'
 })
-
-const onClick = (index: number) => {
-  if (index) {
-    applier[index].status = true
+const onClick = async (cardId: string) => {
+  if (cardId && isAdmin.value) {
+    const res = await passReview(cardId)
+    console.log(res)
+    console.log('审核通过')
     uni.showToast({
       title: '通过',
       success: function () {
         uni.navigateBack()
       },
     });
-    return console.log(index)
+    return
   }
-  console.log(index)
-  console.log(baseFormData.value)
-  const date = new Date(baseFormData.value.birthday.toString());
-  console.log(translateTime(date));
-  store.setApplier(baseFormData.value)
+  baseFormData.value.birthday = translateTime(baseFormData.value.birthday)
+  // 提交表单
+  const res = await submitReview(baseFormData.value)
+  console.log(res)
+  if (res.code == -1) {
+    uni.showToast({
+      title: res.msg,
+      icon: 'none'
+    })
+    return
+  }
+  // 更新用户状态
+  if (!memberStore.profile) return uni.showToast({
+    title: '请先登录',
+    icon: 'none',
+    duration: 1000,
+    success: () => {
+      setTimeout(() => {
+        uni.navigateTo({ url: '/pages/login/index' })
+      }, 1000);
+    }
+  });
+  memberStore.profile.userState = (await getReviewStatus()).data
   uni.showToast({
     title: '提交成功',
     duration: 1500,
     success: () => {
-      uni.navigateBack();
+      setTimeout(() => {
+        // uni.reLaunch({ url: '/pages/index/index' })
+      }, 1500);
     }
   });
 }
 const clear = () => {
-  store.clearApplier()
+  // store.clearApplier()
 }
+
+// 定义单选数据源
+const sexs = ref([{
+  text: '男',
+  value: 0
+}, {
+  text: '女',
+  value: 1
+}])
+// 定义接受组织名称
+const orgName = ref()
+//接收用户状态
+const userState = ref()
+// 接收用户信息
+const userInfo = ref<reviewListType>()
+// 判断用户身份
+const isAdmin = ref(false)
+onLoad(async () => {
+  // 判断用户身份
+  if (memberStore.profile?.userVo?.roleType?.includes('SystemAdmin')) {
+    isAdmin.value = true
+  }
+  console.log('进入审核界面')
+  // 获取组织名称
+  orgName.value = (await getOrgName()).data.map(item => {
+    return {
+      value: item.id,
+      text: item.name
+    }
+  })
+  // 获取用户实时审核状态
+  userState.value = (await getReviewStatus()).data
+  // 如果是游客
+  if (userState.value == 0) {
+    // 游客且未绑定手机号
+    if (!memberStore.profile?.phoneNum) {
+      uni.navigateTo({ url: '/pages/login/index?actions=tapPhone' })
+    }
+    else {
+      baseFormData.value.mobile = memberStore.profile.phoneNum
+    }
+  }
+  // 如果是会员，并且已经提交审核了,但是还没通过
+  else if (userState.value == 1) {
+    // 但是是通过卡片进来的
+    if (cardId.value) {
+      console.log('通过卡片进来的')
+      if (!memberStore.profile?.token) return uni.showToast({
+        title: '请先登录',
+        icon: 'none',
+        duration: 1000,
+        success: () => {
+          setTimeout(() => {
+            uni.navigateTo({ url: '/pages/login/index' })
+          }, 1000);
+        }
+      })
+      const res = (await getReviewInfo()).data[0]
+      for (const key in baseFormData.value) {
+        if (res.hasOwnProperty(key)) {
+          (baseFormData.value as any)[key] = (res as any)[key]
+        }
+      }
+      // baseFormData.value = applier[cardId.value]
+      uni.setNavigationBarTitle({
+        title: '入会审核'
+      });
+      return
+    }
+    console.log('您已经提交过审核了，请耐心等待')
+    uni.showToast({
+      title: '您已经提交过审核了，请耐心等待',
+      icon: 'none',
+      duration: 1000,
+      success: () => {
+        setTimeout(() => {
+          uni.navigateBack()
+        }, 1000);
+      }
+    });
+  }
+  // 如果是会员，并且已经通过审核了
+  else if ((userState.value == 2)) {
+    console.log(baseFormData.value)
+    // 但是是通过卡片进来的
+    if (cardId.value) {
+      console.log('通过卡片进来的')
+      const res = await getReviewInfoById(cardId.value)
+      userInfo.value = res.data[0]
+      console.log(userInfo.value)
+      // 遍历baseFormData.value的key,如果userInfo.value有这个key，就把userInfo.value的值赋给baseFormData.value
+      for (const key in baseFormData.value) {
+        if (userInfo.value.hasOwnProperty(key)) {
+          (baseFormData.value as any)[key] = (userInfo.value as any)[key]
+        }
+      }
+      console.log(baseFormData.value)
+      uni.setNavigationBarTitle({
+        title: '入会审核'
+      });
+      return
+    }
+    uni.showToast({
+      title: '您已经是会员了，不需要再申请了',
+      icon: 'none',
+      duration: 1000,
+      success: () => {
+        setTimeout(() => {
+          uni.navigateBack()
+        }, 1000);
+      }
+    });
+  }
+})
 </script>
 <template>
-  <view class="container">
+  <view class="container" v-if="userState == 0 || cardId">
     <uni-section :title="tittle" type="line" @click="clear">
     </uni-section>
     <view class="example">
       <!-- 基础用法，不包含校验规则 -->
-      <uni-forms ref="baseForm" :model="baseFormData" labelWidth="80px">
+      <uni-forms :model="baseFormData" labelWidth="80px">
         <uni-forms-item required label="组织名称">
-          <uni-easyinput v-model="baseFormData.unionName" placeholder="请输入组织名称" />
+          <uni-data-select v-model="baseFormData.orgId" placeholder="请输入组织名称" :localdata="orgName" />
         </uni-forms-item>
         <uni-forms-item required label="工号">
-          <uni-easyinput v-model="baseFormData.jobId" placeholder="请输入工号" />
+          <uni-easyinput v-model="baseFormData.account" placeholder="请输入工号" />
         </uni-forms-item>
         <uni-forms-item required label="会员姓名">
           <uni-easyinput v-model="baseFormData.name" placeholder="请输入账号" />
         </uni-forms-item>
         <uni-forms-item required label="身份证号">
-          <uni-easyinput v-model="baseFormData.idCard" placeholder="请输入身份证号" />
+          <uni-easyinput v-model="baseFormData.idNumber" placeholder="请输入身份证号" />
         </uni-forms-item>
         <uni-forms-item required label="性别">
-          <uni-easyinput v-model="baseFormData.sex" placeholder="请输入性别" />
+          <uni-data-checkbox v-model="baseFormData.sex" placeholder="请输入性别" :localdata="sexs" />
         </uni-forms-item>
         <uni-forms-item required label="民族">
-          <uni-easyinput v-model="baseFormData.nationality" placeholder="请输入民族" />
+          <uni-easyinput v-model="baseFormData.nation" placeholder="请输入民族：例：汉族" />
         </uni-forms-item>
         <uni-forms-item required label="学历">
-          <uni-easyinput v-model="baseFormData.educational" placeholder="请输入学历" />
+          <uni-easyinput v-model="baseFormData.record" placeholder="请输入学历：例：本科" />
         </uni-forms-item>
-        <uni-forms-item required label="生日">
-          <uni-datetime-picker type="datetime" return-type="timestamp" v-model="baseFormData.birthday" />
+        <uni-forms-item required label="出生日期">
+          <uni-datetime-picker type="date" return-type="date" v-model="baseFormData.birthday" />
         </uni-forms-item>
         <uni-forms-item required label="手机">
-          <uni-easyinput v-model="baseFormData.phone" placeholder="请输入手机号" />
+          <uni-easyinput v-model="baseFormData.mobile" placeholder="请输入手机号" />
         </uni-forms-item>
         <uni-forms-item required label="邮箱">
           <uni-easyinput v-model="baseFormData.email" placeholder="请输入邮箱" />
         </uni-forms-item>
-        <uni-forms-item required label="入会时间">
-          <uni-datetime-picker type="datetime" return-type="timestamp" v-model="baseFormData.enterTime" />
-        </uni-forms-item>
       </uni-forms>
-      <button type="primary" @click="onClick(index)">{{ props.index ? '审核' : '提交' }}</button>
+      <button type="primary" @click="onClick(cardId)">{{ isAdmin ? '审核' : '提交' }}</button>
     </view>
   </view>
 </template>
-
-
-
 <style lang="scss" scoped>
 .example {
   padding: 15px;

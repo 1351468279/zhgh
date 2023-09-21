@@ -15,19 +15,19 @@ export const hotelData = ref<hotelApp[]>([{
     mine: true
 }, {
     src: 'http://cloud.zhgn.cn:808/phone/hotel/1-17.png',
-    url: '',
+    url: '/subpackages/hotel/sanYuReview',
     name: '三育人',
     id: 3,
     mine: true
 }, {
     src: 'http://cloud.zhgn.cn:808/phone/hotel/1-10.png',
-    url: '',
+    url: '/subpackages/hotel/sanYuRen',
     name: '教龄30年',
     id: 4,
     mine: false
 }, {
     src: 'http://cloud.zhgn.cn:808/phone/hotel/1-8.png',
-    url: '',
+    url: '/subpackages/hotel/provincialReview',
     name: '省部级个人',
     id: 5,
     mine: true

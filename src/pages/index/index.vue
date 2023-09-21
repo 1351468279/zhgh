@@ -5,7 +5,7 @@ import CategoryPanel from './components/CategoryPanel.vue'
 import FunctionCard from './components/FunctionCard.vue'
 import TabBar from '@/components/TabBar.vue'
 // import ArticleRead from './components/ArticleRead.vue'
-import { onPullDownRefresh } from '@dcloudio/uni-app'
+import { onLoad, onPullDownRefresh } from '@dcloudio/uni-app'
 import { computed, ref } from 'vue'
 import { listTotalData } from '@/utils/index'
 
@@ -58,6 +58,18 @@ const onScrollTopLower = () => {
     clearTimeout(timer)
   }, 2000)
 }
+import { useMemberStore } from '@/store'
+const memberStore = useMemberStore()
+onLoad(() => {
+  if (memberStore.profile?.token) {
+    console.log('已登录')
+  }
+  else {
+    uni.navigateTo({
+      url: '/pages/login/index'
+    })
+  }
+})
 </script>
 
 <template>
@@ -77,7 +89,7 @@ const onScrollTopLower = () => {
       </scroll-view>
       <NewsList class="indexList" :newsList="newsList" :righticon="righticon" :loadingStatus="loadingStatus"></NewsList>
     </scroll-view>
-  </view>， 
+  </view>，
   <TabBar :current-page="0" />
 
   <!-- <ArticleRead></ArticleRead> -->

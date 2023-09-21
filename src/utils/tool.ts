@@ -1,4 +1,4 @@
-export const translateTime = (time: Date) => {
+export const translateTime = (time: string) => {
     const date = new Date(time)
     const year = date.getFullYear()
     const month = date.getMonth() + 1
@@ -6,5 +6,6 @@ export const translateTime = (time: Date) => {
     const hour = date.getHours()
     const minute = date.getMinutes()
     const second = date.getSeconds()
-    return `${year}-${month}-${day} ${hour}:${minute}:${second}`
+    // return `${year}-${month}-${day} ${hour}:${minute}:${second}`
+    return `${year}-${month <= 9 ? '0' + month : month}-${day <= 9 ? '0' + day : day}`
 }

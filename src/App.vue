@@ -13,5 +13,6 @@ onHide(() => {
 </script>
 <style>
 @import url("static/iconfont/iconfont.css");
+@import url("static/iconfont/loginiconfont.css");
 @import url("static/iconfont/iconimg.css");
 </style>

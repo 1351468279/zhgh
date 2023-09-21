@@ -4,7 +4,7 @@
 
 <template>
   <view class="myactivity">
-    myactivity
+
   </view>
 </template>
 

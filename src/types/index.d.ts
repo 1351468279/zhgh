@@ -1,3 +1,9 @@
+
+export type swiperDataType = {
+    src: string;
+    id: number;
+}[]
+
 export interface unionType {
     id: number;
     name: string;

@@ -1,0 +1,21 @@
+@font-face {
+    font-family: "iconfont";
+    /* Project id 4250617 */
+    /* Color fonts */
+    src:
+        url('data:application/x-font-woff2;charset=utf-8;base64,d09GMgABAAAAAAH4AAwAAAAABAQAAAGoAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIhwjEgZgADwKgTiBLQE2AiQDDgsMAAQgBYF8ByAbGgPIHge5GeseqTTIyRVHGUoJD/z+8M/FSEU4wa5zVmhrq1AWo9uPP+klwBNxdE+deh6P2J/nAhagmM5t07Ip6RiLyhUs0Fo0z0taoKaEYtmdJHmoraUdxLGWNIfiAUAAtoAzEglunwI0AAIp6c2Sww1aI7YxQcsd2QmU8jqikySRBOCEPR+VVVbCGf4/dWrZWIZaZtn2ABJ5BfzpmkEBzqi8xRlNOGBKNJHLvmEA+8a7x0FhAmSiWPqSJKAEwBpR4HekRfjcdFdtTZ20VDVVc2tP5+jls0dLS2G1dipMVk4sbVePRsSxlRWWq88XmcsXq3wVYXMV/99+5WcNTlbUV7T5j7SgiLD8kKbw1PCm68L2K/Y9kzxTSfliYuqV2AMo+svb491dk132b3OlAXgPi3fmk8aLRkUApsgF+na0UtGlF5Ykb1MCLTwTwjUDlZ8AmFJGIbQFAntolsQ20R4oUvEFGn9qgAmejN8zxZ9NPdoMGdRZXxtXpUOXCf1ajEoglnhMsihTTqtLZOkXxaSBEpY/uk6HUWN6Zv0Nxtr6QwUAxqG/TQEAAAAA') format('woff2'),
+        url('//at.alicdn.com/t/c/font_4250617_mnkcsux6lr.woff?t=1694597012523') format('woff'),
+        url('//at.alicdn.com/t/c/font_4250617_mnkcsux6lr.ttf?t=1694597012523') format('truetype');
+}
+
+.iconfont {
+    font-family: "iconfont" !important;
+    font-size: 16px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-denglu:before {
+    content: "\e656";
+}

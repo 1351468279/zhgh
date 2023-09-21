@@ -11,3 +11,5 @@ export default pinia
 
 // 模块统一导出
 export * from './modules/applyUnion'
+export * from './modules/member'
+export * from './modules/applySanYu'

@@ -162,6 +162,24 @@
 					"style": {
 						"navigationBarTitleText": "入会审核"
 					}
+				},
+				{
+					"path": "applySanYu",
+					"style": {
+						"navigationBarTitleText": "三育人"
+					}
+				},
+				{
+					"path": "provincialReview",
+					"style": {
+						"navigationBarTitleText": "provincialReview"
+					}
+				},
+				{
+					"path": "sanYuReview",
+					"style": {
+						"navigationBarTitleText": "三育人"
+					}
 				}
 			]
 		},

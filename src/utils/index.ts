@@ -569,3 +569,26 @@ export const categoryData = ref<categoryType>(
             url: 'string',
         }
     ])
+import type { swiperDataType } from '@/types/index.d.ts'
+export const swiperData = ref<swiperDataType>([
+    {
+        src: 'http://cloud.zhgn.cn:808/phone/unionpicture/meeting.jpg',
+        id: 1
+    },
+    {
+        src: 'http://cloud.zhgn.cn:808/phone/unionpicture/campusview.jpg',
+        id: 2
+    },
+    {
+        src: 'http://cloud.zhgn.cn:808/phone/unionpicture/synodmeetings.png',
+        id: 3
+    },
+    {
+        src: 'http://cloud.zhgn.cn:808/phone/unionpicture/teachermetting.png',
+        id: 4
+    },
+    {
+        src: 'http://cloud.zhgn.cn:808/phone/unionpicture/valleyball.jpeg',
+        id: 5
+    }
+])

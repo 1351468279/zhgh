@@ -2,7 +2,7 @@
 import { hotelData } from '@/composible/hotel'
 import { computed, ref } from 'vue';
 import TabBar from '@/components/TabBar.vue'
-
+const systemInfo = uni.getSystemInfoSync()
 const hotelDataList = computed(() => hotelData.value.filter(item => item.mine))
 const editStatus = ref(false)
 const edit = () => {
@@ -21,7 +21,7 @@ const reduce = (id: number, url: string) => {
     }
     else {
         uni.navigateTo({
-            url: url + '?id=' + id
+            url: url + '?appId=' + id
         })
     }
 
@@ -36,16 +36,21 @@ const add = (id: number, url: string) => {
         })
     } else {
         uni.navigateTo({
-            url: url + '?id=' + id
+            url: url + '?appId=' + id
         })
     }
+}
+// 测试专用
+const ceshi = () => {
+    console.log(systemInfo)
 }
 </script>
  
 
 <template>
-    <view class="hotel">
-        <navigator class="search" hover-class="none" url="/subpackages/hotel/search">
+    <view class="hotel" v-if="systemInfo.safeAreaInsets?.top"
+        :style="{ paddingBottom: (systemInfo.safeAreaInsets?.top + 50) + 'px' }">
+        <navigator class=" search" hover-class="none" url="/subpackages/hotel/search">
             <view class="searchbar">
                 <view class="text">搜索应用</view>
             </view>
@@ -56,8 +61,9 @@ const add = (id: number, url: string) => {
                 <view class="edit" @click="edit">{{ editStatus ? '完成' : '编辑' }}</view>
             </view>
             <view class="appBox">
-                <view class="app" :class="{ editicon: editStatus }" v-for=" item  in hotelDataList" :key="item.id"
-                    hover-class="navigator-hover" @click="reduce(item.id, item.url)">
+                <view class="app" :class="{ editicon: editStatus }"
+                    v-for="                 item                  in                 hotelDataList                "
+                    :key="item.id" hover-class="navigator-hover" @click="reduce(item.id, item.url)">
                     <image class="appimg" :src="item.src" mode="scaleToFill" />
                     <view class="apptext">{{ item.name }}</view>
                     <view class="iconfont icon-jian" v-if="editStatus"></view>
@@ -65,10 +71,11 @@ const add = (id: number, url: string) => {
             </view>
         </view>
         <view class="all">
-            <view class="tittle">全部应用</view>
+            <view class="tittle" @click="ceshi">全部应用</view>
             <view class="appBox">
-                <view class="app" :class="{ editicon: editStatus }" v-for=" item  in hotelData" :key="item.id"
-                    hover-class="navigator-hover" @click="add(item.id, item.url)">
+                <view class="app" :class="{ editicon: editStatus }"
+                    v-for="                 item                  in                 hotelData                "
+                    :key="item.id" hover-class="navigator-hover" @click="add(item.id, item.url)">
                     <image class="appimg" :src="item.src" mode="scaleToFill" />
                     <view class="apptext">{{ item.name }}</view>
                     <view class="iconfont icon-add" v-if="editStatus === true && item.mine === false"></view>
@@ -76,7 +83,6 @@ const add = (id: number, url: string) => {
             </view>
         </view>
         <TabBar :current-page="2" />
-
     </view>
 </template>
 
@@ -92,6 +98,7 @@ const add = (id: number, url: string) => {
         align-items: center;
         height: 80rpx;
         border-radius: 10rpx;
+
 
         .searchbar {
             display: flex;

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-
+import { swiperData } from '@/utils/index'
 // 轮播图数据
 
 
@@ -17,34 +17,34 @@ const changeIndicatorDots = (a: any) => {
   <view class="carousel">
     <swiper class="swiper" indicator-color="white" indicator-active-color="rgba(46, 46, 46)" :circular="true"
       indicator-dots :autoplay="true" :interval="3000" @change="changeIndicatorDots">
-      <swiper-item class="swiperItem">
+      <swiper-item class="swiperItem" v-for="item in swiperData" :key="item.id">
         <navigator url="" hover-class="none" class="navigator">
-          <image mode="aspectFill" class="image" src="http://cloud.zhgn.cn:808/phone/unionpicture/meeting.jpg"></image>
+          <image mode="aspectFill" class="image" :src="item.src"></image>
         </navigator>
       </swiper-item>
-      <swiper-item class="swiperItem">
+      <!-- <swiper-item class="swiperItem">
         <navigator url="" hover-class="none" class="navigator">
           <image mode="aspectFill" class="image" src="http://cloud.zhgn.cn:808/phone/unionpicture/campusview.jpg"></image>
         </navigator>
-      </swiper-item>
-      <swiper-item class="swiperItem">
+      </swiper-item> -->
+      <!-- <swiper-item class="swiperItem">
         <navigator url="" hover-class="none" class="navigator">
           <image mode="aspectFill" class="image" src="http://cloud.zhgn.cn:808/phone/unionpicture/synodmeetings.png">
           </image>
         </navigator>
-      </swiper-item>
-      <swiper-item class="swiperItem">
+      </swiper-item> -->
+      <!-- <swiper-item class="swiperItem">
         <navigator url="" hover-class="none" class="navigator">
           <image mode="aspectFill" class="image" src="http://cloud.zhgn.cn:808/phone/unionpicture/teachermetting.png">
           </image>
         </navigator>
-      </swiper-item>
-      <swiper-item class="swiperItem">
+      </swiper-item> -->
+      <!-- <swiper-item class="swiperItem">
         <navigator url="" hover-class="none" class="navigator">
           <image mode="aspectFill" class="image" src="http://cloud.zhgn.cn:808/phone/unionpicture/valleyball.jpeg">
           </image>
         </navigator>
-      </swiper-item>
+      </swiper-item> -->
     </swiper>
   </view>
 </template>
