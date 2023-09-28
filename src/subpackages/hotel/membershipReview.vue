@@ -23,6 +23,8 @@ const sord = ref('desc')
 const isShow = ref(true)
 // 设置管理员标识
 const isAdmin = ref(false)
+// 待审核和已审核标记
+const reviewTag = ref(1)
 const systemInfo = uni.getSystemInfoSync()
 console.log(systemInfo)
 const applyUnionStore = useApplyUnionStore()
@@ -101,7 +103,7 @@ onShow(async () => {
   reviewAllList.value = (await getReviewInfo()).data
   // 设置待审核列表
   reviewList.value = reviewAllList.value.filter(item => {
-    return item.state == 1
+    return item.state == reviewTag.value
   })
 })
 // 设置审核状态激活样式
@@ -110,6 +112,7 @@ const setReviewActive = ref(1)
 const setAwaitActive = ref(1)
 // 点击切换待审核和已审核
 const changeReviewState = async (val: number) => {
+  reviewTag.value = val
   // console.log(e.target.innerText)
   // 点击待审核
   if (val == 1) {

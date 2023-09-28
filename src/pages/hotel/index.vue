@@ -61,9 +61,8 @@ const ceshi = () => {
                 <view class="edit" @click="edit">{{ editStatus ? '完成' : '编辑' }}</view>
             </view>
             <view class="appBox">
-                <view class="app" :class="{ editicon: editStatus }"
-                    v-for="                 item                  in                 hotelDataList                "
-                    :key="item.id" hover-class="navigator-hover" @click="reduce(item.id, item.url)">
+                <view class="app" :class="{ editicon: editStatus }" v-for="item in hotelDataList" :key="item.id"
+                    hover-class="navigator-hover" @click="reduce(item.id, item.url)">
                     <image class="appimg" :src="item.src" mode="scaleToFill" />
                     <view class="apptext">{{ item.name }}</view>
                     <view class="iconfont icon-jian" v-if="editStatus"></view>
@@ -73,9 +72,8 @@ const ceshi = () => {
         <view class="all">
             <view class="tittle" @click="ceshi">全部应用</view>
             <view class="appBox">
-                <view class="app" :class="{ editicon: editStatus }"
-                    v-for="                 item                  in                 hotelData                "
-                    :key="item.id" hover-class="navigator-hover" @click="add(item.id, item.url)">
+                <view class="app" :class="{ editicon: editStatus }" v-for="item in hotelData" :key="item.id"
+                    hover-class="navigator-hover" @click="add(item.id, item.url)">
                     <image class="appimg" :src="item.src" mode="scaleToFill" />
                     <view class="apptext">{{ item.name }}</view>
                     <view class="iconfont icon-add" v-if="editStatus === true && item.mine === false"></view>

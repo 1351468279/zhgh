@@ -1,23 +1,20 @@
 import { defineStore } from "pinia";
-import type { applySanYuType } from '@/types/hotel'
 import { ref } from "vue";
-
+type applySanYuType = {
+    name: string,
+    title: string,
+    unit: string,
+    age: string,
+    process: string,
+}
 export const useApplySanYuStore = defineStore('applySanYu', () => {
     const applier = ref<applySanYuType[]>([
         {
             name: '2',
-            idNumber: '2',
-            sex: 1,
-            nation: '2',
-            record: '2',
+            title: '职位',
+            unit: '工作单位',
             age: '1',
-            politicalStr: '2',
-            bachelor: '1',
-            employer: '1',
-            jobTittle: '1',
-            position: '1',
-            workExperience: '1',
-            status: '1',
+            process: '0',
         }
     ])
     const setApplier = (val: applySanYuType) => {

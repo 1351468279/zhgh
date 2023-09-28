@@ -39,6 +39,9 @@ const onScrollTopLower = () => {
         clearTimeout(timer)
     }, 2000)
 }
+const ceshi = () => {
+    console.log('测试')
+}
 </script>
     
 <template>
@@ -52,7 +55,7 @@ const onScrollTopLower = () => {
         </scroll-view>
         <scroll-view class="newsScrollTop" scroll-y refresher-enabled :scroll-top="scrollTop" @scroll="onScrollTop"
             lower-threshold="80" @scrolltolower="onScrollTopLower">
-            <NewsList :newsList="newsList" :loadingStatus="loadingStatus"></NewsList>
+            <NewsList @click="ceshi" :newsList="newsList" :loadingStatus="loadingStatus"></NewsList>
         </scroll-view>
     </view>
     <TabBar :current-page="1" />

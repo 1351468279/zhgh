@@ -57,6 +57,7 @@ const code = ref('')
 // 加载页面的时候自动获取code
 onLoad(async () => {
     code.value = (await wx.login()).code
+    console.log(code)
 })
 /* 构造登录参数 */
 const loginParams = ref({
@@ -113,7 +114,6 @@ const getPhoneNumber: UniHelper.ButtonOnGetphonenumber = async (ev) => {
 }
 // 快捷登录
 const quickLog = async () => {
-    console.log(code)
     const userInfo = await postLoginWxMinAPI({ code: code.value })
     console.log(userInfo)
     memberStore.profile = userInfo.data

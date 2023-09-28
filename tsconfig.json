@@ -13,14 +13,14 @@
       "esnext",
       "dom"
     ],
-     "types": [
+    "types": [
       "@dcloudio/types",
       "miniprogram-api-typings",
       "@uni-helper/uni-app-types",
-     "@uni-helper/uni-ui-types"
+      "@uni-helper/uni-ui-types"
     ]
   },
-   "vueCompilerOptions": {
+  "vueCompilerOptions": {
     "nativeTags": [
       "block",
       "component",
@@ -32,6 +32,7 @@
     "src/**/*.ts",
     "src/**/*.d.ts",
     "src/**/*.tsx",
-    "src/**/*.vue"
+    "src/**/*.vue",
+    "src/composible/formdata.js"
   ]
 }

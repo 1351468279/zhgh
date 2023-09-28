@@ -33,14 +33,35 @@ export interface reviewListType extends normalType {
     orgId: string,
     process: number,
 }
+// 申请列表回显三育人成员信息
+export interface applySanYuListType {
+    age: string,        /* 年龄 */
+    education: string,  /* 学历 */
+    id: string,         /* 主键 */
+    name: string,       /* 姓名 */
+    nation: string,     /* 民族 */
+    process: Number,    /* 审核进度 */
+    sex: string,        /* 性别 */
+    userId: string,     /* 用户id */
+    degree: string,     /* 学位 */
+    politics: string,   /* 政治面貌 */
+    unit: string,        /* 工作单位 */
+    title: string,      /* 职位 */
+    duties: string,     /* 职务 */
+}
 // 申请三育人成员信息类型
-export interface applySanYuType extends normalType {
-    age: string,
-    politicalStr: string,
-    bachelor: string,
-    employer: string,
-    jobTittle: string,
-    position: string,
-    workExperience: string,
-    status?: string,
+export interface applySanYuType {
+    age: string,        /* 年龄 */
+    education: string,  /* 学历 */
+    degree: string,     /* 学位*/
+    id?: string,        /* 主键 */
+    name: string,       /* 姓名 */
+    nation: string,     /* 民族 */
+    process?: Number,   /* 审核进度 */
+    sex: string,        /* 性别 */
+    userId?: string,    /* 用户id */
+    unit: string,       /* 工作单位 */
+    politics: string,   /* 政治面貌 */
+    title: string,      /* 职位 */
+    duties: string,     /* 职务 */
 }

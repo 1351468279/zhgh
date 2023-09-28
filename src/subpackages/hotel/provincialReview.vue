@@ -1,349 +1,456 @@
+<script lang="ts" setup>
+import ReviewCard from '@/components/ReviewCard.vue'
+import { getReviewStatus } from '@/services/applyUnion'
+import { useApplySanYuStore } from '@/store/index'
+import { onShow } from '@dcloudio/uni-app'
+import { ref } from 'vue'
+import { useMemberStore } from '@/store/index'
+import type { UniCardOnClick } from '@uni-helper/uni-ui-types'
+import { checkFile, downloadFile, getSanYuListApi, getUserInfo, reportSanYu } from '@/services/applySanYu'
+import type { applySanYuListType } from '@/types/hotel'
+import type { getSanYuListType } from '@/types/sanYu'
+const memberStore = useMemberStore()
+const sanYuStore = useApplySanYuStore()
+
+// const reviewAll = () => {
+//   // 确认是否全部上报
+//   uni.showModal({
+//     title: '提示',
+//     content: '是否全部上报,上报后不可修改',
+//     success: function (res) {
+//       if (res.confirm) {
+//         // 确认全部上报
+//         sanYuStore.applier.forEach(async (item) => {
+//           // if (item.status == '0') {
+//           //   await uni.showToast({
+//           //     title: '上报成功'
+//           //   });
+//           //   item.status = '2'
+//           // }
+//         })
+//       } else if (res.cancel) {
+//         console.log('用户点击取消');
+//       }
+//     }
+//   })
+//   // for (let index = 0; index < sanYuStore.applier.length; index++) {
+//   //   sanYuStore.applier[index].status = '2'
+//   // }
+// }
+
+const onClick = (index: Number) => {
+  uni.navigateTo({
+    url: '/subpackages/hotel/applySanYu' + '?index=' + index
+  })
+}
+// 点击填写申请
+const applySanYu = () => {
+  uni.navigateTo({
+    url: '/subpackages/hotel/applySanYu'
+  })
+}
+// 接收管理员身份标识
+const isAdmin = ref(false)
+// 接收工会委员身份标识
+const isCommissioner = ref(false)
+// 接收工会管理员身份标识
+const isGhAdmin = ref(false)
+// 接收会员身份标识
+const isUser = ref(false)
+// 接收用户审核状态
+const userState = ref()
+// 点击下载
+const downLoad = async (id: string) => {
+  // 查看用户是否有上传文件
+  const checkFileRes = await checkFile(id)
+  if (checkFileRes.flag == false) {
+    uni.showToast({
+      title: '该用户未上传文件',
+      icon: 'none'
+    })
+    return
+  }
+  console.log('-----')
+  await downloadFile(id).then((data) => {
+    const fs = uni.getFileSystemManager()
+    const filePath = wx.env.USER_DATA_PATH + '/' + Date.now() + '.pdf'   // wx.env.USER_DATA_PATH 为微信提供的保存文件路径
+    fs.writeFile({
+      filePath,
+      data: uni.base64ToArrayBuffer((data.body as any).replace(/[\r\n]/g, '')),  // 将 base64 转为 arrayuffer
+      success(res) {
+        uni.openDocument({
+          showMenu: true,
+          fileType: 'pdf',
+          filePath,
+          success: function (res) {
+            console.log('打开文档成功')
+          }
+        })
+      },
+      fail(err) {
+        console.log('错误', err)
+      }
+    })
+  })
+
+}
+// 点击上报或者审核
+const report = async (id: string) => {
+  const reportRes = await reportSanYu(id)
+  if (reportRes.body == 1) {
+    cardList.value = cardList.value.filter((item: any) => item.id != id)
+    uni.showToast({
+      title: '成功',
+      icon: 'none'
+    })
+  }
+  else {
+    uni.showToast({
+      title: '失败',
+      icon: 'none'
+    })
+  }
+  console.log(reportRes)
+}
+/* 以下是横向滑动栏信息 */
+// 横向滑动条位置
+const scrollLeft = ref(0)
+// 滚动事件
+const onScrollLeft = (e: any) => {
+  console.log(e)
+}
+// active栏高亮
+const activeValue = ref(0)
+// 列表数据源
+const listTotalData = ref()
+// 获取系统信息
+const systemInfo = uni.getSystemInfoSync()
+// 适当时候隐藏report
+const reportShow = ref(true)
+// 点击栏
+const handoff = (id: number, index: number) => {
+  if (id == 0) {
+    reportShow.value = true
+  }
+  else { reportShow.value = false }
+  activeValue.value = id;
+  // 计算需要滚动的距离
+  const itemWidth = systemInfo.windowWidth * 0.2; // 假设每个元素宽度为屏幕宽度的 20%
+  const scrollDistance = index * itemWidth - systemInfo.windowWidth * 0.4; // 滚动到元素中间位置
+  scrollLeft.value = scrollDistance < 0 ? 0 : scrollDistance;
+  fs.value = id
+  getSanYuListParams.value.stuEducation.fs = id
+  offset.value = 1
+  cardList.value = []
+  getSanYuList(getSanYuListParams.value)
+}
+/* 以下是竖向滑动栏信息 */
+// 竖向滑动条位置
+const scrollTop = ref(0)
+// 滚动事件
+const onScrollTop = (e: any) => {
+  console.log(e)
+}
+// 滚动到底部事件
+const onScrollTopLower = async () => {
+  isLoading.value = true
+  if (offset.value < total.value / 5) {
+    offset.value++
+    await getSanYuList(getSanYuListParams.value)
+    isLoading.value = false
+    console.log('到底了')
+  } else {
+    loadingText.value = '没有更多了~~~'
+  }
+}
+
+/* 接收纵向列表项 */
+const cardList = ref<any>([])
+// 分页查询页数
+const offset = ref(1)
+// 分页查询默认是第一个选项
+const fs = ref(0)
+// 获取三育人列表总条数
+const total = ref(0)
+// 定义获取三育人列表请求分页参数
+const getSanYuListParams = ref<getSanYuListType>({
+  stuEducation: {
+    fs: fs.value
+  }, pageVo: {
+    limit: 5,
+    offset: offset.value,
+    sidx: "id",
+    sord: "desc"
+  }
+})
+// 封装分页列表函数
+const getSanYuList = async (data: getSanYuListType) => {
+  const res = await getSanYuListApi(data)
+  console.log(res.body)
+  cardList.value.push(...(res.body as any).rows)
+  total.value = (res.body as any).total
+  console.log(cardList.value)
+  console.log(total.value / 5)
+}
+// 定义触底加载状态
+const isLoading = ref(false)
+//  触底加载显示文字
+const loadingText = ref('正在加载中...')
+// 接收搜索框字符
+const searchValue = ref('')
+// 输入框防抖
+let timer: any = null
+// 搜索框输入事件
+const onInput = (e: any) => {
+  clearTimeout(timer)
+  timer = setTimeout(() => {
+    console.log(e)
+    cardList.value = []
+    getSanYuList(getSanYuListParams.value).then((res) => {
+      cardList.value = cardList.value.filter((item: any) => item.name.includes(searchValue.value))
+    })
+  }, 1000)
+}
+onShow(async () => {
+  //  获取用户状态，判断用户身份
+  userState.value = (await getReviewStatus()).data
+  // 如果用户是游客，显示一些提示并跳转到申请入会页面
+  if (userState.value == '0') {
+    uni.showModal({
+      title: '提示',
+      content: '您还未入会，请先申请入会',
+      showCancel: false,
+      success: function (res) {
+        if (res.confirm) {
+          uni.navigateTo({
+            url: '/subpackages/hotel/applyUnion'
+          })
+        }
+      }
+    })
+  }
+  // 如果是审核中，显示提示
+  else if (userState.value == '1') {
+    uni.showModal({
+      title: '提示',
+      content: '您的入会申请正在审核中，请耐心等待审核成功后再来操作',
+      showCancel: false,
+      success: function (res) {
+        if (res.confirm) {
+          uni.switchTab({
+            url: '/pages/index/index'
+          })
+        }
+      }
+    })
+  }
+  // 如果用户是会员
+  else if (userState.value == '2') {
+    // 如果是管理员
+    if (memberStore.profile?.userVo?.roleType?.includes('SystemAdmin') == true) {
+      isAdmin.value = true
+      console.log('管理员')
+
+      // 获取审核总列表,并默认显示待审核列表
+      // 设置管理员横向选择表
+      listTotalData.value = [
+        { id: 0, name: '待审核' },
+        { id: 1, name: '已审核' }]
+    }
+    // 如果是工会委员
+    else if (memberStore.profile?.userVo?.roleType?.includes('UnionMembers') == true) {
+      isCommissioner.value = true
+      console.log('工会委员')
+      // 获取审核总列表,并默认显示待审核列表
+      // 设置工会委员横向选择表
+      listTotalData.value = [
+        { id: 0, name: '待审核' },
+        { id: 1, name: '已审核' }]
+    }
+    // 如果是工会管理员
+    else if (memberStore.profile?.userVo?.roleType?.includes('ghAdmin') == true) {
+      isGhAdmin.value = true
+      console.log('工会管理员')
+      // 获取审核总列表,并默认显示待审核列表
+      // 设置工会管理员横向选择表
+      listTotalData.value = [
+        { id: 0, name: '待审核' },
+        { id: 1, name: '已审核' }]
+    }
+    // 如果是普通会员
+    else if (memberStore.profile?.userVo?.roleType?.includes('member') == true) {
+      isUser.value = true
+      console.log('普通会员 ')
+
+      // 获取审核总列表,并默认显示待审核列表
+      // 设置普通会员横向选择表
+      listTotalData.value = [
+        { id: 0, name: '待上报' },
+        { id: 1, name: '已上报' }
+      ]
+    }
+    // 默认显示待上报列表和显示第一页数据
+    await getSanYuList(getSanYuListParams.value)
+    return
+  }
+})
+</script>
 <template>
-  <view class="container">
-    <uni-card :is-shadow="false" is-full>
-      <text class="uni-h6">uni-forms 组件一般由输入框、选择器、单选框、多选框等控件组成，用以收集、校验、提交数据。</text>
-    </uni-card>
-    <uni-section title="基本用法" type="line">
-      <view class="example">
-        <!-- 基础用法，不包含校验规则 -->
-        <uni-forms ref="baseForm" :model="baseFormData" labelWidth="80px">
-          <uni-forms-item label="账号">
-            <uni-easyinput v-model="baseFormData.name" placeholder="请输入账号" />
-          </uni-forms-item>
-          <uni-forms-item label="密码">
-            <uni-easyinput v-model="baseFormData.age" placeholder="请输入密码" />
-          </uni-forms-item>
-          <uni-forms-item label="性别" required>
-            <uni-data-checkbox v-model="baseFormData.sex" :localdata="sexs" />
-          </uni-forms-item>
-          <uni-forms-item label="兴趣爱好" required>
-            <uni-data-checkbox v-model="baseFormData.hobby" multiple :localdata="hobbys" />
-          </uni-forms-item>
-          <uni-forms-item label="自我介绍">
-            <uni-easyinput type="textarea" v-model="baseFormData.introduction" placeholder="请输入自我介绍" />
-          </uni-forms-item>
-          <uni-forms-item label="日期时间">
-            <uni-datetime-picker type="datetime" return-type="timestamp" v-model="baseFormData.datetimesingle" />
-          </uni-forms-item>
-          <uni-forms-item label="选择城市">
-            <uni-data-picker v-model="baseFormData.city" :localdata="cityData" popup-title="选择城市">
-            </uni-data-picker>
-          </uni-forms-item>
-
-          <uni-forms-item label="选择技能">
-            <uni-data-select v-model="baseFormData.skills" :localdata="skillsRange">
-            </uni-data-select>
-          </uni-forms-item>
-        </uni-forms>
+  <view class="box"
+    :style="{ height: isUser ? (systemInfo.windowHeight - 50) + 'px' : (systemInfo.windowHeight - 10) + 'px' }">
+    <!-- 横向栏 -->
+    <scroll-view class="scrollx" scroll-x :scroll-left="scrollLeft" scroll-with-animation @scroll="onScrollLeft">
+      <view class="newsItem" :class="{ active: activeValue === item.id }" v-for="(item, index ) in listTotalData"
+        :key="item.id" @click.stop="handoff(item.id, index)">
+        {{ item.name }}
       </view>
-    </uni-section>
-
-    <uni-section title="对齐方式" type="line">
-      <view class="example">
-        <view class="segmented-control">
-          <uni-segmented-control :current="current" :values="items" @clickItem="onClickItem" styleType="button">
-          </uni-segmented-control>
-        </view>
-        <!-- 展示不同的排列方式 -->
-        <uni-forms ref="baseForm" :modelValue="alignmentFormData" :label-position="alignment">
-          <uni-forms-item label="姓名" required>
-            <uni-easyinput v-model="baseFormData.name" placeholder="请输入姓名" />
-          </uni-forms-item>
-          <uni-forms-item label="年龄" required>
-            <uni-easyinput v-model="baseFormData.age" placeholder="请输入年龄" />
-          </uni-forms-item>
-        </uni-forms>
-      </view>
-    </uni-section>
-
-    <uni-section title="表单校验" type="line">
-      <view class="example">
-        <!-- 基础表单校验 -->
-        <uni-forms ref="valiForm" :rules="rules" :model="valiFormData" labelWidth="80px">
-          <uni-forms-item label="姓名" required name="name">
-            <uni-easyinput v-model="valiFormData.name" placeholder="请输入姓名" />
-          </uni-forms-item>
-          <uni-forms-item label="年龄" required name="age">
-            <uni-easyinput v-model="valiFormData.age" placeholder="请输入年龄" />
-          </uni-forms-item>
-          <uni-forms-item label="自我介绍">
-            <uni-easyinput type="textarea" v-model="valiFormData.introduction" placeholder="请输入自我介绍" />
-          </uni-forms-item>
-        </uni-forms>
-        <button type="primary" @click="submit('valiForm')">提交</button>
-      </view>
-    </uni-section>
-    <uni-section title="自定义校验规则" type="line">
-      <view class="example">
-        <!-- 自定义表单校验 -->
-        <uni-forms ref="customForm" :rules="customRules" labelWidth="80px" :modelValue="customFormData">
-          <uni-forms-item label="姓名" required name="name">
-            <uni-easyinput v-model="customFormData.name" placeholder="请输入姓名" />
-          </uni-forms-item>
-          <uni-forms-item label="年龄" required name="age">
-            <uni-easyinput v-model="customFormData.age" placeholder="请输入年龄" />
-          </uni-forms-item>
-          <uni-forms-item label="兴趣爱好" required name="hobby">
-            <uni-data-checkbox v-model="customFormData.hobby" multiple :localdata="hobbys" />
-          </uni-forms-item>
-        </uni-forms>
-        <button type="primary" @click="submit('customForm')">提交</button>
-      </view>
-    </uni-section>
-
-
-    <uni-section title="动态表单" type="line">
-      <view class="example">
-        <!-- 动态表单校验 -->
-        <uni-forms ref="dynamicForm" :rules="dynamicRules" :model="dynamicFormData" labelWidth="80px">
-          <uni-forms-item label="邮箱" required name="email">
-            <uni-easyinput v-model="dynamicFormData.email" placeholder="请输入姓名" />
-          </uni-forms-item>
-          <uni-forms-item v-for="(item, index) in dynamicFormData.domains" :key="item.id"
-            :label="item.label + ' ' + index" required :rules="item.rules" :name="['domains', index, 'value']">
-            <view class="form-item">
-              <uni-easyinput v-model="dynamicFormData.domains[index].value" placeholder="请输入域名" />
-              <button class="button" size="mini" type="default" @click="del(item.id)">删除</button>
+      <uni-search-bar v-model="searchValue" :onInput="onInput" placeholder="请输入姓名" />
+    </scroll-view>
+    <scroll-view class="scrolly" scroll-y refresher-enabled :scroll-top="scrollTop" @scroll="onScrollTop"
+      lower-threshold="80" @scrolltolower="onScrollTopLower">
+      <view class="shenhe">
+        <!-- 纵向栏 -->
+        <view class="card" v-for="(item, index) in cardList" :key="item.id" @click.stop="onClick(index)">
+          <view class="tittle">
+            <!-- <view class="main" :class="{ await: item.process == '0' }">{{ item.process == '2' ? '已上报' : '未上报' }}
+            </view> -->
+            <view class="vice">职称：{{ item.title }}</view>
+            <view class="vice">工作单位：{{ item.unit }}</view>
+            <view class="applier"> 申请人：{{ item.name }} </view>
+          </view>
+          <view class="extra">
+            <view class="funbtn" v-if="reportShow"><button type="primary" size="mini" @click.stop="report(item.id)">{{
+              isUser ? '上报' : '审核'
+            }}</button></view>
+            <view class="funbtn"><button type="primary" size="mini" @click="downLoad(item.id)">预览文件</button>
             </view>
-          </uni-forms-item>
-        </uni-forms>
-        <view class="button-group">
-          <button type="primary" size="mini" @click="add">新增域名</button>
-          <button type="primary" size="mini" @click="submit('dynamicForm')">提交</button>
+          </view>
         </view>
+        <view class="tittle" v-if="isLoading">{{ loadingText }}</view>
       </view>
-    </uni-section>
+    </scroll-view>
+  </view>
+  <view class="reviewAll">
+    <button type="default" @click.stop="applySanYu" v-if="isUser">填写申请</button>
   </view>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      // 基础表单数据
-      baseFormData: {
-        name: '121212',
-        age: '',
-        introduction: '',
-        sex: 2,
-        hobby: [5],
-        datetimesingle: 1627529992399,
-        city: '',
-        skills: 0
-      },
-      // 城市数据
-      cityData: [{
-        text: "北京",
-        value: "10001",
-      }, {
-        text: "上海",
-        value: "10002",
-      }, {
-        text: "深圳",
-        value: "10004",
-      }],
-      skillsRange: [{
-        value: 0,
-        text: "编程"
-      },
-      {
-        value: 1,
-        text: "绘画"
-      },
-      {
-        value: 2,
-        text: "运动"
-      },
-      ],
-      // 表单数据
-      alignmentFormData: {
-        name: '',
-        age: '',
-      },
-      // 单选数据源
-      sexs: [{
-        text: '男',
-        value: 0
-      }, {
-        text: '女',
-        value: 1
-      }],
-      // 多选数据源
-      hobbys: [{
-        text: '跑步',
-        value: 0
-      }, {
-        text: '游泳',
-        value: 1
-      }, {
-        text: '绘画',
-        value: 2
-      }, {
-        text: '足球',
-        value: 3
-      }, {
-        text: '篮球',
-        value: 4
-      }, {
-        text: '其他',
-        value: 5
-      }],
-      // 分段器数据
-      current: 0,
-      items: ['左对齐', '顶部对齐'],
-      // 校验表单数据
-      valiFormData: {
-        name: '',
-        age: '',
-        introduction: '',
-      },
-      // 校验规则
-      rules: {
-        name: {
-          rules: [{
-            required: true,
-            errorMessage: '姓名不能为空'
-          }]
-        },
-        age: {
-          rules: [{
-            required: true,
-            errorMessage: '年龄不能为空'
-          }, {
-            format: 'number',
-            errorMessage: '年龄只能输入数字'
-          }]
-        }
-      },
-      // 自定义表单数据
-      customFormData: {
-        name: '',
-        age: '',
-        hobby: []
-      },
-      // 自定义表单校验规则
-      customRules: {
-        name: {
-          rules: [{
-            required: true,
-            errorMessage: '姓名不能为空'
-          }]
-        },
-        age: {
-          rules: [{
-            required: true,
-            errorMessage: '年龄不能为空'
-          }]
-        },
-        hobby: {
-          rules: [{
-            format: 'array'
-          },
-          {
-            validateFunction: function (rule, value, data, callback) {
-              if (value.length < 2) {
-                callback('请至少勾选两个兴趣爱好')
-              }
-              return true
-            }
+<style lang="scss" scoped>
+.box {
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: space-around;
+
+
+
+  .scrollx {
+    white-space: nowrap;
+    width: 100%;
+
+    .newsItem {
+      display: inline-block;
+      width: 20%;
+      height: 70rpx;
+      line-height: 70rpx;
+      text-align: center;
+      font-size: 28rpx;
+      color: gray;
+      position: relative;
+    }
+
+    .active {
+      color: black;
+      font-weight: bold;
+      font-size: 35rpx;
+      border-bottom: 3px solid #ff0000;
+    }
+  }
+
+
+
+  .scrolly {
+    flex: 1;
+    width: 100%;
+    overflow-y: auto;
+    background-color: white;
+
+
+
+    .shenhe {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      overflow: hidden;
+
+      .card {
+        width: 90%;
+        height: 200rpx;
+        box-shadow: 0rpx 0rpx 5rpx 2rpx darkgrey;
+        margin: 20rpx;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 20rpx;
+
+        .tittle {
+          height: 80%;
+          width: 55%;
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          flex-direction: column;
+          margin-left: 50rpx;
+
+          .main {
+            font-size: larger;
+            color: #3a3a3a;
+
           }
-          ]
+
+          .await {
+            color: red;
+          }
+
+          .vice {
+            color: #909399;
+            font-size: small;
+          }
         }
 
-      },
-      dynamicFormData: {
-        email: '',
-        domains: []
-      },
-      dynamicLists: [],
-      dynamicRules: {
-        email: {
-          rules: [{
-            required: true,
-            errorMessage: '域名不能为空'
-          }, {
-            format: 'email',
-            errorMessage: '域名格式错误'
-          }]
+        .extra {
+          margin-right: 50rpx;
+          white-space: nowrap;
+          display: flex;
+          justify-content: space-around;
+          align-items: flex-end;
+          flex-direction: column;
+
+          .funbtn {
+            display: flex;
+            justify-content: right;
+            margin-bottom: 5rpx;
+          }
         }
       }
+
     }
-  },
-  computed: {
-    // 处理表单排列切换
-    alignment() {
-      if (this.current === 0) return 'left'
-      if (this.current === 1) return 'top'
-      return 'left'
-    }
-  },
-  onLoad() { },
-  onReady() {
-    // 设置自定义表单校验规则，必须在节点渲染完毕后执行
-    this.$refs.customForm.setRules(this.customRules)
-  },
-  methods: {
-    onClickItem(e) {
-      console.log(e);
-      this.current = e.currentIndex
-    },
-    add() {
-      this.dynamicFormData.domains.push({
-        label: '域名',
-        value: '',
-        rules: [{
-          'required': true,
-          errorMessage: '域名项必填'
-        }],
-        id: Date.now()
-      })
-    },
-    del(id) {
-      let index = this.dynamicLists.findIndex(v => v.id === id)
-      this.dynamicLists.splice(index, 1)
-    },
-    submit(ref) {
-      console.log(this.baseFormData);
-      this.$refs[ref].validate().then(res => {
-        console.log('success', res);
-        uni.showToast({
-          title: `校验通过`
-        })
-      }).catch(err => {
-        console.log('err', err);
-      })
-    },
   }
-}
-</script>
 
-<style lang="scss">
-.example {
-  padding: 15px;
-  background-color: #fff;
-}
 
-.segmented-control {
-  margin-bottom: 15px;
+
+
+
+
+
 }
 
-.button-group {
-  margin-top: 15px;
-  display: flex;
-  justify-content: space-around;
-}
-
-.form-item {
-  display: flex;
-  align-items: center;
-  flex: 1;
-}
-
-.button {
-  display: flex;
-  align-items: center;
-  height: 35px;
-  line-height: 35px;
-  margin-left: 10px;
+.reviewAll {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
 }
 </style>
