@@ -170,15 +170,39 @@
 					}
 				},
 				{
-					"path": "provincialReview",
+					"path": "sanYuReview",
+					"style": {
+						"navigationBarTitleText": "三育人"
+					}
+				},
+				{
+					"path": "provincialPersonReview",
 					"style": {
 						"navigationBarTitleText": "省部级个人"
 					}
 				},
 				{
-					"path": "sanYuReview",
+					"path": "applyProvincial",
 					"style": {
-						"navigationBarTitleText": "三育人"
+						"navigationBarTitleText": "省部级个人申请"
+					}
+				},
+				{
+					"path": "provincialTeamReview",
+					"style": {
+						"navigationBarTitleText": "省部级集体"
+					}
+				},
+				{
+					"path": "applyProvincialTeam",
+					"style": {
+						"navigationBarTitleText": "省部级集体申请"
+					}
+				},
+				{
+					"path": "difficultyHelper",
+					"style": {
+						"navigationBarTitleText": "困难帮扶"
 					}
 				}
 			]

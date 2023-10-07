@@ -6,7 +6,7 @@ import { onLoad, onShow } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 import { useMemberStore } from '@/store/index'
 import type { UniCardOnClick } from '@uni-helper/uni-ui-types'
-import { checkFile, downloadFile, getSanYuListApi, getUserInfo, reportSanYu } from '@/services/applySanYu'
+import { checkFile, downloadFile, getPersonProvincialListApi, getUserInfo, reportSanYu } from '@/services/applyProvincialTeam'
 import type { applySanYuListType } from '@/types/hotel'
 import type { getSanYuListType } from '@/types/sanYu'
 const memberStore = useMemberStore()
@@ -40,13 +40,13 @@ const sanYuStore = useApplySanYuStore()
 
 const onClick = (id: string) => {
   uni.navigateTo({
-    url: '/subpackages/hotel/applySanYu' + '?id=' + id
+    url: '/subpackages/hotel/applyProvincialTeam' + '?id=' + id
   })
 }
 // 点击填写申请
 const applySanYu = () => {
   uni.navigateTo({
-    url: '/subpackages/hotel/applySanYu'
+    url: '/subpackages/hotel/applyProvincialTeam'
   })
 }
 // 接收管理员身份标识
@@ -147,7 +147,7 @@ const handoff = (id: number, index: number) => {
   const itemWidth = systemInfo.windowWidth * 0.2; // 假设每个元素宽度为屏幕宽度的 20%
   const scrollDistance = index * itemWidth - systemInfo.windowWidth * 0.4; // 滚动到元素中间位置
   scrollLeft.value = scrollDistance < 0 ? 0 : scrollDistance;
-  getSanYuListParams.value.stuEducation.fs = id
+  getSanYuListParams.value.stuTeam.fs = id
   cardList.value = []
   getSanYuList(getSanYuListParams.value)
 }
@@ -183,7 +183,7 @@ const cardList = ref<any>([])
 const total = ref(0)
 // 定义获取三育人列表请求分页参数
 const getSanYuListParams = ref<getSanYuListType>({
-  stuEducation: {
+  stuTeam: {
     fs: 0
   }, pageVo: {
     limit: 5,
@@ -194,7 +194,7 @@ const getSanYuListParams = ref<getSanYuListType>({
 })
 // 封装分页列表函数
 const getSanYuList = async (data: getSanYuListType) => {
-  const res = await getSanYuListApi(data)
+  const res = await getPersonProvincialListApi(data)
   console.log('onShow')
   console.log(res.body)
   cardList.value = (res.body as any).rows
@@ -326,9 +326,9 @@ onShow(async () => {
           <view class="tittle">
             <!-- <view class="main" :class="{ await: item.process == '0' }">{{ item.process == '2' ? '已上报' : '未上报' }}
             </view> -->
-            <view class="vice">职称：{{ item.title }}</view>
-            <view class="vice">工作单位：{{ item.unit }}</view>
-            <view class="applier"> 申请人：{{ item.name }} </view>
+            <view class="vice">荣誉称号：{{ item.designation }}</view>
+            <view class="vice">授奖部门：{{ item.department }}</view>
+            <view class="applier"> 申请单位：{{ item.unit }} </view>
           </view>
           <view class="extra">
             <view class="funbtn" v-if="reportShow"><button type="primary" size="mini" @click.stop="report(item.id)">{{

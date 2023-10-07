@@ -2,11 +2,11 @@
 import ReviewCard from '@/components/ReviewCard.vue'
 import { getReviewStatus } from '@/services/applyUnion'
 import { useApplySanYuStore } from '@/store/index'
-import { onShow } from '@dcloudio/uni-app'
+import { onLoad, onShow } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 import { useMemberStore } from '@/store/index'
 import type { UniCardOnClick } from '@uni-helper/uni-ui-types'
-import { checkFile, downloadFile, getSanYuListApi, getUserInfo, reportSanYu } from '@/services/applySanYu'
+import { checkFile, downloadFile, getPersonProvincialListApi, getUserInfo, reportSanYu } from '@/services/applyProvincial'
 import type { applySanYuListType } from '@/types/hotel'
 import type { getSanYuListType } from '@/types/sanYu'
 const memberStore = useMemberStore()
@@ -38,15 +38,15 @@ const sanYuStore = useApplySanYuStore()
 //   // }
 // }
 
-const onClick = (index: Number) => {
+const onClick = (id: string) => {
   uni.navigateTo({
-    url: '/subpackages/hotel/applySanYu' + '?index=' + index
+    url: '/subpackages/hotel/applyProvincial' + '?id=' + id
   })
 }
 // 点击填写申请
 const applySanYu = () => {
   uni.navigateTo({
-    url: '/subpackages/hotel/applySanYu'
+    url: '/subpackages/hotel/applyProvincial'
   })
 }
 // 接收管理员身份标识
@@ -70,7 +70,7 @@ const downLoad = async (id: string) => {
     })
     return
   }
-  console.log('-----')
+  console.log('--------')
   await downloadFile(id).then((data) => {
     const fs = uni.getFileSystemManager()
     const filePath = wx.env.USER_DATA_PATH + '/' + Date.now() + '.pdf'   // wx.env.USER_DATA_PATH 为微信提供的保存文件路径
@@ -92,10 +92,10 @@ const downLoad = async (id: string) => {
       }
     })
   })
-
 }
 // 点击上报或者审核
 const report = async (id: string) => {
+  console.log(id)
   const reportRes = await reportSanYu(id)
   if (reportRes.body == 1) {
     cardList.value = cardList.value.filter((item: any) => item.id != id)
@@ -127,20 +127,27 @@ const listTotalData = ref()
 const systemInfo = uni.getSystemInfoSync()
 // 适当时候隐藏report
 const reportShow = ref(true)
+// 适当隐藏填写申请按钮
+const applyShow = ref(true)
 // 点击栏
 const handoff = (id: number, index: number) => {
   if (id == 0) {
+    getSanYuListParams.value.pageVo.offset = 0
     reportShow.value = true
+    isUser.value = true
   }
-  else { reportShow.value = false }
+  else {
+    getSanYuListParams.value.pageVo.offset = 0
+    reportShow.value = false
+    // applyShow.value = false
+    isUser.value = false
+  }
   activeValue.value = id;
   // 计算需要滚动的距离
   const itemWidth = systemInfo.windowWidth * 0.2; // 假设每个元素宽度为屏幕宽度的 20%
   const scrollDistance = index * itemWidth - systemInfo.windowWidth * 0.4; // 滚动到元素中间位置
   scrollLeft.value = scrollDistance < 0 ? 0 : scrollDistance;
-  fs.value = id
-  getSanYuListParams.value.stuEducation.fs = id
-  offset.value = 1
+  getSanYuListParams.value.stuPerson.fs = id
   cardList.value = []
   getSanYuList(getSanYuListParams.value)
 }
@@ -153,11 +160,17 @@ const onScrollTop = (e: any) => {
 }
 // 滚动到底部事件
 const onScrollTopLower = async () => {
+  console.log('滚动到底部 了')
   isLoading.value = true
-  if (offset.value < total.value / 5) {
-    offset.value++
-    await getSanYuList(getSanYuListParams.value)
+  if (cardList.value.length < total.value) {
     isLoading.value = false
+    console.log('页数加1')
+    getSanYuListParams.value.pageVo.offset=cardList.value.length
+    // offset.value++
+    const res = await getSanYuListApi(getSanYuListParams.value)
+    console.log('cs', res.body)
+    cardList.value.push(...(res.body?.rows!))
+    // await getSanYuList(getSanYuListParams.value)
     console.log('到底了')
   } else {
     loadingText.value = '没有更多了~~~'
@@ -166,30 +179,28 @@ const onScrollTopLower = async () => {
 
 /* 接收纵向列表项 */
 const cardList = ref<any>([])
-// 分页查询页数
-const offset = ref(1)
-// 分页查询默认是第一个选项
-const fs = ref(0)
 // 获取三育人列表总条数
 const total = ref(0)
 // 定义获取三育人列表请求分页参数
 const getSanYuListParams = ref<getSanYuListType>({
-  stuEducation: {
-    fs: fs.value
+  stuPerson: {
+    fs: 0
   }, pageVo: {
     limit: 5,
-    offset: offset.value,
+    offset: 0,
     sidx: "id",
     sord: "desc"
   }
 })
 // 封装分页列表函数
 const getSanYuList = async (data: getSanYuListType) => {
-  const res = await getSanYuListApi(data)
+  const res = await getPersonProvincialListApi(data)
+  console.log('onShow')
   console.log(res.body)
-  cardList.value.push(...(res.body as any).rows)
+  cardList.value = (res.body as any).rows
   total.value = (res.body as any).total
   console.log(cardList.value)
+  console.log('页数相除')
   console.log(total.value / 5)
 }
 // 定义触底加载状态
@@ -246,6 +257,7 @@ onShow(async () => {
   }
   // 如果用户是会员
   else if (userState.value == '2') {
+    
     // 如果是管理员
     if (memberStore.profile?.userVo?.roleType?.includes('SystemAdmin') == true) {
       isAdmin.value = true
@@ -281,7 +293,6 @@ onShow(async () => {
     else if (memberStore.profile?.userVo?.roleType?.includes('member') == true) {
       isUser.value = true
       console.log('普通会员 ')
-
       // 获取审核总列表,并默认显示待审核列表
       // 设置普通会员横向选择表
       listTotalData.value = [
@@ -289,6 +300,7 @@ onShow(async () => {
         { id: 1, name: '已上报' }
       ]
     }
+    getSanYuListParams.value.pageVo.offset = 0
     // 默认显示待上报列表和显示第一页数据
     await getSanYuList(getSanYuListParams.value)
     return
@@ -306,11 +318,11 @@ onShow(async () => {
       </view>
       <uni-search-bar v-model="searchValue" :onInput="onInput" placeholder="请输入姓名" />
     </scroll-view>
-    <scroll-view class="scrolly" scroll-y refresher-enabled :scroll-top="scrollTop" @scroll="onScrollTop"
-      lower-threshold="80" @scrolltolower="onScrollTopLower">
+    <scroll-view class="scrolly" scroll-y :scroll-top="scrollTop" @scroll="onScrollTop" lower-threshold="10"
+      @scrolltolower="onScrollTopLower">
       <view class="shenhe">
         <!-- 纵向栏 -->
-        <view class="card" v-for="(item, index) in cardList" :key="item.id" @click.stop="onClick(index)">
+        <view class="card" v-for="(item, index) in cardList" :key="item.id" @click.stop="onClick(item.id)">
           <view class="tittle">
             <!-- <view class="main" :class="{ await: item.process == '0' }">{{ item.process == '2' ? '已上报' : '未上报' }}
             </view> -->
@@ -322,7 +334,7 @@ onShow(async () => {
             <view class="funbtn" v-if="reportShow"><button type="primary" size="mini" @click.stop="report(item.id)">{{
               isUser ? '上报' : '审核'
             }}</button></view>
-            <view class="funbtn"><button type="primary" size="mini" @click="downLoad(item.id)">预览文件</button>
+            <view class="funbtn"><button type="primary" size="mini" @click.stop="downLoad(item.id)">预览文件</button>
             </view>
           </view>
         </view>

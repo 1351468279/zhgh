@@ -133,6 +133,24 @@ export const politicsData = ref<DataType>([
         text: '群众',
         value: '群众'
     }])
+// 定义职称数据源
+export const jobTitleData = ref([{
+    text: '教授',
+    value: '教授'
+}, {
+    text: '副教授',
+    value: '副教授'
+}, {
+    text: '讲师',
+    value: '讲师'
+}, {
+    text: '博士生导师',
+    value: '博士生导师'
+}, {
+    text: '助教',
+    value: '助教'
+}
+])
 const mimeMap = {
     "0.001": "application/x-001",
     "0.323": "text/h323",
@@ -462,7 +480,15 @@ const mimeMap = {
     ".xap": "application/x-silverlight-app",
     ".zip": "application/x-zip-compressed",
 }
-
-
-
+export const translateTime = (time: string) => {
+    const date = new Date(time)
+    const year = date.getFullYear()
+    const month = date.getMonth() + 1
+    const day = date.getDate()
+    const hour = date.getHours()
+    const minute = date.getMinutes()
+    const second = date.getSeconds()
+    // return `${year}-${month}-${day} ${hour}:${minute}:${second}`
+    return `${year}-${month <= 9 ? '0' + month : month}-${day <= 9 ? '0' + day : day}`
+}
 

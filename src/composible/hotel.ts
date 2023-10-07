@@ -27,22 +27,22 @@ export const hotelData = ref<hotelApp[]>([{
     mine: false
 }, {
     src: 'http://cloud.zhgn.cn:808/phone/hotel/1-8.png',
-    url: '/subpackages/hotel/provincialReview',
+    url: '/subpackages/hotel/provincialPersonReview',
     name: '省部级个人',
     id: 5,
     mine: true
 }, {
     src: 'http://cloud.zhgn.cn:808/phone/hotel/1-15.png',
-    url: '',
+    url: '/subpackages/hotel/provincialTeamReview',
     name: '省部级集体',
     id: 6,
-    mine: false
+    mine: true
 }, {
     src: 'http://cloud.zhgn.cn:808/phone/hotel/1-2.png',
-    url: '',
+    url: '/subpackages/hotel/difficultyHelper',
     name: '困难帮扶',
     id: 7,
-    mine: true
+    mine: false
 }, {
     src: 'http://cloud.zhgn.cn:808/phone/icon/1-10.png',
     url: '',

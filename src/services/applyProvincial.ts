@@ -4,9 +4,9 @@ import type { UploadFileType } from "@/types/sanYu";
 import type { UniFilePickerTempFile } from "@uni-helper/uni-ui-types";
 // 获取用户信息，用于填写申请时候回显数据
 export const getUserInfo = () => {
-    return request<applySanYuListType>({
+    return request({
         method: 'GET',
-        url: '/wechat/education/getUserInfo.do'
+        url: '/wechat/person/getUserInfo.do'
     })
 }
 // 上传文件
@@ -28,12 +28,12 @@ export const uploadFile = (data: UploadFileType) => {
 export const uploadForm = (data: any) => {
     return request({
         method: 'POST',
-        url: '/selection/insertEducationData.do',
+        url: '/selection/insertPersonData.do',
         data
     })
 }
-// 三育人分页查询
-export const getSanYuListApi = (data: {
+// 省部级个人分页查询
+export const getPersonProvincialListApi = (data: {
     stuEducation: { fs: number },
     pageVo: {
         limit: number,
@@ -48,7 +48,7 @@ export const getSanYuListApi = (data: {
         total: number
     }>({
         method: 'POST',
-        url: '/wechat/education/getEducationData.do',
+        url: '/wechat/person/getPersonData.do',
         data
     })
 }
@@ -74,15 +74,15 @@ export const checkFile = (id: string) => {
 export const reportSanYu = (id: string) => {
     return request({
         method: 'POST',
-        url: '/wechat/education/changeState.do',
+        url: '/wechat/person/changeState.do',
         data: [id]
     })
 }
 // 根据id获取三育人信息
-export const getSanYuInfo = (id: string) => {
-    return http({
+export const getProvincialPersonInfo = (id: string) => {
+    return request({
         method: 'POST',
-        url: '/wechat/education/returnStuInfoById.do',
+        url: '/wechat/person/returnPersonInfoById.do',
         data: JSON.stringify(id)
     })
 }

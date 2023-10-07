@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
-import { translateTime } from '@/utils/tool'
+import { translateTime } from '@/composible/data'
 import type { applyUnionType, reviewListType } from "@/types/hotel";
 import { useApplyUnionStore, useMemberStore } from '@/store/index'
 import { onLoad, onReady } from '@dcloudio/uni-app';
