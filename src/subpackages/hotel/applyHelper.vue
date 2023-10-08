@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import { computed, ref } from "vue";
-import type { applySanYuType, applySanYuListType } from "@/types/hotel";
+import type { applyProvincialPersonType, applySanYuListType } from "@/types/hotel";
 import { useApplySanYuStore, useMemberStore } from "@/store";
-import { getSanYuInfo, getUserInfo, uploadFile, uploadForm } from "@/services/applySanYu";
+import { getProvincialPersonInfo, uploadFile, uploadForm } from "@/services/applyHelper";
+import { getUserInfo } from "@/services/applyHelper";
 import { getReviewStatus } from "@/services/applyUnion";
 import { onShow } from "@dcloudio/uni-app";
 import {
@@ -10,6 +11,7 @@ import {
   educationsData,
   politicsData,
   degreesData,
+  jobTitleData,
 } from "@/composible/data";
 import type {
   UniFilePicker,
@@ -20,40 +22,26 @@ import type {
 import type UniformDescriptor from "XrFrame/kanata/lib/frontend/resource/UniformDescriptor";
 import { baseURL } from "@/utils/http";
 const memberStore = useMemberStore();
-const baseFormData = ref<applySanYuType>({
+const baseFormData = ref<applyProvincialPersonType>({
+  id: "",
+  userId: "",
   name: "",
-  age: "",
-  sex: "男",
-  nation: "",
-  education: "",
-  politics: "",
+  birthday: "",
+  informationId: "",
+  phone: "",
   unit: "",
-  title: "",
-  duties: "",
-  degree: "",
 });
-// 定义单选数据源
-const sexs = ref([
-  {
-    text: "男",
-    value: "男",
-  },
-  {
-    text: "女",
-    value: "女",
-  },
-]);
 const props = defineProps(["id"]);
 // 根据id显示标题和设置回显数据
 const tittle = computed(() => {
   if (props.id) {
     uni.setNavigationBarTitle({
-      title: "三育人",
+      title: "困难帮扶申请",
     });
     console.log(props.id);
     return "详细信息显示";
   }
-  return "填写三育人申请";
+  return "填写困难帮扶申请";
 });
 // 接收用户基本信息
 const userInfo = ref<applySanYuListType>();
@@ -70,8 +58,9 @@ onShow(async () => {
   else if (memberStore.profile?.userVo?.roleType?.includes("member") == true) {
     // 如果是通过点击卡片进来的
     if (props.id) {
-      const res = await getSanYuInfo(props.id);
-      userInfo.value = (res.data as any)[0];
+      console.log("我是点击进来的");
+      const res = await getProvincialPersonInfo(props.id);
+      userInfo.value = (res.body as any)[0];
       console.log(userInfo.value);
       console.log("id用户信息");
     }
@@ -82,19 +71,14 @@ onShow(async () => {
     }
     // 获取用户信息,进行数据回显
     baseFormData.value.name = userInfo.value?.name!;
-    baseFormData.value.age = userInfo.value?.age!;
-    baseFormData.value.sex = userInfo.value?.sex!;
-    baseFormData.value.nation = userInfo.value?.nation!;
-    baseFormData.value.education = userInfo.value?.education!;
+    baseFormData.value.birthday = userInfo.value?.birthday!;
+    baseFormData.value.phone = userInfo.value?.phone!;
     baseFormData.value.userId = userInfo.value?.userId!;
     baseFormData.value.id = userInfo.value?.id!;
-    baseFormData.value.degree = userInfo.value?.degree!;
-    baseFormData.value.politics = userInfo.value?.politics!;
     baseFormData.value.unit = userInfo.value?.unit!;
-    baseFormData.value.title = userInfo.value?.title!;
-    baseFormData.value.duties = userInfo.value?.duties!;
     baseFormData.value.process = userInfo.value?.process!;
   }
+  console.log("cs", baseFormData.value);
 });
 
 // 定义表单校验规则
@@ -113,61 +97,20 @@ const rules = ref({
       },
     ],
   },
-  age: {
+  birthday: {
     rules: [
       {
         required: true,
-        errorMessage: "请输入年龄",
-        trigger: "blur",
-      },
-      {
-        pattern: /^(?:[1-9][0-9]?|1[01][0-9]|120)$/,
-        errorMessage: "年龄格式错误",
+        errorMessage: "请选择出生年月",
         trigger: "blur",
       },
     ],
   },
-  sex: {
+  phone: {
     rules: [
       {
         required: true,
-        errorMessage: "请选择性别",
-        trigger: "blur",
-      },
-    ],
-  },
-  nation: {
-    rules: [
-      {
-        required: true,
-        errorMessage: "请选择民族",
-        trigger: "blur",
-      },
-    ],
-  },
-  degree: {
-    rules: [
-      {
-        required: true,
-        errorMessage: "请选择学历",
-        trigger: "blur",
-      },
-    ],
-  },
-  education: {
-    rules: [
-      {
-        required: true,
-        errorMessage: "请选择学位",
-        trigger: "blur",
-      },
-    ],
-  },
-  politics: {
-    rules: [
-      {
-        required: true,
-        errorMessage: "请选择政治面貌",
+        errorMessage: "请输入手机号",
         trigger: "blur",
       },
     ],
@@ -181,20 +124,11 @@ const rules = ref({
       },
     ],
   },
-  title: {
+  informationId: {
     rules: [
       {
         required: true,
-        errorMessage: "请输入职位",
-        trigger: "blur",
-      },
-    ],
-  },
-  duties: {
-    rules: [
-      {
-        required: true,
-        errorMessage: "请输入职务",
+        errorMessage: "请选择文件",
         trigger: "blur",
       },
     ],
@@ -203,15 +137,10 @@ const rules = ref({
 // 定义表单校验规则name字段
 const rulesName = ref({
   name: "name",
-  age: "age",
-  sex: "sex",
-  nation: "nation",
-  degree: "degree",
-  education: "education",
-  politics: "politics",
+  birthday: "birthday",
+  phone: "phone",
   unit: "unit",
-  title: "title",
-  duties: "duties",
+  informationId: "informationId",
 });
 // 点击测试
 const test = async () => {
@@ -228,6 +157,32 @@ const onSelect = (e: UniFilePickerOnSelectEvent) => {
   console.log(...e.tempFiles);
   pdfFiles.value = pdfFiles.value.concat(...e.tempFiles);
   console.log(pdfFiles.value);
+  //遍历文件列表，上传文件
+  for (let item of pdfFiles.value) {
+    uni.uploadFile({
+      url: baseURL + "/dbylAndKnbf/userFile",
+      name: "file",
+      filePath: item.path,
+      header: {
+        "content-type": "multipart/form-data",
+      },
+      formData: {
+        userId: userInfo.value?.userId!,
+        id: userInfo.value?.id!,
+        type: "pdf",
+      },
+      success: (uploadFileRes) => {
+        console.log(uploadFileRes);
+        console.log(JSON.parse(uploadFileRes.data).body.id);
+        baseFormData.value.informationId = JSON.parse(uploadFileRes.data).body.id;
+        console.log(baseFormData.value.informationId);
+        console.log(2);
+      },
+      fail: (fail) => {
+        console.log(fail);
+      },
+    });
+  }
 };
 // 删除文件事件
 const onDelete = (e: UniFilePickerOnDeleteEvent) => {
@@ -244,27 +199,13 @@ const submit = async () => {
     baseFormData: baseFormData.value,
     pdfFiles: pdfFiles.value,
   });
-  //遍历文件列表，上传文件
-  for (let item of pdfFiles.value) {
-    uni.uploadFile({
-      url: baseURL + "/selection/userFile",
-      name: "file",
-      filePath: item.path,
-      header: {
-        "content-type": "multipart/form-data",
-      },
-      formData: {
-        id: userInfo.value?.id!,
-        type: "pdf",
-      },
-      success: (uploadFileRes) => {
-        console.log(uploadFileRes);
-        console.log(2);
-      },
-      fail: (fail) => {
-        console.log(fail);
-      },
-    });
+  // 如果点击卡片进来的，就不必上传文件
+  if (!props.id) {
+    if (!baseFormData.value.informationId)
+      return uni.showToast({
+        title: "请先上传文件",
+        mask: true,
+      });
   }
   // 上传表单
   uploadForm(baseFormData.value).then((res) => {
@@ -293,28 +234,21 @@ const submit = async () => {
       <uni-forms-item required label="姓名" :name="rulesName.name">
         <uni-easyinput v-model="baseFormData.name" type="text" placeholder="请输入姓名" />
       </uni-forms-item>
-      <uni-forms-item required label="年龄" :name="rulesName.age">
-        <uni-easyinput
-          v-model="baseFormData.age"
-          type="number"
-          placeholder="请输入年龄"
+      <uni-forms-item required label="出生年月" :name="rulesName.birthday">
+        <uni-datetime-picker
+          type="date"
+          return-type="string"
+          v-model="baseFormData.birthday"
         />
       </uni-forms-item>
-      <uni-forms-item required label="性别" :name="rulesName.sex">
-        <uni-data-checkbox v-model="baseFormData.sex" :localdata="sexs" mode="default" />
+      <uni-forms-item required label="手机号" :name="rulesName.phone">
+        <uni-easyinput
+          v-model="baseFormData.phone"
+          type="number"
+          placeholder="请输入手机号"
+        />
       </uni-forms-item>
-      <uni-forms-item required label="民族" :name="rulesName.nation">
-        <uni-data-select v-model="baseFormData.nation" :localdata="nationsData" />
-      </uni-forms-item>
-      <uni-forms-item required label="学位" :name="rulesName.education">
-        <uni-data-select v-model="baseFormData.education" :localdata="educationsData" />
-      </uni-forms-item>
-      <uni-forms-item required label="学历" :name="rulesName.degree">
-        <uni-data-select v-model="baseFormData.degree" :localdata="degreesData" />
-      </uni-forms-item>
-      <uni-forms-item required label="政治面貌" :name="rulesName.politics">
-        <uni-data-select v-model="baseFormData.politics" :localdata="politicsData" />
-      </uni-forms-item>
+
       <uni-forms-item required label="工作单位" :name="rulesName.unit">
         <uni-easyinput
           v-model="baseFormData.unit"
@@ -322,23 +256,8 @@ const submit = async () => {
           placeholder="请输入工作单位"
         />
       </uni-forms-item>
-      <uni-forms-item required label="职位" :name="rulesName.title">
-        <uni-easyinput
-          v-model="baseFormData.title"
-          type="text"
-          placeholder="请输入职位"
-        />
-      </uni-forms-item>
-      <uni-forms-item required label="职务" :name="rulesName.duties">
-        <uni-easyinput
-          v-model="baseFormData.duties"
-          type="text"
-          placeholder="请输入职务"
-        />
-      </uni-forms-item>
-      <uni-forms-item required label="上传先进事迹">
+      <uni-forms-item required label="上传申请资料">
         <uni-file-picker
-          :disabled="userInfo?.process != 0"
           :limit="9"
           file-mediatype="all"
           @select="onSelect"
@@ -351,7 +270,6 @@ const submit = async () => {
     </uni-forms>
   </view>
 </template>
-
 <style lang="scss" scoped>
 .sanYuBox {
   padding: 15px;

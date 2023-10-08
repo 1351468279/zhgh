@@ -204,6 +204,18 @@
 					"style": {
 						"navigationBarTitleText": "困难帮扶"
 					}
+				},
+				{
+					"path": "applyHelper",
+					"style": {
+						"navigationBarTitleText": "困难帮扶申请"
+					}
+				},
+				{
+					"path": "difficultyHelperReview",
+					"style": {
+						"navigationBarTitleText": "我的申请"
+					}
 				}
 			]
 		},

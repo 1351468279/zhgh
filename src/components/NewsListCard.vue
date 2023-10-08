@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { defineProps } from "vue";
-import type { listData } from "@/types/news";
+import type { listData } from "@/types/difficultyHelper";
 
 const props = defineProps({
   newsList: {

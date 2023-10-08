@@ -12,7 +12,7 @@ import {
   getPersonProvincialListApi,
   getUserInfo,
   reportSanYu,
-} from "@/services/applyProvincial";
+} from "@/services/applyHelper";
 import type { applySanYuListType } from "@/types/hotel";
 import type { getSanYuListType } from "@/types/sanYu";
 const memberStore = useMemberStore();
@@ -46,15 +46,10 @@ const sanYuStore = useApplySanYuStore();
 
 const onClick = (id: string) => {
   uni.navigateTo({
-    url: "/subpackages/hotel/applyProvincial" + "?id=" + id,
+    url: "/subpackages/hotel/applyHelper" + "?id=" + id,
   });
 };
-// 点击填写申请
-const applySanYu = () => {
-  uni.navigateTo({
-    url: "/subpackages/hotel/applyProvincial",
-  });
-};
+
 // 接收管理员身份标识
 const isAdmin = ref(false);
 // 接收工会委员身份标识
@@ -94,6 +89,7 @@ const downLoad = async (id: string) => {
         });
       },
       fail(err) {
+        console.log(122121);
         console.log("错误", err);
       },
     });
@@ -151,7 +147,7 @@ const handoff = (id: number, index: number) => {
   const itemWidth = systemInfo.windowWidth * 0.2; // 假设每个元素宽度为屏幕宽度的 20%
   const scrollDistance = index * itemWidth - systemInfo.windowWidth * 0.4; // 滚动到元素中间位置
   scrollLeft.value = scrollDistance < 0 ? 0 : scrollDistance;
-  getSanYuListParams.value.stuPerson.fs = id;
+  getSanYuListParams.value.dbylAndKnbf.fs = id;
   cardList.value = [];
   getSanYuList(getSanYuListParams.value);
 };
@@ -187,7 +183,7 @@ const cardList = ref<any>([]);
 const total = ref(0);
 // 定义获取三育人列表请求分页参数
 const getSanYuListParams = ref<getSanYuListType>({
-  stuPerson: {
+  dbylAndKnbf: {
     fs: 0,
   },
   pageVo: {
@@ -320,9 +316,7 @@ onShow(async () => {
   <view
     class="box"
     :style="{
-      height: isUser
-        ? systemInfo.windowHeight - 50 + 'px'
-        : systemInfo.windowHeight - 10 + 'px',
+      height: systemInfo.windowHeight - 10 + 'px',
     }"
   >
     <!-- 横向栏 -->
@@ -363,7 +357,7 @@ onShow(async () => {
           <view class="tittle">
             <!-- <view class="main" :class="{ await: item.process == '0' }">{{ item.process == '2' ? '已上报' : '未上报' }}
             </view> -->
-            <view class="vice">职称：{{ item.title }}</view>
+            <!-- <view class="vice">职称：{{ item.title }}</view> -->
             <view class="vice">工作单位：{{ item.unit }}</view>
             <view class="applier"> 申请人：{{ item.name }} </view>
           </view>
@@ -374,7 +368,11 @@ onShow(async () => {
               </button></view
             >
             <view class="funbtn"
-              ><button type="primary" size="mini" @click.stop="downLoad(item.id)">
+              ><button
+                type="primary"
+                size="mini"
+                @click.stop="downLoad(item.informationId)"
+              >
                 预览文件
               </button>
             </view>
@@ -383,9 +381,6 @@ onShow(async () => {
         <view class="tittle" v-if="isLoading">{{ loadingText }}</view>
       </view>
     </scroll-view>
-  </view>
-  <view class="reviewAll">
-    <button type="default" @click.stop="applySanYu" v-if="isUser">填写申请</button>
   </view>
 </template>
 
