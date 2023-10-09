@@ -167,7 +167,7 @@ const onScrollTopLower = async () => {
     console.log("页数加1");
     getSanYuListParams.value.pageVo.offset = cardList.value.length;
     // offset.value++
-    const res = await getSanYuListApi(getSanYuListParams.value);
+    const res = await getPersonProvincialListApi(getSanYuListParams.value);
     console.log("cs", res.body);
     cardList.value.push(...res.body?.rows!);
     // await getSanYuList(getSanYuListParams.value)
@@ -185,7 +185,7 @@ const total = ref(0);
 const getSanYuListParams = ref<getSanYuListType>({
   dbylAndKnbf: {
     fs: 0,
-    determine: 0,
+    determine: 1,
   },
   pageVo: {
     limit: 5,
@@ -389,6 +389,7 @@ onShow(async () => {
 .box {
   display: flex;
   flex-direction: column;
+
   align-items: center;
   justify-content: space-around;
 

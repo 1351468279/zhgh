@@ -21,7 +21,7 @@ export const hotelData = ref<hotelApp[]>([{
     mine: true
 }, {
     src: 'http://cloud.zhgn.cn:808/phone/hotel/1-10.png',
-    url: '/subpackages/hotel/sanYuRen',
+    url: '/subpackages/hotel/thirtyYearsReview',
     name: '教龄30年',
     id: 4,
     mine: false
@@ -45,13 +45,13 @@ export const hotelData = ref<hotelApp[]>([{
     mine: false
 }, {
     src: 'http://cloud.zhgn.cn:808/phone/icon/1-10.png',
-    url: '',
+    url: '/subpackages/hotel/diseaseTreatment',
     name: '大病医疗互助',
     id: 8,
     mine: false
 }, {
     src: 'http://cloud.zhgn.cn:808/phone/icon/1-3.png',
-    url: '',
+    url: '/subpackages/hotel/legalAid',
     name: '法律援助',
     id: 9,
     mine: false
@@ -73,10 +73,32 @@ export const hotelData = ref<hotelApp[]>([{
     name: '党建工作',
     id: 12,
     mine: false
-}, {
+}
+    , {
     src: 'http://cloud.zhgn.cn:808/phone/hotel/1-14.png',
     url: '',
     name: '教代会',
+    id: 13,
+    mine: false
+}
+    , {
+    src: 'http://cloud.zhgn.cn:808/phone/icon/activity.png',
+    url: '',
+    name: '工会活动',
+    id: 13,
+    mine: false
+}
+    , {
+    src: 'http://cloud.zhgn.cn:808/phone/icon/fees.png',
+    url: '',
+    name: '经费管理',
+    id: 13,
+    mine: false
+}
+    , {
+    src: 'http://cloud.zhgn.cn:808/phone/icon/message.png',
+    url: '',
+    name: '主席信箱',
     id: 13,
     mine: false
 }

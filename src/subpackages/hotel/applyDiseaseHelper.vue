@@ -7,7 +7,6 @@ import { getUserInfo } from "@/services/applyHelper";
 import { getReviewStatus } from "@/services/applyUnion";
 import { onShow } from "@dcloudio/uni-app";
 import { translateTimes } from "@/composible/data";
-
 import {
   nationsData,
   educationsData,
@@ -32,21 +31,21 @@ const baseFormData = ref<applyProvincialPersonType>({
   phone: "",
   informationId: "",
   uploadDate: "",
-  determine: 0,
+  determine: 1,
   birthday: "",
 });
-const props = defineProps(["id"]);
+const props = defineProps(["id", "tag"]);
 // console.log(props.tag);
 // 根据id显示标题和设置回显数据
 const tittle = computed(() => {
   if (props.id) {
     uni.setNavigationBarTitle({
-      title: "困难帮扶申请",
+      title: "大病医疗申请",
     });
     console.log(props.id);
     return "详细信息显示";
   }
-  return "填写困难帮扶申请";
+  return "填写大病医疗申请";
 });
 // 接收用户基本信息
 const userInfo = ref<applySanYuListType>();
@@ -159,6 +158,7 @@ const pdfFiles = ref<UniFilePickerTempFile[]>([]);
 // 上传文件事件
 const onSelect = (e: UniFilePickerOnSelectEvent) => {
   console.log(e);
+  console.log("上传");
   console.log(...e.tempFiles);
   pdfFiles.value = pdfFiles.value.concat(...e.tempFiles);
   console.log(pdfFiles.value);
@@ -207,7 +207,6 @@ const submit = async () => {
   });
   // 如果点击卡片进来的，就不必上传文件
   if (!props.id) {
-    console.log("如果不是点击卡片");
     if (!baseFormData.value.informationId)
       return uni.showToast({
         title: "请先上传文件",

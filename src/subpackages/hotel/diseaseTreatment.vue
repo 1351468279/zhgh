@@ -30,16 +30,15 @@ const onScrollTopLower = async (e) => {
 };
 // 点击填写申请表
 const applyHelper = () => {
-  console.log(1212);
   uni.navigateTo({
-    url: "/subpackages/hotel/applyHelper?tag=knbf",
+    url: "/subpackages/hotel/applyDiseaseHelper",
   });
 };
 // 点击我的申请
 const myApply = () => {
   console.log(121);
   uni.navigateTo({
-    url: "/subpackages/hotel/difficultyHelperReview",
+    url: "/subpackages/hotel/diseaseHelperReview",
   });
 };
 // 定义获取困难帮扶新闻列表请求分页参数
@@ -95,7 +94,7 @@ onShow(async () => {
     </view>
     <view class="body">
       <view class="tittle">
-        <view class="tittleText">帮扶新闻</view>
+        <view class="tittleText">常见问题</view>
         <!-- <view class="more">查看更多</view> -->
       </view>
       <!-- 新闻列表 -->
@@ -113,23 +112,11 @@ onShow(async () => {
           :key="item.id"
           @click="viewDetail(item.id)"
         >
-          <view class="itemImg"><img class="image" :src="item.image" /></view>
+          <view class="itemImg"
+            ><img class="image" src="http://cloud.zhgn.cn:808/phone/icon/question.png"
+          /></view>
           <view class="itemContent">
             <view class="contentTittle">{{ item.title }}</view>
-            <view class="contentTag">
-              <view class="area">
-                <!-- <view class="iconfont icon" v-if="props.lefticon">{{
-                  props.lefticon
-                }}</view> -->
-                <view class="areaTeam">{{ item.releaseTime }}</view>
-              </view>
-              <view class="viewNum">
-                <!-- <view class="iconfont icon" v-if="props.righticon">{{
-                  props.righticon
-                }}</view> -->
-                <view class="num">{{ item.number }}人看过</view>
-              </view>
-            </view>
           </view>
         </view>
         <view class="loadTittle" v-if="isLoading">{{ loadingText }}</view>
@@ -149,7 +136,7 @@ onShow(async () => {
   display: flex;
   flex-direction: column;
   .head {
-    background: no-repeat right bottom url("http://cloud.zhgn.cn:808/phone/hotel/1-2.png"),
+    background: no-repeat right bottom url("http://cloud.zhgn.cn:808/phone/icon/1-10.png"),
       linear-gradient(to right, white, red);
     background-size: 100%;
     height: 30%;
@@ -162,7 +149,7 @@ onShow(async () => {
       bottom: 0rem;
       background-color: #ffeded;
       width: 20rem;
-      height: 4rem;
+      height: 2.5rem;
       border-radius: 10px;
       left: 0;
       right: 0;
@@ -191,7 +178,7 @@ onShow(async () => {
       overflow-y: auto;
       .listItem {
         width: 95%;
-        height: 200rpx;
+        height: 100rpx;
         background-color: white;
         display: flex;
         justify-content: flex-start;
@@ -202,7 +189,7 @@ onShow(async () => {
 
         .itemImg {
           height: 90%;
-          width: 40%;
+          width: 16%;
           background-color: white;
           display: flex;
           justify-content: center;
@@ -210,7 +197,6 @@ onShow(async () => {
           margin-left: 10rpx;
 
           .image {
-            border: 1px solid #e5e5e5;
             width: 80%;
             height: 90%;
             border-radius: 20rpx;
@@ -227,53 +213,13 @@ onShow(async () => {
 
           .contentTittle {
             width: 90%;
-            height: 60%;
+            height: 100%;
             font-size: 30rpx;
             padding: 0 20rpx;
             overflow: hidden;
             display: -webkit-box;
             -webkit-box-orient: vertical;
             -webkit-line-clamp: 3;
-          }
-
-          .contentTag {
-            width: 90%;
-            height: 40%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-
-            .area {
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-
-              .icon {
-                font-size: 30rpx;
-                color: #ff0000;
-              }
-
-              .areaTeam {
-                font-size: 28rpx;
-                color: #666666;
-              }
-            }
-
-            .viewNum {
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-
-              .icon {
-                font-size: 30rpx;
-                color: #ff0000;
-              }
-
-              .num {
-                font-size: 28rpx;
-                color: #666666;
-              }
-            }
           }
         }
       }

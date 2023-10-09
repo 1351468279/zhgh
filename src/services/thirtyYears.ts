@@ -4,9 +4,9 @@ import type { UploadFileType } from "@/types/sanYu";
 import type { UniFilePickerTempFile } from "@uni-helper/uni-ui-types";
 // 获取用户信息，用于填写申请时候回显数据
 export const getUserInfo = () => {
-    return request({
+    return request<applySanYuListType>({
         method: 'GET',
-        url: '/wechat/knbf/getUserInfo.do'
+        url: '/wechat/education/getUserInfo.do'
     })
 }
 // 上传文件
@@ -20,7 +20,7 @@ export const uploadFile = (data: UploadFileType) => {
             'Content-Type': 'multipart/form-data'
         },
         method: 'POST',
-        url: '/dbylAndKnbf/userFile',
+        url: '/selection/userFile',
         data
     })
 }
@@ -28,13 +28,13 @@ export const uploadFile = (data: UploadFileType) => {
 export const uploadForm = (data: any) => {
     return request({
         method: 'POST',
-        url: '/knbf/api/updataOrAddKnbfData',
+        url: '/selection/insertEducationData.do',
         data
     })
 }
-// 省部级个人分页查询
-export const getPersonProvincialListApi = (data: {
-    stuEducation: { fs: number, determine: number },
+// 三育人分页查询
+export const getSanYuListApi = (data: {
+    stuEducation: { fs: number },
     pageVo: {
         limit: number,
         offset: number,
@@ -48,7 +48,7 @@ export const getPersonProvincialListApi = (data: {
         total: number
     }>({
         method: 'POST',
-        url: '/wechat/knbf/getKhbfData.do',
+        url: '/wechat/education/getEducationData.do',
         data
     })
 }
@@ -74,39 +74,15 @@ export const checkFile = (id: string) => {
 export const reportSanYu = (id: string) => {
     return request({
         method: 'POST',
-        url: '/wechat/knbf/changeState.do',
+        url: '/wechat/education/changeState.do',
         data: [id]
     })
 }
 // 根据id获取三育人信息
-export const getProvincialPersonInfo = (id: string) => {
-    return request({
+export const getSanYuInfo = (id: string) => {
+    return http({
         method: 'POST',
-        url: '/wechat/knbf/returnKnbfInfoById.do',
+        url: '/wechat/education/returnStuInfoById.do',
         data: JSON.stringify(id)
-    })
-}
-// 获取困难帮扶新闻列表
-export const getDifficultyNewsList = (data: {
-    knbfNews: {},
-    pageVo: {
-        limit: number,
-        offset: number,
-        sidx: string,
-        sord: string,
-    },
-}) => {
-    return request({
-        method: 'POST',
-        url: '/wechat/knbf/getknbfNews.do',
-        data
-    })
-}
-// 根据新闻id获取新闻详情
-export const getNewsDetail = (id: string) => {
-    return request({
-        method: 'POST',
-        url: '/wechat/knbf/getknbfNewsById.do',
-        data: { id }
     })
 }

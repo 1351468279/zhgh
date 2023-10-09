@@ -216,6 +216,48 @@
 					"style": {
 						"navigationBarTitleText": "我的申请"
 					}
+				},
+				{
+					"path": "difficultyNewsDetails",
+					"style": {
+						"navigationBarTitleText": "新闻详情"
+					}
+				},
+				{
+					"path": "diseaseTreatment",
+					"style": {
+						"navigationBarTitleText": "大病医疗互助"
+					}
+				},
+				{
+					"path": "applyDiseaseHelper",
+					"style": {
+						"navigationBarTitleText": "大病医疗申请"
+					}
+				},
+				{
+					"path": "diseaseHelperReview",
+					"style": {
+						"navigationBarTitleText": "我的申请"
+					}
+				},
+				{
+					"path": "thirtyYearsReview",
+					"style": {
+						"navigationBarTitleText": "我的申请"
+					}
+				},
+				{
+					"path": "applythirtyYears",
+					"style": {
+						"navigationBarTitleText": "教龄30年"
+					}
+				},
+				{
+					"path": "legalAid",
+					"style": {
+						"navigationBarTitleText": "法律援助"
+					}
 				}
 			]
 		},
