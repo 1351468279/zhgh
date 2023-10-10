@@ -258,6 +258,24 @@
 					"style": {
 						"navigationBarTitleText": "法律援助"
 					}
+				},
+				{
+					"path": "recuperationPage",
+					"style": {
+						"navigationBarTitleText": "疗休养"
+					}
+				},
+				{
+					"path": "recuperationDetail",
+					"style": {
+						"navigationBarTitleText": "活动详情"
+					}
+				},
+				{
+					"path": "applyRecuperation",
+					"style": {
+						"navigationBarTitleText": "发布活动"
+					}
 				}
 			]
 		},

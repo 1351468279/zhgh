@@ -55,9 +55,11 @@
     "@dcloudio/uni-mp-weixin": "3.0.0-3080720230703001",
     "@dcloudio/uni-quickapp-webview": "3.0.0-3080720230703001",
     "@dcloudio/uni-ui": "^1.4.28",
+    "@tinymce/tinymce-vue": "^5.1.1",
     "pinia": "2.0.35",
     "pinia-plugin-persistedstate": "^3.2.0",
     "sass": "^1.66.1",
+    "tinymce": "^6.7.0",
     "vue": "^3.2.47",
     "vue-i18n": "^9.1.9"
   },

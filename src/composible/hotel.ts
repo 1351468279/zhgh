@@ -57,7 +57,7 @@ export const hotelData = ref<hotelApp[]>([{
     mine: false
 }, {
     src: 'http://cloud.zhgn.cn:808/phone/hotel/1-9.png',
-    url: '',
+    url: '/subpackages/hotel/recuperationPage',
     name: '疗休养',
     id: 10,
     mine: false
