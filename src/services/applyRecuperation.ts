@@ -1,13 +1,11 @@
 import { http, request } from "@/utils/http";
-import type { applySanYuListType } from "@/types/hotel";
-import type { UploadFileType } from "@/types/sanYu";
-import type { UniFilePickerTempFile } from "@uni-helper/uni-ui-types";
-import type { applyProvincialPersonType, getSanYuListType } from "@/types/provincialPerson";
+ import type { UploadFileType } from "@/types/sanYu";
+ import type { applyRecuperationDataType } from "@/types/recuperation";
 // 获取用户信息，用于填写申请时候回显数据
 export const getUserInfo = () => {
-    return request<applyProvincialPersonType>({
+    return request<applyRecuperationDataType>({
         method: 'GET',
-        url: '/wechat/person/getUserInfo.do'
+        url: '/wechat/education/getUserInfo.do'
     })
 }
 // 上传文件
@@ -29,19 +27,27 @@ export const uploadFile = (data: UploadFileType) => {
 export const uploadForm = (data: any) => {
     return request({
         method: 'POST',
-        url: '/selection/insertPersonData.do',
+        url: '/selection/insertEducationData.do',
         data
     })
 }
-// 省部级个人分页查询
-export const getPersonProvincialListApi = (data:getSanYuListType) => {
+// 三育人分页查询
+export const getSanYuListApi = (data: {
+    stuEducation: { fs: number },
+    pageVo: {
+        limit: number,
+        offset: number,
+        sidx: string,
+        sord: string
+    }
+}) => {
     return request<{
         flag: string,
         rows: [],
         total: number
     }>({
         method: 'POST',
-        url: '/wechat/person/getPersonData.do',
+        url: '/wechat/education/getEducationData.do',
         data
     })
 }
@@ -67,15 +73,15 @@ export const checkFile = (id: string) => {
 export const reportSanYu = (id: string) => {
     return request({
         method: 'POST',
-        url: '/wechat/person/changeState.do',
+        url: '/wechat/education/changeState.do',
         data: [id]
     })
 }
 // 根据id获取三育人信息
-export const getProvincialPersonInfo = (id: string) => {
-    return request({
+export const getSanYuInfo = (id: string) => {
+    return http({
         method: 'POST',
-        url: '/wechat/person/returnPersonInfoById.do',
+        url: '/wechat/education/returnStuInfoById.do',
         data: JSON.stringify(id)
     })
 }

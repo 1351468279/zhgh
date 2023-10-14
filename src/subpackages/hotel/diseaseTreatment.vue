@@ -7,11 +7,11 @@ const isLoading = ref(false);
 const loadingText = ref("正在加载中...");
 const scrollTop = ref(0);
 // 滚动事件
-const onScrollTop = (e) => {
+const onScrollTop = (e: any) => {
   console.log(e);
 };
 // 触底事件
-const onScrollTopLower = async (e) => {
+const onScrollTopLower = async () => {
   isLoading.value = true;
   if (cardList.value.length < total.value) {
     console.log("页数加1");

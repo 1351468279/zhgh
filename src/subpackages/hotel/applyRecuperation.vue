@@ -2,7 +2,12 @@
 import { computed, ref } from "vue";
 import type { applySanYuType, applySanYuListType } from "@/types/hotel";
 import { useApplySanYuStore, useMemberStore } from "@/store";
-import { getSanYuInfo, getUserInfo, uploadFile, uploadForm } from "@/services/applySanYu";
+import {
+  getSanYuInfo,
+  getUserInfo,
+  uploadFile,
+  uploadForm,
+} from "@/services/applyRecuperation";
 import { getReviewStatus } from "@/services/applyUnion";
 import { onShow } from "@dcloudio/uni-app";
 import {
@@ -19,8 +24,9 @@ import type {
 } from "@uni-helper/uni-ui-types";
 import type UniformDescriptor from "XrFrame/kanata/lib/frontend/resource/UniformDescriptor";
 import { baseURL } from "@/utils/http";
+import type { applyRecuperationDataType } from "@/types/recuperation";
 const memberStore = useMemberStore();
-const baseFormData = ref<applySanYuType>({
+const baseFormData = ref<applyRecuperationDataType>({
   name: "",
   age: "",
   sex: "男",
@@ -28,7 +34,7 @@ const baseFormData = ref<applySanYuType>({
   education: "",
   politics: "",
   unit: "",
-  title: "",
+  tittle: "",
   duties: "",
   degree: "",
 });
@@ -46,17 +52,10 @@ const sexs = ref([
 const props = defineProps(["id"]);
 // 根据id显示标题和设置回显数据
 const tittle = computed(() => {
-  if (props.id) {
-    uni.setNavigationBarTitle({
-      title: "三育人",
-    });
-    console.log(props.id);
-    return "详细信息显示";
-  }
-  return "填写三育人申请";
+  return "发布活动";
 });
 // 接收用户基本信息
-const userInfo = ref<applySanYuListType>();
+const userInfo = ref<applyRecuperationDataType>();
 // 保存按钮显示标识
 const saveBtnShow = ref(false);
 onShow(async () => {
@@ -91,7 +90,7 @@ onShow(async () => {
     baseFormData.value.degree = userInfo.value?.degree!;
     baseFormData.value.politics = userInfo.value?.politics!;
     baseFormData.value.unit = userInfo.value?.unit!;
-    baseFormData.value.title = userInfo.value?.title!;
+    baseFormData.value.tittle = userInfo.value?.tittle!;
     baseFormData.value.duties = userInfo.value?.duties!;
     baseFormData.value.process = userInfo.value?.process!;
   }
@@ -103,12 +102,7 @@ const rules = ref({
     rules: [
       {
         required: true,
-        errorMessage: "请输入姓名",
-        trigger: "blur",
-      },
-      {
-        pattern: /^(?:[\u4e00-\u9fa5·]{2,16})$/,
-        errorMessage: "姓名格式错误",
+        errorMessage: "请输入标题",
         trigger: "blur",
       },
     ],
@@ -201,7 +195,7 @@ const rules = ref({
   },
 });
 // 定义表单校验规则name字段
-const rulesName = ref({
+const rulesName = ref<applyRecuperationDataType>({
   name: "name",
   age: "age",
   sex: "sex",
@@ -210,8 +204,10 @@ const rulesName = ref({
   education: "education",
   politics: "politics",
   unit: "unit",
-  title: "title",
+  tittle: " tittle",
   duties: "duties",
+  startTime: "startTime",
+  endTime: "endTime",
 });
 // 点击测试
 const test = async () => {
@@ -280,7 +276,7 @@ const submit = async () => {
   });
 };
 // 富文本编辑器格式器
-const formats = ref({});
+const formats = ref<any>({});
 // 接收文本编辑器
 const editorCtx = ref();
 // 编辑器加载
@@ -288,7 +284,7 @@ const onEditorReady = () => {
   uni
     .createSelectorQuery()
     .select("#editor")
-    .context((res) => {
+    .context((res: any) => {
       editorCtx.value = res.context;
     })
     .exec();
@@ -298,10 +294,27 @@ const undo = () => {
   editorCtx.value.undo();
 };
 // 格式化富文本编辑器
-const format = (e) => {
+const format = (e: any) => {
   let { name, value } = e.target.dataset;
   if (!name) return;
   editorCtx.value.format(name, value);
+};
+
+// 插入图片
+
+const insertImage = () => {
+  uni.chooseImage({
+    count: 1,
+    success: (res) => {
+      editorCtx.value.insertImage({
+        src: res.tempFilePaths[0],
+        alt: "图像",
+        success: function () {
+          console.log("insert image success");
+        },
+      });
+    },
+  });
 };
 </script>
 <template>
@@ -314,14 +327,22 @@ const format = (e) => {
       label-width="80px"
       ref="customForm"
     >
-      <uni-forms-item required label="标题" :name="rulesName.name">
-        <uni-easyinput v-model="baseFormData.name" type="text" placeholder="请输入姓名" />
+      <uni-forms-item required label="标题" :name="rulesName.tittle">
+        <uni-easyinput
+          v-model="baseFormData.tittle"
+          type="text"
+          placeholder="请输入标题"
+        />
       </uni-forms-item>
-      <uni-forms-item required label="地点" :name="rulesName.name">
-        <uni-easyinput v-model="baseFormData.name" type="text" placeholder="请输入姓名" />
+      <uni-forms-item required label="地点" :name="rulesName.area">
+        <uni-easyinput v-model="baseFormData.area" type="text" placeholder="请输入地点" />
       </uni-forms-item>
       <uni-forms-item required label="热线" :name="rulesName.name">
-        <uni-easyinput v-model="baseFormData.name" type="text" placeholder="请输入姓名" />
+        <uni-easyinput
+          v-model="baseFormData.name"
+          type="text"
+          placeholder="请输入电话热线"
+        />
       </uni-forms-item>
       <uni-forms-item required label="内容" :name="rulesName.name">
         <view class="container">
@@ -330,45 +351,78 @@ const format = (e) => {
               :class="formats.bold ? 'ql-active' : ''"
               class="iconfont icon-zitijiacu"
               data-name="bold"
-              >加粗
+            >
             </view>
             <view
               :class="formats.italic ? 'ql-active' : ''"
               class="iconfont icon-zitixieti"
               data-name="italic"
-              >斜体
+            >
             </view>
             <view
               :class="formats.underline ? 'ql-active' : ''"
               class="iconfont icon-zitixiahuaxian"
               data-name="underline"
-              >下划线</view
-            >
+            ></view>
+
             <view
-              :class="formats.strike ? 'ql-active' : ''"
-              class="iconfont icon-zitishanchuxian"
-              data-name="strike"
-              >删除线</view
-            >
+              :class="formats.align === 'left' ? 'ql-active' : ''"
+              class="iconfont icon-zuoduiqi"
+              data-name="align"
+              data-value="left"
+            ></view>
+
+            <view
+              :class="formats.align === 'center' ? 'ql-active' : ''"
+              class="iconfont icon-juzhongduiqi"
+              data-name="align"
+              data-value="center"
+            ></view>
+
+            <view
+              :class="formats.align === 'right' ? 'ql-active' : ''"
+              class="iconfont icon-youduiqi"
+              data-name="align"
+              data-value="right"
+            ></view>
+
+            <view
+              :class="formats.align === 'justify' ? 'ql-active' : ''"
+              class="iconfont icon-zuoyouduiqi"
+              data-name="align"
+              data-value="justify"
+            ></view>
+            <view class="iconfont icon-charutupian" @tap="insertImage"></view>
           </view>
           <editor
             id="editor"
             class="ql-container"
-            :placeholder="placeholder"
+            placeholder="请输入内容"
             @ready="onEditorReady"
             ref="editorCtx"
           ></editor>
-          <button type="warn" @tap="undo">撤销</button>
         </view>
       </uni-forms-item>
-      <uni-forms-item required label="开始时间" :name="rulesName.name">
-        <uni-easyinput v-model="baseFormData.name" type="text" placeholder="请输入姓名" />
+      <uni-forms-item required label="开始时间" :name="rulesName.startTime">
+        <uni-datetime-picker
+          type="date"
+          return-type="string"
+          v-model="baseFormData.startTime"
+        />
       </uni-forms-item>
-      <uni-forms-item required label="结束时间" :name="rulesName.name">
-        <uni-easyinput v-model="baseFormData.name" type="text" placeholder="请输入姓名" />
+      <uni-forms-item required label="结束时间" :name="rulesName.endTime">
+        <uni-datetime-picker
+          type="date"
+          return-type="string"
+          v-model="baseFormData.endTime"
+        />
       </uni-forms-item>
       <uni-forms-item required label="可参加人数" :name="rulesName.name">
-        <uni-easyinput v-model="baseFormData.name" type="text" placeholder="请输入姓名" />
+        <uni-easyinput
+          v-model="baseFormData.name"
+          type="number"
+          placeholder="请输入可参加人数"
+        />
       </uni-forms-item>
 
       <button :disabled="userInfo?.process != 0" @click="submit">发布</button>
@@ -377,13 +431,63 @@ const format = (e) => {
 </template>
 
 <style lang="scss" scoped>
+@font-face {
+  font-family: "iconfont"; /* Project id 4281647 */
+  src: url("//at.alicdn.com/t/c/font_4281647_gb1ftdspjtn.woff2?t=1697003954970")
+      format("woff2"),
+    url("//at.alicdn.com/t/c/font_4281647_gb1ftdspjtn.woff?t=1697003954970")
+      format("woff"),
+    url("//at.alicdn.com/t/c/font_4281647_gb1ftdspjtn.ttf?t=1697003954970")
+      format("truetype");
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-charutupian:before {
+  content: "\e600";
+}
+
+.icon-juzhongduiqi:before {
+  content: "\ec80";
+}
+
+.icon-youduiqi:before {
+  content: "\ec82";
+}
+
+.icon-zitijiacu:before {
+  content: "\ec83";
+}
+
+.icon-zitixiahuaxian:before {
+  content: "\ec85";
+}
+
+.icon-zitixieti:before {
+  content: "\ec86";
+}
+
+.icon-zuoduiqi:before {
+  content: "\ec87";
+}
+
+.icon-zuoyouduiqi:before {
+  content: "\ec88";
+}
+
 .sanYuBox {
   padding: 15px;
   background-color: #fff;
   .container {
     .toolBar {
       display: flex;
-      justify-content: flex-start;
+      justify-content: space-around;
       align-items: center;
       padding: 20rpx;
       white-space: normal;
@@ -393,7 +497,7 @@ const format = (e) => {
     }
     .ql-container {
       border: 1px solid #e5e5e5;
-      border-redius: 20rpx;
+      border-radius: 20rpx;
     }
   }
 }

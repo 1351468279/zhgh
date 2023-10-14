@@ -71,7 +71,7 @@
 				"navigationBarTextStyle": "black",
 				"navigationBarBackgroundColor": "#ffffff"
 			}
-		}
+		} 
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -275,6 +275,30 @@
 					"path": "applyRecuperation",
 					"style": {
 						"navigationBarTitleText": "发布活动"
+					}
+				},
+				{
+					"path": "quantitativeAssessment",
+					"style": {
+						"navigationBarTitleText": "量化考评"
+					}
+				},
+				{
+					"path": "selfAssessment/index",
+					"style": {
+						"navigationBarTitleText": "评测"
+					}
+				},
+				{
+					"path": "publicBuilding/index",
+					"style": {
+						"navigationBarTitleText": "党建工作"
+					}
+				},
+				{
+					"path": "unionActivity/index",
+					"style": {
+						"navigationBarTitleText": "工会活动"
 					}
 				}
 			]

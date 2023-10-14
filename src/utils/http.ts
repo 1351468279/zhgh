@@ -1,7 +1,7 @@
 import { useMemberStore } from "@/store/modules/member"
 
 // 请求基地址
-export const baseURL = 'http://192.168.1.136:8087/gh'
+export const baseURL = 'http://192.168.0.53:8081/gh'
 
 // 拦截器配置
 const httpInterceptor = {

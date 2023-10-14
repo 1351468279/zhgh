@@ -1,10 +1,9 @@
-import { http, request } from "@/utils/http";
-import type { applySanYuListType } from "@/types/hotel";
-import type { UploadFileType } from "@/types/sanYu";
-import type { UniFilePickerTempFile } from "@uni-helper/uni-ui-types";
+import {   request } from "@/utils/http";
+ import type { UploadFileType } from "@/types/sanYu";
+ import type { applyProvincialTeamType, getProvincialTeamListType } from "@/types/provincialTeam";
 // 获取用户信息，用于填写申请时候回显数据
 export const getUserInfo = () => {
-    return request({
+    return request<applyProvincialTeamType>({
         method: 'GET',
         url: '/wechat/team/getUserInfo.do'
     })
@@ -33,22 +32,14 @@ export const uploadForm = (data: any) => {
     })
 }
 // 省部级个人分页查询
-export const getPersonProvincialListApi = (data: {
-    stuEducation: { fs: number },
-    pageVo: {
-        limit: number,
-        offset: number,
-        sidx: string,
-        sord: string
-    }
-}) => {
+export const getTeamProvincialListApi = (data:getProvincialTeamListType) => {
     return request<{
         flag: string,
         rows: [],
         total: number
     }>({
         method: 'POST',
-        url: '/wechat/team/getTeamData.do',
+        url: '/wechat/person/getPersonData.do',
         data
     })
 }

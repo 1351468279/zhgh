@@ -15,6 +15,8 @@ import {
 } from "@/services/applyHelper";
 import type { applySanYuListType } from "@/types/hotel";
 import type { getSanYuListType } from "@/types/sanYu";
+import type { getDifficultyHelperParamsType } from "@/types/difficultyHelper";
+import { getSanYuListApi } from "@/services/applyHelper";
 const memberStore = useMemberStore();
 const sanYuStore = useApplySanYuStore();
 
@@ -133,11 +135,11 @@ const applyShow = ref(true);
 // 点击栏
 const handoff = (id: number, index: number) => {
   if (id == 0) {
-    getSanYuListParams.value.pageVo.offset = 0;
+    getDifficultyHelperParams.value.pageVo.offset = 0;
     reportShow.value = true;
     isUser.value = true;
   } else {
-    getSanYuListParams.value.pageVo.offset = 0;
+    getDifficultyHelperParams.value.pageVo.offset = 0;
     reportShow.value = false;
     // applyShow.value = false
     isUser.value = false;
@@ -147,9 +149,9 @@ const handoff = (id: number, index: number) => {
   const itemWidth = systemInfo.windowWidth * 0.2; // 假设每个元素宽度为屏幕宽度的 20%
   const scrollDistance = index * itemWidth - systemInfo.windowWidth * 0.4; // 滚动到元素中间位置
   scrollLeft.value = scrollDistance < 0 ? 0 : scrollDistance;
-  getSanYuListParams.value.dbylAndKnbf.fs = id;
+  getDifficultyHelperParams.value.dbylAndKnbf.fs = id;
   cardList.value = [];
-  getSanYuList(getSanYuListParams.value);
+  getSanYuList(getDifficultyHelperParams.value);
 };
 /* 以下是竖向滑动栏信息 */
 // 竖向滑动条位置
@@ -165,12 +167,12 @@ const onScrollTopLower = async () => {
   if (cardList.value.length < total.value) {
     isLoading.value = false;
     console.log("页数加1");
-    getSanYuListParams.value.pageVo.offset = cardList.value.length;
+    getDifficultyHelperParams.value.pageVo.offset = cardList.value.length;
     // offset.value++
-    const res = await getSanYuListApi(getSanYuListParams.value);
+    const res = await getSanYuListApi(getDifficultyHelperParams.value);
     console.log("cs", res.body);
     cardList.value.push(...res.body?.rows!);
-    // await getSanYuList(getSanYuListParams.value)
+    // await getSanYuList(getDifficultyHelperParams.value)
     console.log("到底了");
   } else {
     loadingText.value = "没有更多了~~~";
@@ -182,7 +184,7 @@ const cardList = ref<any>([]);
 // 获取三育人列表总条数
 const total = ref(0);
 // 定义获取三育人列表请求分页参数
-const getSanYuListParams = ref<getSanYuListType>({
+const getDifficultyHelperParams = ref<getDifficultyHelperParamsType>({
   dbylAndKnbf: {
     fs: 0,
     determine: 0,
@@ -195,7 +197,7 @@ const getSanYuListParams = ref<getSanYuListType>({
   },
 });
 // 封装分页列表函数
-const getSanYuList = async (data: getSanYuListType) => {
+const getSanYuList = async (data: getDifficultyHelperParamsType) => {
   const res = await getPersonProvincialListApi(data);
   console.log("onShow");
   console.log(res.body);
@@ -219,7 +221,7 @@ const onInput = (e: any) => {
   timer = setTimeout(() => {
     console.log(e);
     cardList.value = [];
-    getSanYuList(getSanYuListParams.value).then((res) => {
+    getSanYuList(getDifficultyHelperParams.value).then((res) => {
       cardList.value = cardList.value.filter((item: any) =>
         item.name.includes(searchValue.value)
       );
@@ -306,9 +308,9 @@ onShow(async () => {
         { id: 1, name: "已上报" },
       ];
     }
-    getSanYuListParams.value.pageVo.offset = 0;
+    getDifficultyHelperParams.value.pageVo.offset = 0;
     // 默认显示待上报列表和显示第一页数据
-    await getSanYuList(getSanYuListParams.value);
+    await getSanYuList(getDifficultyHelperParams.value);
     return;
   }
 });

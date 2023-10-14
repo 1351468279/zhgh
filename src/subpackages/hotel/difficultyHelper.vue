@@ -2,16 +2,19 @@
 import { computed, ref } from "vue";
 import { getDifficultyNewsList } from "@/services/applyHelper";
 import { onShow } from "@dcloudio/uni-app";
+import type { cardListItemType } from "@/types/difficultyHelper";
 // 触底加载提示
 const isLoading = ref(false);
 const loadingText = ref("正在加载中...");
 const scrollTop = ref(0);
 // 滚动事件
-const onScrollTop = (e) => {
+const onScrollTop = (e: any) => {
   console.log(e);
 };
+// 接收新闻列表
+const cardList = ref<cardListItemType[]>([]);
 // 触底事件
-const onScrollTopLower = async (e) => {
+const onScrollTopLower = async () => {
   isLoading.value = true;
   if (cardList.value.length < total.value) {
     console.log("页数加1");
@@ -52,16 +55,15 @@ const getSanYuListParams = {
     sord: "desc",
   },
 };
-// 接收新闻列表
-const cardList = ref([]);
+
 // 接收新闻总条数
 const total = ref();
 // 封装分页列表函数
-const getNewsList = async (data) => {
+const getNewsList = async (data: any) => {
   const res = await getDifficultyNewsList(data);
   console.log("onShow");
   console.log(res.body);
-
+  if (!res.body) return;
   console.log(res.body.rows);
   total.value = res.body.total;
   cardList.value = res.body.rows;

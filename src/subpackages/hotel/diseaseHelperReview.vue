@@ -15,6 +15,7 @@ import {
 } from "@/services/applyHelper";
 import type { applySanYuListType } from "@/types/hotel";
 import type { getSanYuListType } from "@/types/sanYu";
+import type { getDiseaseHelperParamsType } from "@/types/diseaseHelper";
 const memberStore = useMemberStore();
 const sanYuStore = useApplySanYuStore();
 
@@ -182,7 +183,7 @@ const cardList = ref<any>([]);
 // 获取三育人列表总条数
 const total = ref(0);
 // 定义获取三育人列表请求分页参数
-const getSanYuListParams = ref<getSanYuListType>({
+const getSanYuListParams = ref<getDiseaseHelperParamsType>({
   dbylAndKnbf: {
     fs: 0,
     determine: 1,
@@ -195,7 +196,7 @@ const getSanYuListParams = ref<getSanYuListType>({
   },
 });
 // 封装分页列表函数
-const getSanYuList = async (data: getSanYuListType) => {
+const getSanYuList = async (data: getDiseaseHelperParamsType) => {
   const res = await getPersonProvincialListApi(data);
   console.log("onShow");
   console.log(res.body);

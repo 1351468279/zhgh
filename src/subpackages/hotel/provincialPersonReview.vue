@@ -14,7 +14,7 @@ import {
   reportSanYu,
 } from "@/services/applyProvincial";
 import type { applySanYuListType } from "@/types/hotel";
-import type { getSanYuListType } from "@/types/sanYu";
+import type { getSanYuListType } from "@/types/provincialPerson";
 const memberStore = useMemberStore();
 const sanYuStore = useApplySanYuStore();
 
@@ -171,7 +171,7 @@ const onScrollTopLower = async () => {
     console.log("页数加1");
     getSanYuListParams.value.pageVo.offset = cardList.value.length;
     // offset.value++
-    const res = await getSanYuListApi(getSanYuListParams.value);
+    const res = await getPersonProvincialListApi(getSanYuListParams.value);
     console.log("cs", res.body);
     cardList.value.push(...res.body?.rows!);
     // await getSanYuList(getSanYuListParams.value)

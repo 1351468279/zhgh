@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, ref } from "vue";
-import type { applyProvincialPersonType, applySanYuListType } from "@/types/hotel";
+import type { applyProvincialPersonType } from "@/types/provincialPerson";
 import { useApplySanYuStore, useMemberStore } from "@/store";
 import {
   getProvincialPersonInfo,
@@ -61,7 +61,7 @@ const tittle = computed(() => {
   return "填写省部级个人申请";
 });
 // 接收用户基本信息
-const userInfo = ref<applySanYuListType>();
+const userInfo = ref<applyProvincialPersonType>();
 // 保存按钮显示标识
 const saveBtnShow = ref(false);
 onShow(async () => {

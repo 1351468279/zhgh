@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { computed, ref } from "vue";
-import type { applyProvincialPersonType, applySanYuListType } from "@/types/hotel";
+import type { applySanYuListType } from "@/types/hotel";
+import type { applyDiseaseHelper } from "@/types/diseaseHelper.d";
 import { useApplySanYuStore, useMemberStore } from "@/store";
 import { getProvincialPersonInfo, uploadFile, uploadForm } from "@/services/applyHelper";
 import { getUserInfo } from "@/services/applyHelper";
@@ -23,7 +24,7 @@ import type {
 import type UniformDescriptor from "XrFrame/kanata/lib/frontend/resource/UniformDescriptor";
 import { baseURL } from "@/utils/http";
 const memberStore = useMemberStore();
-const baseFormData = ref<applyProvincialPersonType>({
+const baseFormData = ref<applyDiseaseHelper>({
   id: "",
   userId: "",
   unit: "",
@@ -48,7 +49,7 @@ const tittle = computed(() => {
   return "填写大病医疗申请";
 });
 // 接收用户基本信息
-const userInfo = ref<applySanYuListType>();
+const userInfo = ref<applyDiseaseHelper>();
 // 保存按钮显示标识
 const saveBtnShow = ref(false);
 onShow(async () => {
@@ -71,7 +72,7 @@ onShow(async () => {
     // 如果是点新增进来的
     else {
       const res = await getUserInfo();
-      userInfo.value = res.body;
+      userInfo.value = res.body!;
     }
     // 获取用户信息,进行数据回显
     baseFormData.value.name = userInfo.value?.name!;

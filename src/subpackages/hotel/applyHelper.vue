@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { computed, ref } from "vue";
-import type { applyProvincialPersonType, applySanYuListType } from "@/types/hotel";
+import type { applySanYuListType } from "@/types/hotel";
+import type { applyDiseaseHelper } from "@/types/diseaseHelper.d";
 import { useApplySanYuStore, useMemberStore } from "@/store";
 import { getProvincialPersonInfo, uploadFile, uploadForm } from "@/services/applyHelper";
 import { getUserInfo } from "@/services/applyHelper";
@@ -8,23 +9,15 @@ import { getReviewStatus } from "@/services/applyUnion";
 import { onShow } from "@dcloudio/uni-app";
 import { translateTimes } from "@/composible/data";
 
-import {
-  nationsData,
-  educationsData,
-  politicsData,
-  degreesData,
-  jobTitleData,
-} from "@/composible/data";
 import type {
   UniFilePicker,
   UniFilePickerOnDeleteEvent,
   UniFilePickerOnSelectEvent,
   UniFilePickerTempFile,
 } from "@uni-helper/uni-ui-types";
-import type UniformDescriptor from "XrFrame/kanata/lib/frontend/resource/UniformDescriptor";
 import { baseURL } from "@/utils/http";
 const memberStore = useMemberStore();
-const baseFormData = ref<applyProvincialPersonType>({
+const baseFormData = ref<applyDiseaseHelper>({
   id: "",
   userId: "",
   unit: "",
@@ -49,7 +42,7 @@ const tittle = computed(() => {
   return "填写困难帮扶申请";
 });
 // 接收用户基本信息
-const userInfo = ref<applySanYuListType>();
+const userInfo = ref<applyDiseaseHelper>();
 // 保存按钮显示标识
 const saveBtnShow = ref(false);
 onShow(async () => {

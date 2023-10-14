@@ -1,9 +1,12 @@
 <script lang="ts" setup>
 import { computed, ref } from "vue";
-import type { applySanYuType, applySanYuListType } from "@/types/hotel";
-import { useApplySanYuStore, useMemberStore } from "@/store";
-import { getSanYuInfo, getUserInfo, uploadFile, uploadForm } from "@/services/applySanYu";
-import { getReviewStatus } from "@/services/applyUnion";
+import { useMemberStore } from "@/store";
+import {
+  getSanYuInfo,
+  getUserInfo,
+  uploadFile,
+  uploadForm,
+} from "@/services/applythirtyYears";
 import { onShow } from "@dcloudio/uni-app";
 import {
   nationsData,
@@ -17,10 +20,10 @@ import type {
   UniFilePickerOnSelectEvent,
   UniFilePickerTempFile,
 } from "@uni-helper/uni-ui-types";
-import type UniformDescriptor from "XrFrame/kanata/lib/frontend/resource/UniformDescriptor";
 import { baseURL } from "@/utils/http";
+import type { applyThirtyYearsTypeData } from "@/types/thirtyYears";
 const memberStore = useMemberStore();
-const baseFormData = ref<applySanYuType>({
+const baseFormData = ref<applyThirtyYearsTypeData>({
   name: "",
   teachAge: "",
   sex: "男",
@@ -57,7 +60,7 @@ const tittle = computed(() => {
   return "填写三育人申请";
 });
 // 接收用户基本信息
-const userInfo = ref<applySanYuListType>();
+const userInfo = ref<applyThirtyYearsTypeData>();
 // 保存按钮显示标识
 const saveBtnShow = ref(false);
 onShow(async () => {
@@ -190,6 +193,7 @@ const rulesName = ref({
   politics: "politics",
   unit: "unit",
   title: "title",
+  nation: "nation",
 });
 // 点击测试
 const test = async () => {

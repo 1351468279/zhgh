@@ -41,16 +41,46 @@ const publishActivity = () => {
     url: "/subpackages/hotel/applyRecuperation",
   });
 };
+const activeId = ref(0);
+const categoryTittle = ref([
+  {
+    text: "即将开始",
+    value: 0,
+  },
+  {
+    text: "我参与的",
+    value: 1,
+  },
+  {
+    text: "已结束",
+    value: 2,
+  },
+]);
+const a = document.querySelector("category");
+const onClick = (id: number) => {
+  activeId.value = id;
+  console.log(a);
+};
 </script>
 
 <template>
   <view class="recuperation">
-    <uni-search-bar
+    <view class="category">
+      <view
+        class="cateforyList"
+        :class="{ active: activeId == item.value }"
+        v-for="item in categoryTittle"
+        @click="onClick(item.value)"
+      >
+        {{ item.text }}
+      </view>
+    </view>
+    <!-- <uni-search-bar
       class="search"
       v-model="searchValue"
       :onInput="onInput"
       placeholder="请输入活动关键字"
-    />
+    /> -->
     <scroll-view
       class="scrolly"
       scroll-y
@@ -89,12 +119,31 @@ const publishActivity = () => {
   height: 100vh;
   background-color: #eeeeee;
   position: relative;
-  .search {
-    width: calc(100vw);
+  .category {
+    width: calc(90vw);
+    height: calc(12vw);
+    display: flex;
+    left: 0;
+    right: 0;
+    margin: auto;
+    align-items: center;
+    .cateforyList {
+      margin: 20rpx;
+    }
+    .active {
+      font-size: 20px;
+      font-weight: bold;
+    }
   }
+
+  .search {
+    width: calc(90vw);
+  }
+
   .scrolly {
     height: calc(88vh);
     overflow-y: auto;
+
     .recuperationCard {
       left: 0;
       right: 0;
@@ -109,6 +158,7 @@ const publishActivity = () => {
       border-radius: 20rpx;
       background-color: white;
       position: relative;
+
       .state {
         // filter: grayscale(100%);
         position: absolute;
@@ -122,6 +172,7 @@ const publishActivity = () => {
         color: #17ab64;
         font: 14px Arial;
       }
+
       .left {
         .img {
           margin-left: 20rpx;
@@ -129,23 +180,28 @@ const publishActivity = () => {
           height: calc(15vh);
         }
       }
+
       .right {
         width: calc(80vw);
         display: flex;
         flex-direction: column;
+
         .top {
           padding: 20rpx;
           display: flex;
           justify-content: space-between;
         }
+
         .down {
           padding: 20rpx;
           display: flex;
           justify-content: space-between;
+
           .area {
             color: #ccc;
             font: 14px Arial;
           }
+
           .time {
             color: #ccc;
             font: 14px Arial;
@@ -153,6 +209,7 @@ const publishActivity = () => {
         }
       }
     }
+
     .loadingtittle {
       margin: 20rpx;
       display: flex;
@@ -160,6 +217,7 @@ const publishActivity = () => {
       align-items: center;
     }
   }
+
   .publishItem {
     position: absolute;
     bottom: 180rpx;

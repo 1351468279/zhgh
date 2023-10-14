@@ -63,13 +63,13 @@ export const hotelData = ref<hotelApp[]>([{
     mine: false
 }, {
     src: 'http://cloud.zhgn.cn:808/phone/hotel/1-14.png',
-    url: '',
+    url: '/subpackages/hotel/quantitativeAssessment',
     name: '量化考评',
     id: 11,
     mine: false
 }, {
     src: 'http://cloud.zhgn.cn:808/phone/hotel/1-12.png',
-    url: '',
+    url: '/subpackages/hotel/publicBuilding/index',
     name: '党建工作',
     id: 12,
     mine: false
@@ -83,7 +83,7 @@ export const hotelData = ref<hotelApp[]>([{
 }
     , {
     src: 'http://cloud.zhgn.cn:808/phone/icon/activity.png',
-    url: '',
+    url: '/subpackages/hotel/unionActivity/index',
     name: '工会活动',
     id: 13,
     mine: false

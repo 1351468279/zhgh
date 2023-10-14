@@ -11,11 +11,11 @@ const onInput = (e: any) => {
   }
   timer = setTimeout(() => {
     console.log(e);
-    getSanYuList(getSanYuListParams.value).then((res) => {
-      cardList.value = cardList.value.filter((item: any) =>
-        item.name.includes(searchValue.value)
-      );
-    });
+    // getSanYuList(getSanYuListParams.value).then((res) => {
+    //   cardList.value = cardList.value.filter((item: any) =>
+    //     item.name.includes(searchValue.value)
+    //   );
+    // });
   }, 1000);
 };
 // 竖向滑动条位置
