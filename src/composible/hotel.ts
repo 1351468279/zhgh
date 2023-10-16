@@ -90,7 +90,7 @@ export const hotelData = ref<hotelApp[]>([{
 }
     , {
     src: 'http://cloud.zhgn.cn:808/phone/icon/fees.png',
-    url: '',
+    url: '/subpackages/hotel/fundManagement/index',
     name: '经费管理',
     id: 13,
     mine: false

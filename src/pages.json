@@ -295,10 +295,17 @@
 						"navigationBarTitleText": "党建工作"
 					}
 				},
+				 
 				{
 					"path": "unionActivity/index",
 					"style": {
 						"navigationBarTitleText": "工会活动"
+					}
+				},
+				{
+					"path": "fundManagement/index",
+					"style": {
+						"navigationBarTitleText": "工会会费缴纳"
 					}
 				}
 			]

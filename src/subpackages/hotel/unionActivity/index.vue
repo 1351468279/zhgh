@@ -56,10 +56,8 @@ const categoryTittle = ref([
     value: 2,
   },
 ]);
-const a = document.querySelector("category");
 const onClick = (id: number) => {
   activeId.value = id;
-  console.log(a);
 };
 </script>
 
