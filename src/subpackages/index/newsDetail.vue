@@ -1,22 +1,27 @@
 <script lang="ts" setup>
-import type { listData } from '@/types/news';
-import { ref } from 'vue';
-const props = defineProps(['item'])
-console.log(props.item)
-const info = ref<listData>(JSON.parse(props.item))
-console.log(info.value)
+import { getNewsDetailById, type newsInfo } from "@/services/indexNews";
+import type { listData } from "@/types/news";
+import { onShow } from "@dcloudio/uni-app";
+import { ref } from "vue";
+const props = defineProps(["id"]);
+console.log(props.id);
+const newsData = ref<newsInfo>();
+onShow(() => {
+  getNewsDetailById(props.id).then((res)=>{
+    newsData.value=res.body
+  })
+});
 </script>
 
 <template>
   <view class="info">
-    <view class="infoTittle">{{ info.tittle }}</view>
+    <view class="infoTittle">{{ newsData?.bt }}</view>
     <view class="infoTag">
-      <text class="timeTag">{{ info.time }}</text>
-      <text class="viewTag">{{ info.viewNum }} 人浏览</text>
+      <text class="timeTag">{{ newsData?.fbsj }}</text>
+      <text class="viewTag">{{ newsData?.fwl }} 人浏览</text>
     </view>
     <view class="infoContent">
-      <view class="infoContentImg"><img class="image" :src="info.image"></view>
-      <view class="infoContentText" v-html="info.content"></view>
+      <view class="infoContentText" v-html="newsData?.context"></view>
     </view>
   </view>
 </template>
@@ -45,14 +50,12 @@ console.log(info.value)
     .timeTag {
       font-size: 26rpx;
       color: gray;
-
     }
 
     .viewTag {
       font-size: 26rpx;
       color: gray;
       margin-left: 20rpx;
-
     }
   }
 
@@ -71,7 +74,6 @@ console.log(info.value)
       line-height: 50rpx;
       text-align: justify;
       text-indent: 2em;
-
     }
 
     .infoContentImg {

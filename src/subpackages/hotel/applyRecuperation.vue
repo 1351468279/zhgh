@@ -1,54 +1,30 @@
 <script lang="ts" setup>
 import { computed, ref } from "vue";
-import type { applySanYuType, applySanYuListType } from "@/types/hotel";
-import { useApplySanYuStore, useMemberStore } from "@/store";
-import {
-  getSanYuInfo,
-  getUserInfo,
-  uploadFile,
-  uploadForm,
-} from "@/services/applyRecuperation";
-import { getReviewStatus } from "@/services/applyUnion";
+import { useMemberStore } from "@/store";
+import { getSanYuInfo, handleActivity, uploadForm } from "@/services/applyRecuperation";
 import { onShow } from "@dcloudio/uni-app";
-import {
-  nationsData,
-  educationsData,
-  politicsData,
-  degreesData,
-} from "@/composible/data";
+
 import type {
-  UniFilePicker,
   UniFilePickerOnDeleteEvent,
   UniFilePickerOnSelectEvent,
   UniFilePickerTempFile,
 } from "@uni-helper/uni-ui-types";
-import type UniformDescriptor from "XrFrame/kanata/lib/frontend/resource/UniformDescriptor";
 import { baseURL } from "@/utils/http";
 import type { applyRecuperationDataType } from "@/types/recuperation";
+import type { EditorInstance, EditorOnInputEvent } from "@uni-helper/uni-app-types";
 const memberStore = useMemberStore();
+const sltFile = ref();
 const baseFormData = ref<applyRecuperationDataType>({
-  name: "",
-  age: "",
-  sex: "男",
-  nation: "",
-  education: "",
-  politics: "",
-  unit: "",
-  tittle: "",
-  duties: "",
-  degree: "",
+  id: "",
+  title: "",
+  address: "",
+  participantsNumber: NaN,
+  content: "",
+  organization: NaN,
+  hotline: "",
+  startTime: "",
+  endTime: "",
 });
-// 定义单选数据源
-const sexs = ref([
-  {
-    text: "男",
-    value: "男",
-  },
-  {
-    text: "女",
-    value: "女",
-  },
-]);
 const props = defineProps(["id"]);
 // 根据id显示标题和设置回显数据
 const tittle = computed(() => {
@@ -58,47 +34,23 @@ const tittle = computed(() => {
 const userInfo = ref<applyRecuperationDataType>();
 // 保存按钮显示标识
 const saveBtnShow = ref(false);
-onShow(async () => {
-  console.log("onshow");
-  // 如果是管理员
-  if (memberStore.profile?.userVo?.roleType?.includes("SystemAdmin") == true) {
-    console.log("管理员");
-    return;
-  }
-  // 如果是普通会员
-  else if (memberStore.profile?.userVo?.roleType?.includes("member") == true) {
-    // 如果是通过点击卡片进来的
-    if (props.id) {
-      const res = await getSanYuInfo(props.id);
-      userInfo.value = (res.data as any)[0];
-      console.log(userInfo.value);
-      console.log("id用户信息");
-    }
-    // 如果是点新增进来的
-    else {
-      const res = await getUserInfo();
-      userInfo.value = res.body;
-    }
-    // 获取用户信息,进行数据回显
-    baseFormData.value.name = userInfo.value?.name!;
-    baseFormData.value.age = userInfo.value?.age!;
-    baseFormData.value.sex = userInfo.value?.sex!;
-    baseFormData.value.nation = userInfo.value?.nation!;
-    baseFormData.value.education = userInfo.value?.education!;
-    baseFormData.value.userId = userInfo.value?.userId!;
-    baseFormData.value.id = userInfo.value?.id!;
-    baseFormData.value.degree = userInfo.value?.degree!;
-    baseFormData.value.politics = userInfo.value?.politics!;
-    baseFormData.value.unit = userInfo.value?.unit!;
-    baseFormData.value.tittle = userInfo.value?.tittle!;
-    baseFormData.value.duties = userInfo.value?.duties!;
-    baseFormData.value.process = userInfo.value?.process!;
-  }
-});
+// 定义操作列表项方式
+let type = NaN;
 
+// 定义表单校验规则name字段
+const rulesName = ref({
+  title: "title",
+  address: "address",
+  participantsNumber: "participantsNumber",
+  content: "content",
+  organization: "organization",
+  hotline: "hotline",
+  startTime: "startTime",
+  endTime: "endTime",
+});
 // 定义表单校验规则
 const rules = ref({
-  name: {
+  title: {
     rules: [
       {
         required: true,
@@ -107,108 +59,81 @@ const rules = ref({
       },
     ],
   },
-  age: {
+  address: {
     rules: [
       {
         required: true,
-        errorMessage: "请输入年龄",
-        trigger: "blur",
-      },
-      {
-        pattern: /^(?:[1-9][0-9]?|1[01][0-9]|120)$/,
-        errorMessage: "年龄格式错误",
+        errorMessage: "请输入活动地址",
         trigger: "blur",
       },
     ],
   },
-  sex: {
+  participantsNumber: {
     rules: [
       {
         required: true,
-        errorMessage: "请选择性别",
+        errorMessage: "请输入活动人数限制",
+        trigger: "blur",
+      },
+      {
+        pattern: /^[0-9]*$/,
+        errorMessage: "必须是数字",
         trigger: "blur",
       },
     ],
   },
-  nation: {
+  content: {
     rules: [
       {
         required: true,
-        errorMessage: "请选择民族",
+        errorMessage: "请输入活动内容",
         trigger: "blur",
       },
     ],
   },
-  degree: {
+  organization: {
     rules: [
       {
         required: true,
-        errorMessage: "请选择学历",
+        errorMessage: "请输入活动发布组织",
         trigger: "blur",
       },
     ],
   },
-  education: {
+  hotline: {
     rules: [
       {
         required: true,
-        errorMessage: "请选择学位",
+        errorMessage: "请输入活动电话热线",
+        trigger: "blur",
+      },
+      {
+        pattern: /^(?:(?:\+|00)86)?1[3-9]\d{9}$/,
+        errorMessage: "电话格式错误",
         trigger: "blur",
       },
     ],
   },
-  politics: {
+  startTime: {
     rules: [
       {
         required: true,
-        errorMessage: "请选择政治面貌",
+        errorMessage: "请选择活动开始时间",
         trigger: "blur",
       },
     ],
   },
-  unit: {
+  endTime: {
     rules: [
       {
         required: true,
-        errorMessage: "请输入工作单位",
-        trigger: "blur",
-      },
-    ],
-  },
-  title: {
-    rules: [
-      {
-        required: true,
-        errorMessage: "请输入职位",
-        trigger: "blur",
-      },
-    ],
-  },
-  duties: {
-    rules: [
-      {
-        required: true,
-        errorMessage: "请输入职务",
+        errorMessage: "请选择活动结束时间",
         trigger: "blur",
       },
     ],
   },
 });
-// 定义表单校验规则name字段
-const rulesName = ref<applyRecuperationDataType>({
-  name: "name",
-  age: "age",
-  sex: "sex",
-  nation: "nation",
-  degree: "degree",
-  education: "education",
-  politics: "politics",
-  unit: "unit",
-  tittle: " tittle",
-  duties: "duties",
-  startTime: "startTime",
-  endTime: "endTime",
-});
+
 // 点击测试
 const test = async () => {
   console.log(await customForm.value.validate());
@@ -221,9 +146,35 @@ const pdfFiles = ref<UniFilePickerTempFile[]>([]);
 // 上传文件事件
 const onSelect = (e: UniFilePickerOnSelectEvent) => {
   console.log(e);
-  console.log(...e.tempFiles);
-  pdfFiles.value = pdfFiles.value.concat(...e.tempFiles);
-  console.log(pdfFiles.value);
+  console.log(e.tempFilePaths[0]);
+  uni.uploadFile({
+    url: baseURL + "/lxygl/api/hdImg",
+    name: "file",
+    filePath: e.tempFilePaths[0],
+    header: {
+      "content-type": "multipart/form-data",
+    },
+    formData: {
+      id: baseFormData.value.id,
+    },
+    success: (uploadFileRes) => {
+      const imgPath = baseURL + JSON.parse(uploadFileRes.data).body.path;
+      console.log(JSON.parse(uploadFileRes.data).body.path);
+      console.log(imgPath);
+      // editorCtx.value.insertImage({
+      //   src: imgPath,
+      //   alt: "图像",
+      //   success: function () {
+      //     console.log("insert image success");
+      //   },
+      // });
+    },
+    fail: (fail) => {
+      console.log(fail);
+    },
+  });
+  // pdfFiles.value = pdfFiles.value.concat(...e.tempFiles);
+  // console.log(pdfFiles.value);
 };
 // 删除文件事件
 const onDelete = (e: UniFilePickerOnDeleteEvent) => {
@@ -238,35 +189,12 @@ const submit = async () => {
   console.log("提交表单");
   console.log({
     baseFormData: baseFormData.value,
-    pdfFiles: pdfFiles.value,
   });
-  //遍历文件列表，上传文件
-  for (let item of pdfFiles.value) {
-    uni.uploadFile({
-      url: baseURL + "/selection/userFile",
-      name: "file",
-      filePath: item.path,
-      header: {
-        "content-type": "multipart/form-data",
-      },
-      formData: {
-        id: userInfo.value?.id!,
-        type: "pdf",
-      },
-      success: (uploadFileRes) => {
-        console.log(uploadFileRes);
-        console.log(2);
-      },
-      fail: (fail) => {
-        console.log(fail);
-      },
-    });
-  }
   // 上传表单
   uploadForm(baseFormData.value).then((res) => {
     console.log(res);
     uni.showToast({
-      title: "已保存",
+      title: props.id ? "已修改" : "已发布",
       success: () => {
         setTimeout(() => {
           uni.navigateBack();
@@ -281,11 +209,14 @@ const formats = ref<any>({});
 const editorCtx = ref();
 // 编辑器加载
 const onEditorReady = () => {
+  console.log("我加载了");
   uni
     .createSelectorQuery()
     .select("#editor")
     .context((res: any) => {
       editorCtx.value = res.context;
+      console.log(editorCtx.value);
+      editorCtx.value.setContents({ html: baseFormData.value.content });
     })
     .exec();
 };
@@ -306,16 +237,75 @@ const insertImage = () => {
   uni.chooseImage({
     count: 1,
     success: (res) => {
-      editorCtx.value.insertImage({
-        src: res.tempFilePaths[0],
-        alt: "图像",
-        success: function () {
-          console.log("insert image success");
+      console.log(res.tempFilePaths[0]);
+      uni.uploadFile({
+        url: baseURL + "/index/ueditor/config.do?action=uploadimage",
+        name: "file",
+        filePath: res.tempFilePaths[0],
+        header: {
+          "content-type": "multipart/form-data",
+        },
+        success: (uploadFileRes) => {
+          console.log(JSON.parse(uploadFileRes.data));
+          const imgPath =
+            baseURL +
+            "/dbylAndKnbf/imgsPath.interface?url=" +
+            JSON.parse(uploadFileRes.data).url;
+          console.log(JSON.parse(uploadFileRes.data));
+          console.log(imgPath);
+          editorCtx.value.insertImage({
+            src: imgPath,
+            alt: "图像",
+            success: function () {
+              console.log("insert image success");
+            },
+          });
+        },
+        fail: (fail) => {
+          console.log(fail);
         },
       });
     },
   });
 };
+const input = (e: EditorOnInputEvent) => {
+  console.log(e.detail.html);
+  baseFormData.value.content = e.detail.html;
+};
+onShow(async () => {
+  console.log("onshow");
+  // 如果是管理员
+  if (memberStore.profile?.userVo?.roleType?.includes("SystemAdmin") != true) return;
+  // 如果是通过点击卡片进来的
+  if (props.id) {
+    type = 2;
+    baseFormData.value.id = props.id;
+    const res = await handleActivity(type, props.id);
+    console.log(res.body?.body);
+    if (!res.body)
+      return uni.showToast({
+        title: "错误",
+      });
+
+    baseFormData.value.title = res.body?.body.title;
+    baseFormData.value.organization = res.body?.body.organization;
+    baseFormData.value.slt = res.body.body.slt;
+    baseFormData.value.address = res.body?.body.address;
+    baseFormData.value.hotline = res.body?.body.hotline;
+    baseFormData.value.content = res.body?.body.content;
+    baseFormData.value.startTime = res.body?.body.startTime;
+    baseFormData.value.endTime = res.body?.body.endTime;
+    baseFormData.value.participantsNumber = res.body?.body.participantsNumber;
+  }
+  // 如果是点新增进来的
+  else {
+    type = 0;
+    const res = await handleActivity(type);
+    console.log("测试");
+    console.log(res.body?.body.id);
+    baseFormData.value.id = res.body?.body.id;
+  }
+});
 </script>
 <template>
   <view class="sanYuBox">
@@ -327,24 +317,44 @@ const insertImage = () => {
       label-width="80px"
       ref="customForm"
     >
-      <uni-forms-item required label="标题" :name="rulesName.tittle">
+      <uni-forms-item required label="标题" :name="rulesName.title">
         <uni-easyinput
-          v-model="baseFormData.tittle"
+          v-model="baseFormData.title"
           type="text"
           placeholder="请输入标题"
         />
       </uni-forms-item>
-      <uni-forms-item required label="地点" :name="rulesName.area">
-        <uni-easyinput v-model="baseFormData.area" type="text" placeholder="请输入地点" />
-      </uni-forms-item>
-      <uni-forms-item required label="热线" :name="rulesName.name">
+      <uni-forms-item required label="发布组织" :name="rulesName.organization">
         <uni-easyinput
-          v-model="baseFormData.name"
+          v-model="baseFormData.organization"
           type="text"
+          placeholder="请输入发布组织"
+        />
+      </uni-forms-item>
+      <uni-forms-item label="上传缩略图">
+        <uni-file-picker
+          v-model="baseFormData.slt"
+          :limit="1"
+          file-mediatype="image"
+          @select="onSelect"
+          @delete="onDelete"
+        />
+      </uni-forms-item>
+      <uni-forms-item required label="地点" :name="rulesName.address">
+        <uni-easyinput
+          v-model="baseFormData.address"
+          type="text"
+          placeholder="请输入地点"
+        />
+      </uni-forms-item>
+      <uni-forms-item required label="热线" :name="rulesName.hotline">
+        <uni-easyinput
+          v-model="baseFormData.hotline"
+          type="number"
           placeholder="请输入电话热线"
         />
       </uni-forms-item>
-      <uni-forms-item required label="内容" :name="rulesName.name">
+      <uni-forms-item required label="内容" :name="rulesName.content">
         <view class="container">
           <view class="toolBar" @click="format">
             <view
@@ -385,7 +395,6 @@ const insertImage = () => {
               data-name="align"
               data-value="right"
             ></view>
-
             <view
               :class="formats.align === 'justify' ? 'ql-active' : ''"
               class="iconfont icon-zuoyouduiqi"
@@ -396,8 +405,10 @@ const insertImage = () => {
           </view>
           <editor
             id="editor"
+            :node="baseFormData.content"
             class="ql-container"
             placeholder="请输入内容"
+            @input="input"
             @ready="onEditorReady"
             ref="editorCtx"
           ></editor>
@@ -417,15 +428,15 @@ const insertImage = () => {
           v-model="baseFormData.endTime"
         />
       </uni-forms-item>
-      <uni-forms-item required label="可参加人数" :name="rulesName.name">
+      <uni-forms-item required label="可参加人数" :name="rulesName.participantsNumber">
         <uni-easyinput
-          v-model="baseFormData.name"
+          v-model="baseFormData.participantsNumber"
           type="number"
           placeholder="请输入可参加人数"
         />
       </uni-forms-item>
 
-      <button :disabled="userInfo?.process != 0" @click="submit">发布</button>
+      <button @click="submit">{{ props.id ? "修改" : "发布" }}</button>
     </uni-forms>
   </view>
 </template>

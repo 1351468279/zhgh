@@ -76,7 +76,7 @@ export const hotelData = ref<hotelApp[]>([{
 }
     , {
     src: 'http://cloud.zhgn.cn:808/phone/hotel/1-14.png',
-    url: '',
+    url: '/subpackages/hotel/teachingUnion/index',
     name: '教代会',
     id: 13,
     mine: false
@@ -97,7 +97,7 @@ export const hotelData = ref<hotelApp[]>([{
 }
     , {
     src: 'http://cloud.zhgn.cn:808/phone/icon/message.png',
-    url: '',
+    url: '/subpackages/hotel/charimanBox/index',
     name: '主席信箱',
     id: 13,
     mine: false

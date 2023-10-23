@@ -346,7 +346,6 @@ const submit = async () => {
           file-extname="pdf"
         />
       </uni-forms-item>
-      <bean> </bean>
       <button :disabled="userInfo?.process != 0" @click="submit">保存</button>
     </uni-forms>
   </view>

@@ -1,10 +1,11 @@
 <script lang="ts" setup>
 import { defineProps } from "vue";
 import type { listData } from "@/types/news";
+import type { newsItem } from "@/services/indexNews";
 
 const props = defineProps({
   newsList: {
-    type: Array as () => listData[],
+    type: Array as () => newsItem[],
     default: () => [],
   },
   loadingStatus: {
@@ -20,9 +21,9 @@ const props = defineProps({
     default: "",
   },
 });
-const onClick = (item: listData) => {
+const onClick = (id: string) => {
   uni.navigateTo({
-    url: "/subpackages/index/newsDetail?item=" + encodeURIComponent(JSON.stringify(item)),
+    url: "/subpackages/index/newsDetail?id=" + id,
   });
 };
 </script>
@@ -32,19 +33,19 @@ const onClick = (item: listData) => {
     class="listItem"
     v-for="(item, index) in props.newsList"
     :key="item.id"
-    @click="onClick(item)"
+    @click="onClick(item.id)"
   >
-    <view class="itemImg"><img class="image" :src="item.image" /></view>
+    <view class="itemImg"><img class="image" :src="item.slt" /></view>
     <view class="itemContent">
-      <view class="contentTittle">{{ item.tittle }}</view>
+      <view class="contentTittle">{{ item.bt }}</view>
       <view class="contentTag">
         <view class="area">
           <view class="iconfont icon" v-if="props.lefticon">{{ props.lefticon }}</view>
-          <view class="areaTeam">{{ item.time }}</view>
+          <view class="areaTeam">{{ item.fbsj }}</view>
         </view>
         <view class="viewNum">
           <view class="iconfont icon" v-if="props.righticon">{{ props.righticon }}</view>
-          <view class="num">{{ item.viewNum }}</view>
+          <view class="num">{{ item.fwl ? item.fwl : 0 }}</view>
         </view>
       </view>
     </view>
@@ -64,7 +65,7 @@ const onClick = (item: listData) => {
   align-items: center;
   border: 1px solid #e5e5e5;
   border-radius: 20rpx;
-  margin: 15rpx auto;
+  margin: 3vw auto;
 
   .itemImg {
     height: 90%;
@@ -76,7 +77,6 @@ const onClick = (item: listData) => {
     margin-left: 10rpx;
 
     .image {
-      border: 1px solid #e5e5e5;
       width: 80%;
       height: 90%;
       border-radius: 20rpx;

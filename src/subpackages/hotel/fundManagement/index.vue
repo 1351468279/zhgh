@@ -123,7 +123,7 @@ onShow(async () => {
           <view class="line" v-if="item != 5"> </view>
         </view>
         <view class="right">
-          <view class="line"> </view>
+          <!-- <view class="line"> </view> -->
           <view class="content"> 内容 </view>
         </view>
       </view>
@@ -190,10 +190,10 @@ onShow(async () => {
         background-color: #f1f1f1;
 
         .yuanquan {
-          height: 6vw;
-          width: 6vw;
+          height: 3vw;
+          width: 3vw;
           background-color: red;
-          box-shadow: 0 0 21px 3px red;
+          box-shadow: 0 0 11px 1px red;
           border-radius: 50%;
         }
         .line {

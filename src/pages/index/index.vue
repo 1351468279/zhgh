@@ -5,10 +5,11 @@ import CategoryPanel from "./components/CategoryPanel.vue";
 import FunctionCard from "./components/FunctionCard.vue";
 import TabBar from "@/components/TabBar.vue";
 // import ArticleRead from './components/ArticleRead.vue'
-import { onLoad, onPullDownRefresh } from "@dcloudio/uni-app";
-import { computed, ref } from "vue";
+import { onLoad, onPullDownRefresh, onShow } from "@dcloudio/uni-app";
+import { computed, ref, watch } from "vue";
 import { listTotalData } from "@/utils/index";
-
+import { useMemberStore } from "@/store";
+import { getNewsCategoryList, type categoryItemType, getNewsListById, type newsItem } from "@/services/indexNews";
 import NewsList from "@/components/NewsList.vue";
 const systemInfo = uni.getSystemInfoSync();
 // 下拉刷新
@@ -18,8 +19,17 @@ onPullDownRefresh(() => {
     uni.stopPullDownRefresh();
   }, 1000);
 });
+
+
+
+
 // 被激活文章类型
-const activeValue = ref(1);
+const activeValue = ref('');
+const ceshi = computed(() => {
+  console.log(5151)
+  return activeValue.value + 1
+})
+
 // 进度条位置
 const scrollLeft = ref(0);
 const scrollTop = ref(0);
@@ -30,40 +40,78 @@ const onScrollLeft = (e: any) => {
 const onScrollTop = (e: any) => {
   console.log(e);
 };
-
+// 定义页数
+const page = ref(1)
+// 接受新闻总条数
+const total = ref()
 // 点击文章类型
-const onClick = (id: number, index: number) => {
+const onClick = (id: string, index: number) => {
+
+  console.log(id)
   activeValue.value = id;
   // 计算需要滚动的距离
   const itemWidth = systemInfo.windowWidth * 0.2; // 假设每个元素宽度为屏幕宽度的 20%
   const scrollDistance = index * itemWidth - systemInfo.windowWidth * 0.4; // 滚动到元素中间位置
   scrollLeft.value = scrollDistance < 0 ? 0 : scrollDistance;
+  // 获取新闻列表
+  page.value = 1
+  getNewsListById({ page: page.value, pageSize: 5, lMid: activeValue.value }).then((res) => {
+    newsList.value = res.rows
+    total.value = res.total
+  })
 };
 // 左右图标及数据
 const lefticon = ref(null);
 const righticon = ref("\uE60F");
-const newsList = computed(() => {
-  return listTotalData.value.filter((item) => item.articleId === activeValue.value)[0]
-    .data;
-});
+// const newsList = computed(() => {
+//   return listTotalData.value.filter((item) => item.articleId === activeValue.value)[0]
+//     .data;
+// });
 let timer: any = null;
-
 const loadingStatus = ref(false);
 const onScrollTopLower = () => {
-  if (loadingStatus.value) return;
+  // if (loadingStatus.value) return;
+  console.log('长度', newsList.value?.length)
+  console.log(newsList.value)
+  if(!newsList.value) return
+  if (newsList.value.length >= total.value) return
   loadingStatus.value = true;
   console.log("到底了");
-  timer = setTimeout(() => {
-    // listTotalData.value[activeValue.value - 1].data.push({ id: 6, image: 'http://cloud.zhgn.cn:808/phone/unionpicture/synodmeetings.png', area: '新郑市总工会', viewNum: 1212, content: '文章内容', tittle: '文章标题', time: '2023-01-02' })
-    loadingStatus.value = false;
-    clearTimeout(timer);
-  }, 2000);
+  page.value++
+  getNewsListById({ page: page.value, pageSize: 5, lMid: activeValue.value }).then((res) => {
+    console.log(8585)
+    console.log(res.rows)
+    newsList.value?.push(...(res.rows as newsItem[]))
+    console.log(newsList.value)
+  })
+  // listTotalData.value[activeValue.value - 1].data.push({ id: 6, image: 'http://cloud.zhgn.cn:808/phone/unionpicture/synodmeetings.png', area: '新郑市总工会', viewNum: 1212, content: '文章内容', tittle: '文章标题', time: '2023-01-02' })
+  loadingStatus.value = false;
 };
-import { useMemberStore } from "@/store";
+const newsCategory = ref<categoryItemType[]>();
+// 接收新闻列表
+const newsList = ref<newsItem[]>()
 const memberStore = useMemberStore();
+
 onLoad(() => {
   if (memberStore.profile?.token) {
     console.log("已登录");
+    page.value=1
+    getNewsCategoryList().then((res) => {
+      newsCategory.value = res.body?.categoryList;
+      activeValue.value = res.body?.categoryList[0].id as string
+
+    }).then(() => {
+      getNewsListById({
+        page: page.value,
+        pageSize: 5,
+        lMid: activeValue.value
+      }).then((res) => {
+        console.log(activeValue.value)
+        console.log(5454)
+        newsList.value = res.rows
+        total.value = res.total
+      })
+    })
   } else {
     uni.navigateTo({
       url: "/pages/login/index",
@@ -73,7 +121,7 @@ onLoad(() => {
 </script>
 
 <template>
-  <view class="home" :style="{ height: systemInfo.windowHeight - 50 + 'px' }">
+  <view class="home" :style="{ height: 88 + 'vh' }">
     <!-- <CustomNavBar class="navbar" :tittle="'首页'"></CustomNavBar> -->
 
     <scroll-view
@@ -97,11 +145,12 @@ onLoad(() => {
       >
         <view
           class="newsItem"
-          :class="{ active: item.articleId === activeValue }"
-          v-for="(item, index) in listTotalData"
-          @click="onClick(item.articleId, index)"
+          :class="{ active: item.id === activeValue }"
+          v-for="(item, index) in newsCategory"
+          :key="item.id"
+          @click="onClick(item.id, index)"
         >
-          {{ item.name }}
+          {{ item.xmmche }}
         </view>
       </scroll-view>
       <NewsList
@@ -113,8 +162,6 @@ onLoad(() => {
     </scroll-view>
   </view>
   <TabBar :current-page="0" />
-
-  <!-- <ArticleRead></ArticleRead> -->
 </template>
 
 <style lang="scss">
@@ -124,16 +171,11 @@ onLoad(() => {
   justify-content: flex-start;
   flex-direction: column;
   align-items: center;
-  width: 100%;
-
-  .navbar {
-    width: 100%;
-    background-color: red;
-  }
+  width: 100vw;
+  height: 60vh;
 
   .indexScrollTop {
-    flex: 1;
-    width: 100%;
+    width: 100vw;
     display: flex;
     justify-content: flex-start;
     flex-direction: column;

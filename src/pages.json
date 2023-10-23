@@ -62,16 +62,7 @@
 				"navigationBarTextStyle": "black",
 				"navigationBarBackgroundColor": "#ffffff"
 			}
-		},
-		{
-			"path": "pages/index/loopdown",
-			"style": {
-				"navigationStyle": "default",
-				"navigationBarTitleText": "跳转页",
-				"navigationBarTextStyle": "black",
-				"navigationBarBackgroundColor": "#ffffff"
-			}
-		} 
+		}
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -95,7 +86,8 @@
 				"pagePath": "pages/news/index",
 				"text": "新闻",
 				"iconPath": "static/tabs/xinwen_default.png",
-				"selectedIconPath": "static/tabs/xinwen_selected.png"
+				"selectedIconPath": "static/tabs/xinwen_selected.png",
+				"enablePullDownRefresh":true
 			},
 			{
 				"pagePath": "pages/hotel/index",
@@ -295,7 +287,6 @@
 						"navigationBarTitleText": "党建工作"
 					}
 				},
-				 
 				{
 					"path": "unionActivity/index",
 					"style": {
@@ -306,6 +297,43 @@
 					"path": "fundManagement/index",
 					"style": {
 						"navigationBarTitleText": "工会会费缴纳"
+					}
+				},
+				{
+					"path": "charimanBox/index",
+					"style": {
+						"navigationBarTitleText": "charimanBox"
+					}
+				},
+				{
+					"path": "teachingUnion/index",
+					"style": {
+						"navigationBarTitleText": "teachingUnion"
+					}
+				},
+				{
+					"path": "sendMessage",
+					"style": {
+						"navigationBarTitleText": "在线写信"
+					}
+				}
+				,
+				{
+					"path": "emailDetail",
+					"style": {
+						"navigationBarTitleText": "信件详情"
+					}
+				},
+				{
+					"path": "writeProposal",
+					"style": {
+						"navigationBarTitleText": "撰写提案"
+					}
+				},
+				{
+					"path": "myProposal",
+					"style": {
+						"navigationBarTitleText": "我的提案"
 					}
 				}
 			]

@@ -1,46 +1,72 @@
 <script lang="ts" setup>
-import { hotelData } from "@/composible/hotel";
-import { computed, ref } from "vue";
-import TabBar from "@/components/TabBar.vue";
+import { ref } from "vue";
 const systemInfo = uni.getSystemInfoSync();
-const hotelDataList = computed(() => hotelData.value.filter((item) => item.mine));
-const editStatus = ref(false);
-const edit = () => {
-  console.log("编辑");
-  editStatus.value = !editStatus.value;
-  console.log(editStatus.value);
-};
-const reduce = (id: number, url: string) => {
-  if (editStatus.value) {
-    console.log(`减少${id}`);
-    hotelData.value.forEach((item) => {
-      if (item.id === id) {
-        item.mine = false;
-      }
-    });
-  } else {
-    uni.navigateTo({
-      url: url + "?appId=" + id,
-    });
-  }
-};
-const add = (id: number, url: string) => {
-  if (editStatus.value) {
-    console.log(`增加${id}`);
-    hotelData.value.forEach((item) => {
-      if (item.id === id) {
-        item.mine = true;
-      }
-    });
-  } else {
-    uni.navigateTo({
-      url: url + "?appId=" + id,
-    });
-  }
-};
+const submitAppList = ref([
+  {
+    src: "http://cloud.zhgn.cn:808/phone/index/renzheng.png",
+    url: "/subpackages/hotel/writeProposal",
+    name: "撰写提案",
+    id: 1,
+  },
+  {
+    src: "http://cloud.zhgn.cn:808/phone/index/shenling.png",
+    url: "/subpackages/hotel/myProposal",
+    name: "我的提案",
+    id: 2,
+  },
+  {
+    src: "http://cloud.zhgn.cn:808/phone/hotel/1-17.png",
+    url: "/subpackages/hotel/sanYuReview",
+    name: "邀我附议",
+    id: 3,
+  },
+  {
+    src: "http://cloud.zhgn.cn:808/phone/hotel/1-10.png",
+    url: "/subpackages/hotel/thirtyYearsReview",
+    name: "他人提案",
+    id: 4,
+  },
+  {
+    src: "http://cloud.zhgn.cn:808/phone/hotel/1-8.png",
+    url: "/subpackages/hotel/provincialPersonReview",
+    name: "提案汇总",
+    id: 5,
+  },
+]);
+const completeAppList = ref([
+  {
+    src: "http://cloud.zhgn.cn:808/phone/hotel/1-15.png",
+    url: "/subpackages/hotel/provincialTeamReview",
+    name: "领导审阅",
+    id: 1,
+  },
+  {
+    src: "http://cloud.zhgn.cn:808/phone/hotel/1-2.png",
+    url: "/subpackages/hotel/difficultyHelper",
+    name: "承办部门办理",
+    id: 2,
+  },
+  {
+    src: "http://cloud.zhgn.cn:808/phone/icon/1-10.png",
+    url: "/subpackages/hotel/diseaseTreatment",
+    name: "发给提案人",
+    id: 3,
+  },
+  {
+    src: "http://cloud.zhgn.cn:808/phone/icon/1-3.png",
+    url: "/subpackages/hotel/legalAid",
+    name: "待转交提案",
+    id: 4,
+  },
+]);
 // 测试专用
 const ceshi = () => {
   console.log(systemInfo);
+};
+const onclick = (url: string) => {
+  uni.navigateTo({
+    url,
+  });
 };
 </script>
 
@@ -50,52 +76,38 @@ const ceshi = () => {
     v-if="systemInfo.safeAreaInsets?.top"
     :style="{ paddingBottom: systemInfo.safeAreaInsets?.top + 50 + 'px' }"
   >
-    <navigator class="search" hover-class="none" url="/subpackages/hotel/search">
-      <view class="searchbar">
-        <view class="text">搜索应用</view>
-      </view>
-    </navigator>
     <view class="mine">
       <view class="mineTittle">
-        <view class="tittle">我的应用 </view>
-        <view class="edit" @click="edit">{{ editStatus ? "完成" : "编辑" }}</view>
+        <view class="tittle">立案办理 </view>
       </view>
       <view class="appBox">
         <view
           class="app"
-          :class="{ editicon: editStatus }"
-          v-for="item in hotelDataList"
+          v-for="item in submitAppList"
           :key="item.id"
           hover-class="navigator-hover"
-          @click="reduce(item.id, item.url)"
+          @click="onclick(item.url)"
         >
           <image class="appimg" :src="item.src" mode="scaleToFill" />
           <view class="apptext">{{ item.name }}</view>
-          <view class="iconfont icon-jian" v-if="editStatus"></view>
         </view>
       </view>
     </view>
     <view class="all">
-      <view class="tittle" @click="ceshi">全部应用</view>
+      <view class="tittle" @click="ceshi">提案管理</view>
       <view class="appBox">
         <view
           class="app"
-          :class="{ editicon: editStatus }"
-          v-for="item in hotelData"
+          v-for="item in completeAppList"
           :key="item.id"
           hover-class="navigator-hover"
-          @click="add(item.id, item.url)"
+          @click="onclick(item.url)"
         >
           <image class="appimg" :src="item.src" mode="scaleToFill" />
           <view class="apptext">{{ item.name }}</view>
-          <view
-            class="iconfont icon-add"
-            v-if="editStatus === true && item.mine === false"
-          ></view>
         </view>
       </view>
     </view>
-    <TabBar :current-page="2" />
   </view>
 </template>
 
@@ -165,24 +177,6 @@ const ceshi = () => {
       flex-wrap: wrap;
       margin-top: 20rpx;
 
-      .editicon {
-        position: relative;
-
-        .icon-jian {
-          position: absolute;
-          top: -8rpx;
-          right: 8rpx;
-          width: 30rpx;
-          height: 30rpx;
-          background-color: #f1f1f1;
-          border-radius: 50%;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          font-size: 28rpx;
-        }
-      }
-
       .app {
         display: flex;
         justify-content: space-around;
@@ -228,24 +222,6 @@ const ceshi = () => {
       justify-content: flex-start;
       flex-wrap: wrap;
       margin-top: 20rpx;
-
-      .editicon {
-        position: relative;
-
-        .iconfont {
-          position: absolute;
-          top: -8rpx;
-          right: 8rpx;
-          width: 30rpx;
-          height: 30rpx;
-          background-color: #f1f1f1;
-          border-radius: 50%;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          font-size: 30rpx;
-        }
-      }
 
       .app {
         display: flex;

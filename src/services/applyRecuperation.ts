@@ -1,33 +1,23 @@
 import { http, request } from "@/utils/http";
  import type { UploadFileType } from "@/types/sanYu";
- import type { applyRecuperationDataType } from "@/types/recuperation";
+ import type { applyRecuperationDataType, applyRecuperationResDataType } from "@/types/recuperation";
 // 获取用户信息，用于填写申请时候回显数据
-export const getUserInfo = () => {
-    return request<applyRecuperationDataType>({
+export const handleActivity = (type:number,id?:string) => {
+    return request<applyRecuperationResDataType>({
         method: 'GET',
-        url: '/wechat/education/getUserInfo.do'
+        url: '/lxygl/api/getInitDataByHd',
+        data:{
+            type:type,
+            id:id
+        }
     })
 }
-// 上传文件
-export const uploadFile = (data: UploadFileType) => {
-    const formdata = new FormData()
-    formdata.append('file', data.file)
-    formdata.append('type', data.type)
-    formdata.append('id', data.id)
-    return request({
-        header: {
-            'Content-Type': 'multipart/form-data'
-        },
-        method: 'POST',
-        url: '/selection/userFile',
-        data
-    })
-}
+ 
 // 上传表单信息
-export const uploadForm = (data: any) => {
+export const uploadForm = (data: applyRecuperationDataType) => {
     return request({
         method: 'POST',
-        url: '/selection/insertEducationData.do',
+        url: '/lxygl/api/hdDataAddOrUpdate',
         data
     })
 }
@@ -84,4 +74,12 @@ export const getSanYuInfo = (id: string) => {
         url: '/wechat/education/returnStuInfoById.do',
         data: JSON.stringify(id)
     })
+}
+export const getImage=(path:string)=>{
+    return http({
+        method:'GET',
+        url:'/dbylAndKnbf/imgsPath.interface',
+        data:{path}
+    })
+
 }

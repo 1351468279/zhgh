@@ -69,35 +69,37 @@ onShow(async () => {
 </script>
 
 <template>
-  <view class="assessBox">
-    <view
-      class="item self_assessment"
-      :class="[{ pending: self_state == 0 }, { complete: self_state == 1 }]"
-      @click="onClick(0)"
-    >
-      <view class=""> 自评 </view>
-      <view class="iconfont">&#xe606; </view>
-    </view>
-    <view class="line"> </view>
-    <view
-      class="item peer_assessment"
-      :class="[{ pending: peer_state == 0 }, { complete: peer_state == 1 }]"
-      @click="onClick(1)"
-    >
-      <view class=""> 互评 </view>
-      <view class="iconfont">&#xe606; </view>
-    </view>
-    <view class="line"> </view>
-    <view
-      class="item organization_assessment"
-      :class="[
-        { pending: organization_state == 0 },
-        { complete: organization_state == 1 },
-      ]"
-      @click="onClick(2)"
-    >
-      <view class=""> 组织评价 </view>
-      <view class="iconfont">&#xe606; </view>
+  <view class="wrape">
+    <view class="assessBox">
+      <view
+        class="item self_assessment"
+        :class="[{ pending: self_state == 0 }, { complete: self_state == 1 }]"
+        @click="onClick(0)"
+      >
+        <view class=""> 自评 </view>
+        <view class="iconfont">&#xe606; </view>
+      </view>
+      <view class="line"> </view>
+      <view
+        class="item peer_assessment"
+        :class="[{ pending: peer_state == 0 }, { complete: peer_state == 1 }]"
+        @click="onClick(1)"
+      >
+        <view class=""> 互评 </view>
+        <view class="iconfont">&#xe606; </view>
+      </view>
+      <view class="line"> </view>
+      <view
+        class="item organization_assessment"
+        :class="[
+          { pending: organization_state == 0 },
+          { complete: organization_state == 1 },
+        ]"
+        @click="onClick(2)"
+      >
+        <view class=""> 组织评价 </view>
+        <view class="iconfont">&#xe606; </view>
+      </view>
     </view>
   </view>
 </template>
@@ -124,49 +126,57 @@ onShow(async () => {
     box-shadow: 0 0 20px 2px #d81e06;
   }
 }
-.assessBox {
-  width: calc(100vw);
-  height: calc(80vh);
+.wrape {
+  width: 100vw;
+  height: 100vh;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
-  flex-direction: column;
-  .item {
-    width: 112px;
-    height: 112px;
-    // background-color: #72dca2;
-    background-color: gray;
-    border-radius: 50%;
+  .assessBox {
+    width: calc(100vw);
+    height: calc(90vh);
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: space-around;
     align-items: center;
-    color: white;
-  }
-  .pending {
-    background-color: #d81e06;
-    animation: scale 1s infinite alternate;
-  }
-  .complete {
-    background-color: #0f8cdc;
-  }
-  .line {
-    width: calc(2vw);
-    height: calc(10vh);
-    background-color: #ccc;
-    border-radius: 20rpx;
-  }
-  .popup {
-    .selfBox {
-      background-color: #fff;
-      width: calc(80vw);
-      height: calc(60vh);
-      border-radius: 20rpx;
+    .item {
+      width: 112px;
+      height: 112px;
+      // background-color: #72dca2;
+      background-color: gray;
+      border-radius: 50%;
       display: flex;
       justify-content: center;
       align-items: center;
+      color: white;
+    }
+    .pending {
+      background-color: #d81e06;
+      animation: scale 1s infinite alternate;
+    }
+    .complete {
+      background-color: #0f8cdc;
+    }
+    .line {
+      width: calc(2vw);
+      height: calc(10vh);
+      background-color: #ccc;
+      border-radius: 20rpx;
+    }
+    .popup {
+      .selfBox {
+        background-color: #fff;
+        width: calc(80vw);
+        height: calc(60vh);
+        border-radius: 20rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
     }
   }
 }
+
 @font-face {
   font-family: "iconfont"; /* Project id 4282388 */
   src: url("//at.alicdn.com/t/c/font_4282388_c7xqenhqfxg.woff2?t=1697014878751")

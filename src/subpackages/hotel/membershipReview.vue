@@ -213,21 +213,23 @@ const changeReviewState = async (val: number) => {
         >已审核</view
       >
     </view>
-    <view class="shenheCard">
-      <view class="card" v-for="item in reviewList" @click="onClick(item.id)">
-        <view class="tittle">
-          <view class="main" :class="{ await: setAwaitActive == 1 }">{{
-            setAwaitActive == 1 ? "待审核" : "已审核"
-          }}</view>
-          <view class="vice">工号：{{ item.account }}</view>
-          <view class="vice">组织：{{ outOrgName(item.orgId) }}</view>
+    <scroll-view scroll-y class="scrollY" :class="{ translate: setReviewActive == 2 }">
+      <view class="shenhe">
+        <view class="card" v-for="item in reviewList" @click="onClick(item.id)">
+          <view class="tittle">
+            <view class="main" :class="{ await: setAwaitActive == 1 }">{{
+              setAwaitActive == 1 ? "待审核" : "已审核"
+            }}</view>
+            <view class="vice">工号：{{ item.account }}</view>
+            <view class="vice">组织：{{ outOrgName(item.orgId) }}</view>
+          </view>
+          <view class="extra">申请人：{{ item.name }}</view>
         </view>
-        <view class="extra">申请人：{{ item.name }}</view>
       </view>
-    </view>
+    </scroll-view>
     <view class="reviewAll">
       <button type="primary" @click="reviewAll" v-if="isAdmin === true && isShow == true">
-        一键审核
+        一键审核121
       </button>
     </view>
   </view>
@@ -235,14 +237,18 @@ const changeReviewState = async (val: number) => {
 
 <style lang="scss" scoped>
 .box {
+  width: 100vw;
+  height: 100vh;
   display: flex;
   flex-direction: column;
-
-  align-items: center;
-  justify-content: space-around;
-
+  justify-content: flex-start;
+  position: relative;
   .reviewOption {
-    width: 100%;
+    height: 8vh;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 90vw;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -272,57 +278,79 @@ const changeReviewState = async (val: number) => {
     }
   }
 
-  .shenheCard {
-    width: 100%;
+  .scrollY {
+    overflow-y: auto;
+    height: 82vh;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 100vw;
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
-
-    .card {
-      width: 90%;
-      height: 200rpx;
-      box-shadow: 0rpx 0rpx 5rpx 2rpx darkgrey;
-      margin: 20rpx;
+    justify-content: space-around;
+    overflow: hidden;
+    .shenhe {
+      width: 100vw;
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
-      border-radius: 20rpx;
-
-      .tittle {
-        height: 80%;
-        width: 55%;
+      flex-direction: column;
+      overflow: hidden;
+      .card {
+        left: 0;
+        right: 0;
+        width: 90vw;
+        height: 30vw;
+        box-shadow: 0rpx 0rpx 5rpx 2rpx darkgrey;
+        margin: 3vw auto;
         display: flex;
         justify-content: space-between;
-        align-items: flex-start;
-        flex-direction: column;
-        margin-left: 50rpx;
+        align-items: center;
+        border-radius: 20rpx;
 
-        .main {
-          font-size: larger;
-          color: #3a3a3a;
+        .tittle {
+          height: 80%;
+          width: 55%;
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          flex-direction: column;
+          margin-left: 50rpx;
+
+          .main {
+            font-size: larger;
+            color: #3a3a3a;
+          }
+
+          .await {
+            color: red;
+          }
+
+          .vice {
+            color: #909399;
+            font-size: small;
+          }
         }
 
-        .await {
-          color: red;
+        .extra {
+          margin-right: 50rpx;
+          white-space: nowrap;
         }
-
-        .vice {
-          color: #909399;
-          font-size: small;
-        }
-      }
-
-      .extra {
-        margin-right: 50rpx;
-        white-space: nowrap;
       }
     }
   }
+  .translate {
+    height: 90vh;
+  }
 
   .reviewAll {
-    margin-bottom: 20rpx;
-    width: 90%;
+    position: absolute;
+    width: 90vw;
+    height: 15vw;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: 0 auto;
   }
 }
 </style>

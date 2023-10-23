@@ -82,9 +82,10 @@ const onScrollTopLower = () => {
     height: calc(88vh);
     overflow-y: auto;
     .personCard {
+      height: 30vw;
       left: 0;
       right: 0;
-      margin: 10rpx auto;
+      margin: 3vw auto;
       width: calc(90vw);
       // background-color: skyblue;
       display: flex;
@@ -94,8 +95,8 @@ const onScrollTopLower = () => {
       border-radius: 20rpx;
       .left {
         .img {
-          width: calc(10vw);
-          height: calc(10vh);
+          width: calc(20vw);
+          height: calc(20vw);
         }
       }
       .right {

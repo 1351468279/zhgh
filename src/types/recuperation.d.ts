@@ -1,18 +1,16 @@
 export type applyRecuperationDataType = {
   id?: string;
-  name?: string;
-  age?: string;
-  area?:string;
-  sex?: string;
-  nation?: string;
-  education?: string;
-  politics?: string;
-  unit?: string;
-  tittle?: string;
-  duties?: string;
-  degree?: string;
-  userId?: string;
-  process?: number;
-  startTime?:string;
-  endTime?:string;
+  title: string;
+  organization: number;
+  slt?:string;
+  address: string;
+  hotline:string;
+  content: string;
+  startTime:string;
+  endTime:string;
+  participantsNumber: number;
+};
+export type applyRecuperationResDataType = {
+  body:applyRecuperationDataType
+  flag:boolean
 };
