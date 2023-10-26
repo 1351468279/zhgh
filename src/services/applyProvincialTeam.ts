@@ -39,7 +39,7 @@ export const getTeamProvincialListApi = (data:getProvincialTeamListType) => {
         total: number
     }>({
         method: 'POST',
-        url: '/wechat/person/getPersonData.do',
+        url: '/wechat/team/getTeamData.do',
         data
     })
 }

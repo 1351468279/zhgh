@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { computed, ref } from "vue";
-import { translateTime } from "@/composible/data";
+
 import type { applyUnionType, reviewListType } from "@/types/hotel";
-import { useApplyUnionStore, useMemberStore } from "@/store/index";
-import { onLoad, onReady } from "@dcloudio/uni-app";
+import { useMemberStore } from "@/store/index";
+import { onLoad, onReady, onShow } from "@dcloudio/uni-app";
 import {
   getOrgName,
   getReviewInfoById,
@@ -64,7 +64,7 @@ const userInfo = ref<reviewListType>();
 // 判断用户身份
 const isAdmin = ref(false);
 
-onLoad(async () => {
+onShow(async () => {
   // 判断用户身份
   if (memberStore.profile?.userVo?.roleType?.includes("SystemAdmin")) {
     isAdmin.value = true;

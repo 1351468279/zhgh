@@ -34,16 +34,18 @@ const onScrollTopLower = () => {
   showLoading.value = true;
 };
 // 点击查看活动
-const viewDetail = (id:string) => {
-  if(isAdmin){
-    uni.navigateTo({
-      animationType:'pop-in',
-      url:'/subpackages/hotel/applyRecuperation?id='+id
+const viewDetail = (id: string) => {
+  if (isAdmin.value) {
+    console.log('管理员')
+    return uni.navigateTo({
+      animationType: 'pop-in',
+      url: '/subpackages/hotel/applyRecuperation?id=' + id
     })
   }
+  console.log('跳转')
   uni.navigateTo({
-    url: "/subpackages/hotel/recuperationDetail",
-    // url: "/subpackages/hotel/recuperationDetail" + "?id=" + id,
+    // url: "/subpackages/hotel/recuperationDetail",
+    url: "/subpackages/hotel/recuperationDetail" + "?id=" + id,
   });
 };
 // 点击发布活动
@@ -53,31 +55,44 @@ const publishActivity = () => {
   });
 };
 const activeId = ref(0);
-const categoryTittle = ref([
-  {
-    text: "即将开始",
-    value: 0,
-  },
-  {
-    text: "我参与的",
-    value: 1,
-  },
-  {
-    text: "已结束",
-    value: 2,
-  },
-]);
+
 
 const onClick = async (id: number) => {
+  showLoading.value = false
   activeId.value = id;
-  if(isAdmin){
-    pageNum.value = 1;
+  pageNum.value = 1;
+  scrollTop.value = 0
+  if(id==0){
+    activityStatus.value = activeId.value;
+    // 显示第一页所点击活动列表
+    const res = await getUnactivityListApi(pageNum.value, 0);
+    activityList.value=  res.rows
+    console.log(activityList.value);
+    return
+  }else if(id==1){
+    activityStatus.value = activeId.value;
+    if(isAdmin.value){
+      activityStatus.value = activeId.value;
+    // 显示第一页所点击活动列表
+    const res = await getUnactivityListApi(pageNum.value, activityStatus.value);
+    activityList.value=  res.rows
+    }
+    else if(isUser.value){
+      console.log('普通会员我参与的')
+      activityStatus.value = activeId.value;
+    // 显示第一页所点击活动列表
+    const res = await getUnactivityListApi(pageNum.value, '');
+    activityList.value=  res.rows?.filter( item =>  item.isJoin==0&&item.state==1 )
+    console.log(activityList.value)
+      return
+    }
+  }else{
     activityStatus.value = activeId.value;
     // 显示第一页所点击活动列表
     const res = await getUnactivityListApi(pageNum.value, activityStatus.value);
-    console.log(res.rows);
-    activityList.value=res.rows
-   }
+    activityList.value=  res.rows
+    return
+  }
 };
 // 接收管理员身份标识
 const isAdmin = ref(false);
@@ -95,21 +110,29 @@ const listTotalData = ref();
 // 定义活动列表
 const activityList = ref<activityItem[]>();
 // 定义活动列表项总条数
-const activityTotalNum=ref()
+const activityTotalNum = ref()
 // 定义活动列表页数
 const pageNum = ref();
 // 定义活动状态
 const activityStatus = ref();
 // 获取图片
-const getImageDetail=(path:string)=>{
-  getImage(path).then((res)=>{
+const getImageDetail = (path: string) => {
+  getImage(path).then((res) => {
     return res
   })
 }
- var  query = uni.createSelectorQuery();
+var query = uni.createSelectorQuery();
 // 获取left实例
-const leftValue=ref()
+const leftValue = ref()
+// 优化显示
+const truncateString = (str: any, maxLength: number) => {
+  if (str.length > maxLength) {
+    return str.slice(0, maxLength - 3) + "...";
+  }
+  return str;
+}
 onShow(async () => {
+
   //  获取用户状态，判断用户身份
   userState.value = (await getReviewStatus()).data;
   // 如果用户是游客，显示一些提示并跳转到申请入会页面
@@ -144,6 +167,7 @@ onShow(async () => {
   }
   // 如果用户是会员
   else if (userState.value == "2") {
+    activeId.value=0
     // 如果是管理员
     if (memberStore.profile?.userVo?.roleType?.includes("SystemAdmin") == true) {
       isAdmin.value = true;
@@ -198,19 +222,19 @@ onShow(async () => {
     // 默认显示第一页未开始活动列表
     const res = await getUnactivityListApi(pageNum.value, activityStatus.value);
     console.log(res.rows);
-    activityList.value=res.rows
+    activityList.value = res.rows
     // if(activityList.value){
     //   console.log(2121)
-  // console.log(getImageDetail(activityList.value[1].imgList[0].path))
-  //  const res=await getImage(activityList.value[1].imgList[0].path)
-  //  console.log(res)
-    }
-    // getSanYuListParams.value.pageVo.offset = 0;
-    // 默认显示待上报列表和显示第一页数据
-    // await getSanYuList(getSanYuListParams.value);
-    return;
+    // console.log(getImageDetail(activityList.value[1].imgList[0].path))
+    //  const res=await getImage(activityList.value[1].imgList[0].path)
+    //  console.log(res)
   }
- );
+  // getSanYuListParams.value.pageVo.offset = 0;
+  // 默认显示待上报列表和显示第一页数据
+  // await getSanYuList(getSanYuListParams.value);
+  return;
+}
+);
 </script>
 
 <template>
@@ -239,20 +263,31 @@ onShow(async () => {
       >
         <!-- <view class="state"> 进行中 </view> -->
         <view class="left" id="ceshi" :ref="leftValue">
-          <image class="img" src="" mode="aspectFit" />
+          <image
+            class="img"
+            :src="
+              baseURL +
+              '/dbylAndKnbf/sltPath.interface?url=' +
+              items.imgList[items.imgList.length - 1].path
+            "
+            mode="aspectFill"
+            v-if="items.imgList[items.imgList.length - 1]"
+          />
         </view>
         <view class="right">
           <view class="top">
-            <view class="tittle">{{ items.title }}</view>
+            <view class="tittle">{{ truncateString(items.title, 28) }}</view>
           </view>
           <view class="down">
-            <view class="area">地址：{{ items.address }} </view>
-            <view class="time">总人数：{{ items.participantsNumber }} </view>
+            <view class="area">地址：{{ truncateString(items.address, 6) }} </view>
+            <view class="time"
+              >总人数：{{ truncateString(items.participantsNumber, 4) }}
+            </view>
           </view>
         </view>
       </view>
       <view class="loadingtittle">
-        <view v-if="showLoading"> 正在加载中... </view>
+        <view v-if="showLoading"> 没有更多数据了~~~</view>
       </view>
     </scroll-view>
     <view class="publishItem" @click="publishActivity" v-if="isAdmin"> + </view>
@@ -264,6 +299,7 @@ onShow(async () => {
   height: 100vh;
   background-color: #eeeeee;
   position: relative;
+
   .category {
     width: calc(90vw);
     height: calc(12vw);
@@ -272,9 +308,11 @@ onShow(async () => {
     right: 0;
     margin: auto;
     align-items: center;
+
     .cateforyList {
       margin: 20rpx;
     }
+
     .active {
       font-size: 20px;
       font-weight: bold;
@@ -319,10 +357,17 @@ onShow(async () => {
       }
 
       .left {
+        width: 25vw;
+        height: 25vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
         .img {
           margin-left: 20rpx;
           width: calc(20vw);
-          height: calc(15vh);
+          height: calc(20vw);
+          border-radius: 2vw;
         }
       }
 

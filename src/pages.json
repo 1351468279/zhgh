@@ -302,13 +302,13 @@
 				{
 					"path": "charimanBox/index",
 					"style": {
-						"navigationBarTitleText": "charimanBox"
+						"navigationBarTitleText": "主席信箱"
 					}
 				},
 				{
 					"path": "teachingUnion/index",
 					"style": {
-						"navigationBarTitleText": "teachingUnion"
+						"navigationBarTitleText": "教代会"
 					}
 				},
 				{

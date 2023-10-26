@@ -8,12 +8,13 @@ import type {
   UniFilePickerOnDeleteEvent,
   UniFilePickerOnSelectEvent,
   UniFilePickerTempFile,
+  UniFilePickerValue,
 } from "@uni-helper/uni-ui-types";
 import { baseURL } from "@/utils/http";
 import type { applyRecuperationDataType } from "@/types/recuperation";
-import type { EditorInstance, EditorOnInputEvent } from "@uni-helper/uni-app-types";
+import type { EditorOnInputEvent } from "@uni-helper/uni-app-types";
 const memberStore = useMemberStore();
-const sltFile = ref();
+const sltFile = ref<UniFilePickerValue[]>();
 const baseFormData = ref<applyRecuperationDataType>({
   id: "",
   title: "",
@@ -289,7 +290,17 @@ onShow(async () => {
 
     baseFormData.value.title = res.body?.body.title;
     baseFormData.value.organization = res.body?.body.organization;
-    baseFormData.value.slt = res.body.body.slt;
+    sltFile.value = [
+      {
+        name: res.body.body.imgList[res.body.body.imgList.length - 1].originalName,
+        extname: res.body.body.imgList[res.body.body.imgList.length - 1].type.slice(1),
+        url:
+          baseURL +
+          "/dbylAndKnbf/sltPath.interface?url=" +
+          res.body.body.imgList[res.body.body.imgList.length - 1].path,
+      },
+    ];
+
     baseFormData.value.address = res.body?.body.address;
     baseFormData.value.hotline = res.body?.body.hotline;
     baseFormData.value.content = res.body?.body.content;
@@ -333,7 +344,7 @@ onShow(async () => {
       </uni-forms-item>
       <uni-forms-item label="上传缩略图">
         <uni-file-picker
-          v-model="baseFormData.slt"
+          v-model="sltFile"
           :limit="1"
           file-mediatype="image"
           @select="onSelect"

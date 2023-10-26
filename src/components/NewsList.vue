@@ -2,6 +2,7 @@
 import { defineProps } from "vue";
 import type { listData } from "@/types/news";
 import type { newsItem } from "@/services/indexNews";
+import { baseURL } from "@/utils/http";
 
 const props = defineProps({
   newsList: {
@@ -35,7 +36,11 @@ const onClick = (id: string) => {
     :key="item.id"
     @click="onClick(item.id)"
   >
-    <view class="itemImg"><img class="image" :src="item.slt" /></view>
+    <view class="itemImg"
+      ><img
+        class="image"
+        :src="baseURL + '/dbylAndKnbf/sltPath.interface?url=' + item.slt"
+    /></view>
     <view class="itemContent">
       <view class="contentTittle">{{ item.bt }}</view>
       <view class="contentTag">

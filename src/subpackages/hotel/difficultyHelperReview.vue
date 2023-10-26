@@ -66,7 +66,7 @@ const userState = ref();
 const downLoad = async (id: string) => {
   // 查看用户是否有上传文件
   const checkFileRes = await checkFile(id);
-  if (checkFileRes.flag == false) {
+  if (checkFileRes.flag == "error") {
     uni.showToast({
       title: "该用户未上传文件",
       icon: "none",
@@ -168,8 +168,10 @@ const onScrollTopLower = async () => {
     isLoading.value = false;
     console.log("页数加1");
     getDifficultyHelperParams.value.pageVo.offset = cardList.value.length;
+    console.log(getDifficultyHelperParams.value.pageVo.offset);
+    console.log(getDifficultyHelperParams.value);
     // offset.value++
-    const res = await getSanYuListApi(getDifficultyHelperParams.value);
+    const res = await getPersonProvincialListApi(getDifficultyHelperParams.value);
     console.log("cs", res.body);
     cardList.value.push(...res.body?.rows!);
     // await getSanYuList(getDifficultyHelperParams.value)
@@ -371,11 +373,7 @@ onShow(async () => {
               </button></view
             >
             <view class="funbtn"
-              ><button
-                type="primary"
-                size="mini"
-                @click.stop="downLoad(item.informationId)"
-              >
+              ><button type="primary" size="mini" @click.stop="downLoad(item.userId)">
                 预览文件
               </button>
             </view>

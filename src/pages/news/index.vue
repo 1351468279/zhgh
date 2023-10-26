@@ -163,18 +163,14 @@ onLoad(() => {
   align-items: center;
   flex-direction: column;
 
-  .nav {
-    width: 100%;
-  }
-
   .newsScrollLeft {
     white-space: nowrap;
     width: 90vw;
 
     .newsItem {
       display: inline-block;
-      width: 20%;
-      height: 70rpx;
+      width: 22vw;
+      height: 6vh;
       line-height: 70rpx;
       text-align: center;
       font-size: 28rpx;

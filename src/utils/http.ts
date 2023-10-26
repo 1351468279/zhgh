@@ -1,7 +1,9 @@
 import { useMemberStore } from "@/store/modules/member";
 
 // 请求基地址
-export const baseURL = "http://192.168.0.53:8081";
+//export const baseURL = "http://cloud.zhgn.cn:808/cdgh";
+// export const baseURL = "http://192.168.0.53:8081";
+export const baseURL = "http://222.137.17.193:808/cdgh";
 
 // 拦截器配置
 const httpInterceptor = {
@@ -102,7 +104,7 @@ export const http = <T>(options: UniApp.RequestOptions) => {
   });
 };
 type requestData<T> = {
-  flag: boolean;
+  flag: string;
   body?: T;
   errorMessage?: {
     errorCode?: string;

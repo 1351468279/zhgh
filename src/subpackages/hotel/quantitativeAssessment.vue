@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import { ref, computed } from "vue";
-import { onShow } from "@dcloudio/uni-app";
+import { onHide, onShow, onUnload } from "@dcloudio/uni-app";
 import { getReviewStatus } from "@/services/applyUnion";
 import { useMemberStore } from "@/store/index";
+import { getinviteData } from "@/services/quantitativeAssessment";
 const memberStore = useMemberStore();
 const self_state = ref(1);
 const peer_state = ref(0);
@@ -19,9 +20,33 @@ const onClick = (val: number) => {
     url: "/subpackages/hotel/selfAssessment/index?id=" + val,
   });
 };
-
+// 他人邀请我的评价
+const inviteDataTotal = ref();
 // 接收下拉框
 const self_assessmentParams = ref();
+// 定义定时器模拟心跳包
+let timer: any;
+const activeId = ref(1);
+const evaluateCatagoryList = ref([
+  {
+    text: "自评",
+    id: 1,
+  },
+  {
+    text: "互评",
+    id: 2,
+  },
+]);
+// 切换评论分类
+const transfrom = (id: number) => {
+  activeId.value = id;
+};
+// 滚动条位置
+const scrollY = ref(0);
+// 发生滚动
+const onScroll = () => {
+  console.log("发生滚动");
+};
 onShow(async () => {
   //  获取用户状态，判断用户身份
   userState.value = (await getReviewStatus()).data;
@@ -62,49 +87,82 @@ onShow(async () => {
     if (memberStore.profile?.userVo?.roleType?.includes("member") == true) {
       isUser.value = true;
       console.log("普通会员 ");
+      timer = setInterval(async () => {
+        const res = await getinviteData();
+        inviteDataTotal.value = res.total;
+        console.log(res.rows);
+      }, 3000);
     }
     return;
   }
+});
+onHide(() => {
+  console.log("5456465465");
+  clearInterval(timer);
+});
+onUnload(() => {
+  console.log("unload");
+  clearInterval(timer);
 });
 </script>
 
 <template>
   <view class="wrape">
-    <view class="assessBox">
+    <view class="evaluateCatagoryList">
       <view
-        class="item self_assessment"
-        :class="[{ pending: self_state == 0 }, { complete: self_state == 1 }]"
-        @click="onClick(0)"
-      >
-        <view class=""> 自评 </view>
-        <view class="iconfont">&#xe606; </view>
-      </view>
-      <view class="line"> </view>
-      <view
-        class="item peer_assessment"
-        :class="[{ pending: peer_state == 0 }, { complete: peer_state == 1 }]"
-        @click="onClick(1)"
-      >
-        <view class=""> 互评 </view>
-        <view class="iconfont">&#xe606; </view>
-      </view>
-      <view class="line"> </view>
-      <view
-        class="item organization_assessment"
-        :class="[
-          { pending: organization_state == 0 },
-          { complete: organization_state == 1 },
-        ]"
-        @click="onClick(2)"
-      >
-        <view class=""> 组织评价 </view>
-        <view class="iconfont">&#xe606; </view>
+        class="listItem"
+        :class="{ active: activeId == item.id }"
+        v-for="item in evaluateCatagoryList"
+        :key="item.id"
+        @click="transfrom(item.id)"
+        >{{ item.text }}
       </view>
     </view>
+    <scroll-view
+      class="scrollY"
+      scroll-y
+      :scroll-top="scrollY"
+      scroll-with-animation
+      @scroll="onScroll"
+    >
+      <view class="cardItem" v-for="item in 10">
+        <view class="left">
+          <image
+            class="img"
+            src="http://cloud.zhgn.cn:808/phone/icon/1-3.png"
+            mode="aspectFit"
+          />
+        </view>
+        <view class="right"> </view>
+      </view>
+    </scroll-view>
   </view>
 </template>
 
 <style lang="scss" scoped>
+@font-face {
+  font-family: "iconfont"; /* Project id 4301659 */
+  /* Color fonts */
+  src: url("//at.alicdn.com/t/c/font_4301659_7tsiyo597yh.woff2?t=1698216460151")
+      format("woff2"),
+    url("//at.alicdn.com/t/c/font_4301659_7tsiyo597yh.woff?t=1698216460151")
+      format("woff"),
+    url("//at.alicdn.com/t/c/font_4301659_7tsiyo597yh.ttf?t=1698216460151")
+      format("truetype");
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-youxiang:before {
+  content: "\e6a1";
+}
+
 @keyframes scale {
   /*开始状态*/
   0% {
@@ -129,12 +187,110 @@ onShow(async () => {
 .wrape {
   width: 100vw;
   height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  .evaluateCatagoryList {
+    right: 0;
+    left: 0;
+    margin: 0 auto;
+    width: 90vw;
+    height: 7vh;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: pink;
+    border: 1px solid #ccc;
+    border-radius: 2vw;
+    .listItem {
+      font-size: 5vw;
+    }
+    .active {
+      font-weight: bold;
+    }
+    margin-bottom: 1vh;
+  }
+  .scrollY {
+    right: 0;
+    left: 0;
+    margin: 0 auto;
+    overflow-y: auto;
+    width: 90vw;
+    height: 90vh;
+    // background-color: skyblue;
+    border: 1px solid #ccc;
+    border-radius: 2vw;
+    .cardItem {
+      right: 0;
+      left: 0;
+      margin: 0 auto;
+      width: 90vw;
+      height: 11vh;
+      background-color: #fff;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+
+      .left {
+        width: 11vh;
+        height: 11vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .img {
+          width: 8vh;
+          height: 8vh;
+        }
+      }
+      .right {
+        margin-right: 2vw;
+        width: 72vw;
+        height: 11vh;
+        border-bottom: 1px solid #ccc;
+      }
+    }
+  }
+  .notice {
+    font-size: 10vw;
+    position: absolute;
+    top: 5vw;
+    left: 5vw;
+    width: 15vw;
+    height: 15vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // background-color: red;
+    color: white;
+    border-radius: 50%;
+  }
+  .noticeNum {
+    position: absolute;
+    top: 5vw;
+    left: 18vw;
+    width: 5vw;
+    height: 5vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // background-color: red;
+    color: #0f8cdc;
+    border-radius: 50%;
+  }
+  .noticeText {
+    font-size: 13px;
+    position: absolute;
+    top: 12vw;
+    left: 6vw;
+    width: 60vw;
+    height: 5vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // background-color: red;
+    color: #0f8cdc;
+    border-radius: 50%;
+  }
   .assessBox {
     width: calc(100vw);
-    height: calc(90vh);
+    height: calc(60vh);
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -162,17 +318,6 @@ onShow(async () => {
       height: calc(10vh);
       background-color: #ccc;
       border-radius: 20rpx;
-    }
-    .popup {
-      .selfBox {
-        background-color: #fff;
-        width: calc(80vw);
-        height: calc(60vh);
-        border-radius: 20rpx;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
     }
   }
 }

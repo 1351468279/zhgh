@@ -1,6 +1,13 @@
 <script lang="ts" setup>
 // 接收搜索框字符
+import { getLawerListApi } from "@/services/legalAid";
+import type { lawerItem } from "@/types/legalAid";
+import { baseURL } from "@/utils/http";
+import { onShow } from "@dcloudio/uni-app";
+import type { UniSearchBarOnInputEvent } from "@uni-helper/uni-ui-types";
 import { ref } from "vue";
+// 接收律师列表
+const lawerList = ref<lawerItem[]>();
 const searchValue = ref("");
 // 输入框防抖
 let timer: any = null;
@@ -9,8 +16,16 @@ const onInput = (e: any) => {
   if (timer) {
     clearTimeout(timer);
   }
-  timer = setTimeout(() => {
+  timer = setTimeout(async () => {
+    if (e == "") {
+      const res = await getLawerListApi(page.value, "");
+      console.log(res.rows);
+      lawerList.value = res.rows;
+      return;
+    }
     console.log(e);
+    console.log(e);
+    lawerList.value = lawerList.value?.filter((item) => item.name.includes(e));
     // getSanYuList(getSanYuListParams.value).then((res) => {
     //   cardList.value = cardList.value.filter((item: any) =>
     //     item.name.includes(searchValue.value)
@@ -27,6 +42,16 @@ const onScrollTopLower = () => {
   console.log("触底了");
   showLoading.value = true;
 };
+// 定义页数
+const page = ref(1);
+
+onShow(async () => {
+  // 默认请求第一页的信息
+  console.log(";45");
+  const res = await getLawerListApi(page.value, "");
+  console.log(res.rows);
+  lawerList.value = res.rows;
+});
 </script>
 
 <template>
@@ -43,18 +68,18 @@ const onScrollTopLower = () => {
       :scroll-top="scrollTop"
       @scrolltolower="onScrollTopLower"
     >
-      <view class="personCard" v-for="items in 10">
+      <view class="personCard" v-for="items in lawerList" :key="items.id">
         <view class="left">
           <image
             class="img"
-            src="http://cloud.zhgn.cn:808/phone/icon/lawyer.png"
+            src="http://cloud.zhgn.cn:808/phone/hotel/1-8.png"
             mode="aspectFit"
           />
         </view>
         <view class="right">
           <view class="top">
-            <view class="name">李星云</view>
-            <view class="time">14:00-18:00</view>
+            <view class="name">{{ items.name }}</view>
+            <!-- <view class="time">{{items.}}</view> -->
           </view>
           <view class="down">
             <view class="area">擅长 </view>
@@ -63,7 +88,7 @@ const onScrollTopLower = () => {
         </view>
       </view>
       <view class="loadingtittle">
-        <view v-if="showLoading"> 正在加载中... </view>
+        <view v-if="showLoading"> 没有更多数据了~~~ </view>
       </view>
     </scroll-view>
   </view>

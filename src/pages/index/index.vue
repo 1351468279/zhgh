@@ -11,6 +11,7 @@ import { listTotalData } from "@/utils/index";
 import { useMemberStore } from "@/store";
 import { getNewsCategoryList, type categoryItemType, getNewsListById, type newsItem } from "@/services/indexNews";
 import NewsList from "@/components/NewsList.vue";
+import { postLoginWxMinAPI } from "@/services/login";
 const systemInfo = uni.getSystemInfoSync();
 // 下拉刷新
 onPullDownRefresh(() => {
@@ -73,7 +74,7 @@ const onScrollTopLower = () => {
   // if (loadingStatus.value) return;
   console.log('长度', newsList.value?.length)
   console.log(newsList.value)
-  if(!newsList.value) return
+  if (!newsList.value) return
   if (newsList.value.length >= total.value) return
   loadingStatus.value = true;
   console.log("到底了");
@@ -91,15 +92,22 @@ const newsCategory = ref<categoryItemType[]>();
 // 接收新闻列表
 const newsList = ref<newsItem[]>()
 const memberStore = useMemberStore();
+//定义code
+const code = ref("");
+// 快捷登录
+const quickLog = async () => {
+  const userInfo = await postLoginWxMinAPI({ code: code.value });
+  console.log(userInfo);
+  memberStore.profile = userInfo.data;
 
-onLoad(() => {
+};
+onShow(async () => {
   if (memberStore.profile?.token) {
     console.log("已登录");
-    page.value=1
+    page.value = 1
     getNewsCategoryList().then((res) => {
       newsCategory.value = res.body?.categoryList;
       activeValue.value = res.body?.categoryList[0].id as string
-
     }).then(() => {
       getNewsListById({
         page: page.value,
@@ -117,7 +125,15 @@ onLoad(() => {
       url: "/pages/login/index",
     });
   }
+
 });
+onLoad(async ()=>{
+  await memberStore.clearProfile()
+  console.log('刷新token')
+  code.value = (await wx.login()).code
+  console.log(code);
+  await quickLog()
+})
 </script>
 
 <template>
@@ -126,7 +142,6 @@ onLoad(() => {
 
     <scroll-view
       class="indexScrollTop"
-      refresher-enabled
       scroll-y
       :scroll-top="scrollTop"
       @scroll="onScrollTop"
@@ -183,15 +198,15 @@ onLoad(() => {
     overflow-y: auto;
 
     .newsScrollLeft {
-      width: 100%;
+      width: 100vw;
       // background-color: skyblue;
       white-space: nowrap;
       transition: all 1s;
 
       .newsItem {
         display: inline-block;
-        width: 20%;
-        height: 70rpx;
+        width: 20vw;
+        height: 6vh;
         line-height: 70rpx;
         text-align: center;
         font-size: 28rpx;

@@ -2,7 +2,9 @@
 import { computed, ref } from "vue";
 import { getDifficultyNewsList } from "@/services/applyHelper";
 import { onShow } from "@dcloudio/uni-app";
-import type { cardListItemType } from "@/types/difficultyHelper";
+import type { newsItem } from "@/types/difficultyHelper";
+import { baseURL } from "@/utils/http";
+
 // 触底加载提示
 const isLoading = ref(false);
 const loadingText = ref("正在加载中...");
@@ -12,18 +14,22 @@ const onScrollTop = (e: any) => {
   console.log(e);
 };
 // 接收新闻列表
-const cardList = ref<cardListItemType[]>([]);
+const cardList = ref<newsItem[]>();
 // 触底事件
 const onScrollTopLower = async () => {
   isLoading.value = true;
+  if (!cardList.value)
+    return uni.showToast({
+      title: "数据不存在",
+    });
   if (cardList.value.length < total.value) {
     console.log("页数加1");
     getSanYuListParams.pageVo.offset = cardList.value.length;
     // offset.value++
     const res = await getDifficultyNewsList(getSanYuListParams);
     // const res = await getNewsList(getSanYuListParams);
-    console.log("cs", res.body);
-    cardList.value.push(...res.body?.rows!);
+    console.log("cs", res.body?.rows);
+    cardList.value.push(...(res.body?.rows as Array<newsItem>));
     isLoading.value = false;
     // await getSanYuList(getSanYuListParams.value)
     console.log("到底了");
@@ -62,8 +68,8 @@ const total = ref();
 const getNewsList = async (data: any) => {
   const res = await getDifficultyNewsList(data);
   console.log("onShow");
-  console.log(res.body);
-  if (!res.body) return;
+  console.log(res);
+  if (!res.body?.rows) return;
   console.log(res.body.rows);
   total.value = res.body.total;
   cardList.value = res.body.rows;
@@ -81,6 +87,8 @@ const viewDetail = (id: string) => {
   });
 };
 onShow(async () => {
+  scrollTop.value = 0;
+  getSanYuListParams.pageVo.offset = 0;
   await getNewsList(getSanYuListParams);
 });
 </script>
@@ -115,7 +123,15 @@ onShow(async () => {
           :key="item.id"
           @click="viewDetail(item.id)"
         >
-          <view class="itemImg"><img class="image" :src="item.image" /></view>
+          <view class="itemImg"
+            ><img
+              class="image"
+              :src="
+                baseURL +
+                '/dbylAndKnbf/sltPath.interface?url=' +
+                item.knbfNewsImgList[0].path
+              "
+          /></view>
           <view class="itemContent">
             <view class="contentTittle">{{ item.title }}</view>
             <view class="contentTag">
@@ -129,7 +145,7 @@ onShow(async () => {
                 <!-- <view class="iconfont icon" v-if="props.righticon">{{
                   props.righticon
                 }}</view> -->
-                <view class="num">{{ item.number }}人看过</view>
+                <!-- <view class="num">{{ item.id }}人看过</view> -->
               </view>
             </view>
           </view>
@@ -179,14 +195,10 @@ onShow(async () => {
     flex-direction: column;
     .tittle {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       .tittleText {
         font-weight: bold;
         margin-bottom: 20rpx;
-      }
-      .more {
-        font-size: 13px;
-        color: #cccc;
       }
     }
     .newsScrollTop {

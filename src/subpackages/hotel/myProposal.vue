@@ -69,7 +69,7 @@ const userState = ref();
 const downLoad = async (id: string) => {
   // 查看用户是否有上传文件
   const checkFileRes = await checkFile(id);
-  if (checkFileRes.flag == false) {
+  if (checkFileRes.flag == "error") {
     uni.showToast({
       title: "该用户未上传文件",
       icon: "none",

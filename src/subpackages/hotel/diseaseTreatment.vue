@@ -2,6 +2,7 @@
 import { computed, ref } from "vue";
 import { getDifficultyNewsList } from "@/services/applyHelper";
 import { onShow } from "@dcloudio/uni-app";
+import type { newsItem } from "@/types/difficultyHelper";
 // 触底加载提示
 const isLoading = ref(false);
 const loadingText = ref("正在加载中...");
@@ -52,15 +53,15 @@ const getSanYuListParams = {
   },
 };
 // 接收新闻列表
-const cardList = ref([]);
+const cardList = ref<newsItem[]>([]);
 // 接收新闻总条数
 const total = ref();
 // 封装分页列表函数
-const getNewsList = async (data) => {
+const getNewsList = async (data: any) => {
   const res = await getDifficultyNewsList(data);
   console.log("onShow");
   console.log(res.body);
-
+  if (!res.body) return uni.showToast({ title: "数据不存在" });
   console.log(res.body.rows);
   total.value = res.body.total;
   cardList.value = res.body.rows;
@@ -92,12 +93,12 @@ onShow(async () => {
         <!-- <view class="download"> 资料下载</view> -->
       </view>
     </view>
-    <view class="body">
+    <!-- <view class="body">
       <view class="tittle">
         <view class="tittleText">常见问题</view>
-        <!-- <view class="more">查看更多</view> -->
+        <view class="more">查看更多</view>
       </view>
-      <!-- 新闻列表 -->
+      新闻列表
       <scroll-view
         class="newsScrollTop"
         scroll-y
@@ -121,7 +122,7 @@ onShow(async () => {
         </view>
         <view class="loadTittle" v-if="isLoading">{{ loadingText }}</view>
       </scroll-view>
-    </view>
+    </view> -->
     <view class="bottom" @click="applyHelper">
       <view class="content">填写申请 </view>
     </view>
@@ -135,6 +136,7 @@ onShow(async () => {
   background-color: #f4f8fb;
   display: flex;
   flex-direction: column;
+  position: relative;
   .head {
     background: no-repeat right bottom url("http://cloud.zhgn.cn:808/phone/icon/1-10.png"),
       linear-gradient(to right, white, red);
@@ -156,83 +158,10 @@ onShow(async () => {
       margin: auto;
     }
   }
-  .body {
-    background-color: #f4f8fb;
-    margin: 20rpx 40rpx;
-    height: 60%;
-    display: flex;
-    flex-direction: column;
-    .tittle {
-      display: flex;
-      justify-content: space-between;
-      .tittleText {
-        font-weight: bold;
-        margin-bottom: 20rpx;
-      }
-      .more {
-        font-size: 13px;
-        color: #cccc;
-      }
-    }
-    .newsScrollTop {
-      overflow-y: auto;
-      .listItem {
-        width: 95%;
-        height: 100rpx;
-        background-color: white;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        border: 1px solid #e5e5e5;
-        border-radius: 20rpx;
-        margin: 15rpx auto;
 
-        .itemImg {
-          height: 90%;
-          width: 16%;
-          background-color: white;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          margin-left: 10rpx;
-
-          .image {
-            width: 80%;
-            height: 90%;
-            border-radius: 20rpx;
-          }
-        }
-
-        .itemContent {
-          width: 60%;
-          height: 100%;
-          display: flex;
-          justify-content: space-between;
-          align-items: flex-start;
-          flex-direction: column;
-
-          .contentTittle {
-            width: 90%;
-            height: 100%;
-            font-size: 30rpx;
-            padding: 0 20rpx;
-            overflow: hidden;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 3;
-          }
-        }
-      }
-      .loadTittle {
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        height: 60rpx;
-        width: 100%;
-      }
-    }
-  }
   .bottom {
+    position: absolute;
+    bottom: 1vh;
     height: 10%;
     width: calc(90vw);
     left: 0;

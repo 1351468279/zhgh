@@ -4,6 +4,8 @@ export type activityItem= {
         id: string;
         title:string
         address: string;
+        state:number;
+        isJoin:number;
         participantsNumber: number;
         createTime:string
         imgList: {
@@ -13,12 +15,12 @@ export type activityItem= {
       }
  
 // 获取未开始活动列表接口
-export const getUnactivityListApi = (page: number, state: number) => {
+export const getUnactivityListApi = (page: number, state?: any) => {
   return requestRows<activityItem[]>({
     url: "/lxygl/api/getHdData",
     method: "GET",
     data: {
-      limit: 10,
+      limit: 1000,
       title: "",
       page,
       state,

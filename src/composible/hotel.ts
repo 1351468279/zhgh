@@ -61,45 +61,48 @@ export const hotelData = ref<hotelApp[]>([{
     name: '疗休养',
     id: 10,
     mine: false
-}, {
+}, 
+{
     src: 'http://cloud.zhgn.cn:808/phone/hotel/1-14.png',
     url: '/subpackages/hotel/quantitativeAssessment',
     name: '量化考评',
     id: 11,
     mine: false
-}, {
-    src: 'http://cloud.zhgn.cn:808/phone/hotel/1-12.png',
-    url: '/subpackages/hotel/publicBuilding/index',
-    name: '党建工作',
-    id: 12,
-    mine: false
-}
-    , {
-    src: 'http://cloud.zhgn.cn:808/phone/hotel/1-14.png',
-    url: '/subpackages/hotel/teachingUnion/index',
-    name: '教代会',
-    id: 13,
-    mine: false
-}
-    , {
+},
+//  {
+//     src: 'http://cloud.zhgn.cn:808/phone/hotel/1-12.png',
+//     url: '/subpackages/hotel/publicBuilding/index',
+//     name: '党建工作',
+//     id: 12,
+//     mine: false
+// },
+// {
+//     src: 'http://cloud.zhgn.cn:808/phone/hotel/1-14.png',
+//     url: '/subpackages/hotel/teachingUnion/index',
+//     name: '教代会',
+//     id: 13,
+//     mine: false
+// }, 
+    {
     src: 'http://cloud.zhgn.cn:808/phone/icon/activity.png',
     url: '/subpackages/hotel/unionActivity/index',
     name: '工会活动',
     id: 13,
     mine: false
-}
-    , {
-    src: 'http://cloud.zhgn.cn:808/phone/icon/fees.png',
-    url: '/subpackages/hotel/fundManagement/index',
-    name: '经费管理',
-    id: 13,
-    mine: false
-}
-    , {
-    src: 'http://cloud.zhgn.cn:808/phone/icon/message.png',
-    url: '/subpackages/hotel/charimanBox/index',
-    name: '主席信箱',
-    id: 13,
-    mine: false
-}
+},
+// {
+//     src: 'http://cloud.zhgn.cn:808/phone/icon/fees.png',
+//     url: '/subpackages/hotel/fundManagement/index',
+//     name: '经费管理',
+//     id: 13,
+//     mine: false
+// }
+// ,
+// {
+//     src: 'http://cloud.zhgn.cn:808/phone/icon/message.png',
+//     url: '/subpackages/hotel/charimanBox/index',
+//     name: '主席信箱',
+//     id: 13,
+//     mine: false
+// }
 ])

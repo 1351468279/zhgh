@@ -1,6 +1,6 @@
 import { http, request } from "@/utils/http";
  import type { UploadFileType } from "@/types/sanYu";
- import type { applyRecuperationDataType, applyRecuperationResDataType } from "@/types/recuperation";
+ import type { applyRecuperationDataParams, applyRecuperationDataType, applyRecuperationResDataType } from "@/types/recuperation";
 // 获取用户信息，用于填写申请时候回显数据
 export const handleActivity = (type:number,id?:string) => {
     return request<applyRecuperationResDataType>({
@@ -82,4 +82,34 @@ export const getImage=(path:string)=>{
         data:{path}
     })
 
+}
+// 报名
+export const registerApi=(id:string)=>{
+    return request({
+        url:'/lxygl/api/registerEvents',
+        method:'GET',
+        data:{
+            id
+        }
+    })
+}
+// 取消报名
+export const unRegisterApi=(id:string)=>{
+    return request({
+        url:'/lxygl/api/noJoin',
+        method:'GET',
+        data:{
+            id
+        }
+    })
+}
+// 打卡
+export const attendApi=(id:string)=>{
+    return request({
+        url:'/lxygl/api/attend',
+        method:'GET',
+        data:{
+            id
+        }
+    })
 }

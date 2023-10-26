@@ -174,6 +174,15 @@ const list = ref([
     border: 1px solid #e7e7e7;
     justify-content: space-around;
     align-items: center;
+    .media {
+      width: 7 vw;
+      height: 7 vw;
+      border: 1px solid black;
+      border-radius: 1vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
     .input {
       width: 80vw;
       height: 9vw;

@@ -14,14 +14,7 @@ export type listData = {
   update_time: string;
   process: number;
 };
-// 新闻列表
-export type cardListItemType = {
-  id: string;
-  image?: string;
-  title?: string;
-  releaseTime?: string;
-  number?: number;
-};
+
 export type getDifficultyNewsListType = {
   rows: cardListItemType[];
   total: number;
@@ -37,4 +30,32 @@ export type getDifficultyHelperParamsType = {
     sidx: string;
     sord: string;
   };
+};
+export type imageItem = {
+  fileName: string;
+  id: string;
+  originalName: string;
+  path: string;
+  type: string;
+  uploadDate: string;
+  userId: string;
+};
+export type newsItem = {
+  author: string;
+  blurb: string;
+  id: string;
+  details: string;
+  knbfNewsImgList: imageItem[];
+  organization: string;
+  releaseTime: string;
+  source: string;
+  stateId: string;
+  title: string;
+  topping: number;
+  userId: string;
+};
+export type nesItemRes = {
+  flag: string;
+  rows: newsItem[];
+  total: number;
 };

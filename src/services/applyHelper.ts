@@ -1,10 +1,10 @@
-import { http, request } from "@/utils/http";
+import { http, request, requestRows } from "@/utils/http";
 import type { applySanYuListType } from "@/types/hotel";
 import type { UploadFileType } from "@/types/sanYu";
 import type { applyDiseaseHelper } from "@/types/diseaseHelper.d";
 
 import type { UniFilePickerTempFile } from "@uni-helper/uni-ui-types";
-import type { cardListItemType, getDifficultyHelperParamsType, getDifficultyNewsListType } from "@/types/difficultyHelper";
+import type { getDifficultyHelperParamsType, getDifficultyNewsListType, nesItemRes, newsItem } from "@/types/difficultyHelper";
 // 获取用户信息，用于填写申请时候回显数据
 export const getUserInfo = () => {
   return request<applyDiseaseHelper>({
@@ -91,7 +91,7 @@ export const getDifficultyNewsList = (data: {
     sord: string;
   };
 }) => {
-  return request<getDifficultyNewsListType>({
+  return request<nesItemRes>({
     method: "POST",
     url: "/wechat/knbf/getknbfNews.do",
     data,
@@ -99,10 +99,10 @@ export const getDifficultyNewsList = (data: {
 };
 // 根据新闻id获取新闻详情
 export const getNewsDetail = (id: string) => {
-  return request({
+  return request<newsItem>({
     method: "POST",
     url: "/wechat/knbf/getknbfNewsById.do",
-    data: { id },
+    data: JSON.stringify(id),
   });
 };
 // 三育人分页查询

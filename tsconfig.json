@@ -11,7 +11,8 @@
     },
     "lib": [
       "esnext",
-      "dom"
+      "dom",
+      "DOM.Iterable"
     ],
     "types": [
       "@dcloudio/types",

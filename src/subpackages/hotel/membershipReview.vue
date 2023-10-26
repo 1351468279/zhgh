@@ -11,6 +11,8 @@ import type { OrgDataType } from "@/types/member";
 import { onLoad, onShow } from "@dcloudio/uni-app";
 import { ref } from "vue";
 import { useMemberStore } from "@/store/index";
+const enabled = ref(false);
+
 // 获取用户审核状态
 const userState = ref();
 // 设置审核列表接受数据
@@ -137,6 +139,7 @@ const changeReviewState = async (val: number) => {
   // console.log(e.target.innerText)
   // 点击待审核
   if (val == 1) {
+    console.log("点击待审核");
     fs.value = "0";
     isShow.value = true;
     setAwaitActive.value = val;
@@ -160,6 +163,8 @@ const changeReviewState = async (val: number) => {
       return;
     }
     setReviewActive.value = val;
+    // 默认展示的是待审核列表
+    reviewAllList.value = (await getReviewInfo()).data;
     // 设置待审核列表
     reviewList.value = reviewAllList.value.filter((item) => {
       return item.state == "1";
@@ -188,11 +193,13 @@ const changeReviewState = async (val: number) => {
       reviewList.value = res.data.content;
       return;
     }
+    setReviewActive.value = val;
+    // 默认展示的是待审核列表
+    reviewAllList.value = (await getReviewInfo()).data;
     // 设置已审核列表
     reviewList.value = reviewAllList.value.filter((item) => {
       return item.state == "2";
     });
-    setReviewActive.value = val;
   }
 };
 </script>
@@ -229,7 +236,7 @@ const changeReviewState = async (val: number) => {
     </scroll-view>
     <view class="reviewAll">
       <button type="primary" @click="reviewAll" v-if="isAdmin === true && isShow == true">
-        一键审核121
+        一键审核
       </button>
     </view>
   </view>
