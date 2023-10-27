@@ -117,6 +117,9 @@ const quickLog = async () => {
   const userInfo = await postLoginWxMinAPI({ code: code.value });
   console.log(userInfo);
   memberStore.profile = userInfo.data;
+  if (!memberStore.profile) {
+    return uni.showToast({ title: "个人数据请求失败，请右上角刷新重新进行快捷登录" });
+  }
   // 成功提示
   uni.showToast({
     icon: "none",

@@ -3,8 +3,11 @@ import { ref, computed } from "vue";
 import { onHide, onShow, onUnload } from "@dcloudio/uni-app";
 import { getReviewStatus } from "@/services/applyUnion";
 import { useMemberStore } from "@/store/index";
-import { getinviteData } from "@/services/quantitativeAssessment";
-import type { myDataResType } from "@/types/quantitativeAssessment";
+import {
+  getTogetherEvaluationApi,
+  getinviteData,
+} from "@/services/quantitativeAssessment";
+import type { myDataResItemsType, myDataResType } from "@/types/quantitativeAssessment";
 const memberStore = useMemberStore();
 const self_state = ref(1);
 const peer_state = ref(0);
@@ -40,15 +43,35 @@ const evaluateCatagoryList = ref([
     id: 2,
   },
 ]);
+// 接收个人评论信息
+const personEvaluate = ref();
 // 切换评论分类
-const transfrom = (id: number) => {
+const transfrom = async (id: number) => {
   activeId.value = id;
+  if (id == 2) {
+    // await getTogetherEvaluationApi();
+  }
 };
 // 滚动条位置
 const scrollY = ref(0);
 // 发生滚动
 const onScroll = () => {
   console.log("发生滚动");
+};
+// 获取评论列表
+const evaluateList = ref<myDataResType>();
+const personalEvaluate = (obj: myDataResItemsType) => {
+  let item = JSON.stringify(obj);
+  console.log("654654165");
+  uni.navigateTo({
+    url: "/subpackages/hotel/selfAssessment/index?item=" + item,
+  });
+};
+const togetherEvalyate = (obj: myDataResItemsType) => {
+  let item = JSON.stringify(obj);
+  uni.navigateTo({
+    url: "/subpackages/hotel/selfAssessment/index?item=" + item + "&id=1",
+  });
 };
 onShow(async () => {
   //  获取用户状态，判断用户身份
@@ -91,9 +114,12 @@ onShow(async () => {
       isUser.value = true;
       console.log("普通会员 ");
       const res = await getinviteData();
-      inviteDataTotal.value = res.total;
-      console.log(res.rows);
-      evauateList.value = res.rows;
+      evaluateList.value = res.rows;
+      // timer = setInterval(async () => {
+      //   const res = await getinviteData();
+      //   inviteDataTotal.value = res.total;
+      //   console.log(res.rows);
+      // }, 3000);
     }
     return;
   }
@@ -111,7 +137,6 @@ onUnload(() => {
 <template>
   <view class="wrape">
     <view class="evaluateCatagoryList">
-      {{ inviteDataTotal }}
       <!-- <view
         class="listItem"
         :class="{ active: activeId == item.id }"
@@ -120,7 +145,9 @@ onUnload(() => {
         @click="transfrom(item.id)"
         >{{ item.text }}
       </view> -->
+      {{ evaluateList?.length }}
     </view>
+    <view class="evaluateCatagory"> 231 </view>
     <scroll-view
       class="scrollY"
       scroll-y
@@ -128,19 +155,19 @@ onUnload(() => {
       scroll-with-animation
       @scroll="onScroll"
     >
-      <view class="cardItem" v-for="item in evauateList" :key="item.id">
+      <view class="cardItem" v-for="item in evaluateList" :key="item.id">
         <view class="left">
           <image
             class="img"
-            src="http://cloud.zhgn.cn:808/phone/icon/1-3.png"
+            src="https://cloud.zhgn.cn:8092/cdgh/static/phone/icon/1-3.png"
             mode="aspectFit"
           />
         </view>
         <view class="right">
-          <view class="assessTheme"> 考核主题：{{ item.messageTitle }} </view>
+          <view class="assessTheme"> {{ item.messageTitle }} </view>
           <view class="bottom">
-            <view class="pesonalEvaluate"> 自评</view>
-            <view class="togetherEvaluate"> 互评</view>
+            <view class="personalEvaluate" @click="personalEvaluate(item)"> 自评 </view>
+            <view class="togetherEvaluate" @click="togetherEvalyate(item)"> 互评 </view>
           </view>
         </view>
       </view>
@@ -216,13 +243,26 @@ onUnload(() => {
     }
     margin-bottom: 1vh;
   }
+  .evaluateCatagory {
+    right: 0;
+    left: 0;
+    margin: 0 auto;
+    width: 90vw;
+    height: 7vh;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: pink;
+    border: 1px solid #ccc;
+    border-radius: 2vw;
+  }
   .scrollY {
     right: 0;
     left: 0;
     margin: 0 auto;
     overflow-y: auto;
     width: 90vw;
-    max-height: 90vh;
+    max-height: 82vh;
     // background-color: skyblue;
     border: 1px solid #ccc;
     border-radius: 2vw;
@@ -261,34 +301,34 @@ onUnload(() => {
         flex-direction: column;
         justify-content: space-around;
         align-items: center;
-
         .assessTheme {
-          display: flex;
-          justify-content: center;
-          align-items: center;
+          font-size: 4vw;
+          font-weight: bold;
+          color: #d81e06;
         }
         .bottom {
-          width: 70vw;
           display: flex;
+          width: 72vw;
           justify-content: space-around;
-          align-items: center;
-          .pesonalEvaluate {
-            width: 10vw;
-            height: 10vw;
-            border: 1px solid #ccc;
+          .personalEvaluate {
+            width: 8vw;
+            height: 8vw;
+            border: 1px solid #2e2e2e;
             display: flex;
             justify-content: center;
             align-items: center;
             border-radius: 50%;
+            color: #2e2e2e;
           }
           .togetherEvaluate {
-            width: 10vw;
-            height: 10vw;
-            border: 1px solid #ccc;
+            width: 8vw;
+            height: 8vw;
+            border: 1px solid #2e2e2e;
             display: flex;
             justify-content: center;
             align-items: center;
             border-radius: 50%;
+            color: #2e2e2e;
           }
         }
       }

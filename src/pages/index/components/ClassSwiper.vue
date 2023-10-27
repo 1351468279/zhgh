@@ -1,22 +1,29 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { swiperData } from '@/utils/index'
+import { ref } from "vue";
+import { swiperData } from "@/utils/index";
 // 轮播图数据
 
-
-const activeIndex = ref(0)
+const activeIndex = ref(0);
 
 // 滑动自动改变指示点
 const changeIndicatorDots = (a: any) => {
   // console.log(a)
-  activeIndex.value = a.detail.current
-}
+  activeIndex.value = a.detail.current;
+};
 </script>
 
 <template>
   <view class="carousel">
-    <swiper class="swiper" indicator-color="white" indicator-active-color="rgba(46, 46, 46)" :circular="true"
-      indicator-dots :autoplay="true" :interval="3000" @change="changeIndicatorDots">
+    <swiper
+      class="swiper"
+      indicator-color="white"
+      indicator-active-color="rgba(46, 46, 46)"
+      :circular="true"
+      indicator-dots
+      :autoplay="true"
+      :interval="3000"
+      @change="changeIndicatorDots"
+    >
       <swiper-item class="swiperItem" v-for="item in swiperData" :key="item.id">
         <navigator url="" hover-class="none" class="navigator">
           <image mode="aspectFill" class="image" :src="item.src"></image>
@@ -80,7 +87,6 @@ const changeIndicatorDots = (a: any) => {
       }
     }
   }
-
 
   .indicator {
     position: absolute;

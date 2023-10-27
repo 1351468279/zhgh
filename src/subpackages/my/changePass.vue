@@ -1,16 +1,16 @@
 <script lang="ts" setup>
 const onClick = () => {
   uni.showToast({
-    title: '修改成功',
-    icon: 'none',
+    title: "修改成功",
+    icon: "none",
     duration: 2000,
     success: () => {
       setTimeout(() => {
-        uni.navigateBack()
-      }, 500)
-    }
-  })
-}
+        uni.navigateBack();
+      }, 500);
+    },
+  });
+};
 </script>
 
 <template>

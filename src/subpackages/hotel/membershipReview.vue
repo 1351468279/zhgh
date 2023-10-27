@@ -142,10 +142,8 @@ const changeReviewState = async (val: number) => {
     console.log("点击待审核");
     fs.value = "0";
     isShow.value = true;
-    setAwaitActive.value = val;
     if (memberStore.profile?.userVo?.roleType?.includes("SystemAdmin")) {
       // 设置高亮
-      setReviewActive.value = val;
       // 执行获取审核列表函数
       const res = await getReviewList({
         fs: fs.value,
@@ -156,30 +154,33 @@ const changeReviewState = async (val: number) => {
           sord: sord.value,
         },
       });
+      console.log("执行");
       reviewList.value = res.data.content;
       //把content里面的id取出来
       reviewAllId.value = res.data.content.map((item: { id: string }) => item.id);
+      setReviewActive.value = val;
+      setAwaitActive.value = val;
       console.log(reviewAllId.value);
       return;
     }
-    setReviewActive.value = val;
     // 默认展示的是待审核列表
     reviewAllList.value = (await getReviewInfo()).data;
     // 设置待审核列表
     reviewList.value = reviewAllList.value.filter((item) => {
       return item.state == "1";
     });
+    console.log("执行会员样式");
+    setReviewActive.value = val;
+    setAwaitActive.value = val;
     console.log(userState.value);
   }
   // 点击已审核
   else if (val == 2) {
+    console.log("已审核");
     fs.value = "1";
     isShow.value = false;
-    setAwaitActive.value = val;
     // 如果是管理员身份
     if (memberStore.profile?.userVo?.roleType?.includes("SystemAdmin")) {
-      // 设置高亮
-      setReviewActive.value = val;
       // 执行获取审核列表函数
       const res = await getReviewList({
         fs: fs.value,
@@ -191,15 +192,19 @@ const changeReviewState = async (val: number) => {
         },
       });
       reviewList.value = res.data.content;
+      // 设置高亮
+      setReviewActive.value = val;
+      setAwaitActive.value = val;
       return;
     }
-    setReviewActive.value = val;
     // 默认展示的是待审核列表
     reviewAllList.value = (await getReviewInfo()).data;
     // 设置已审核列表
     reviewList.value = reviewAllList.value.filter((item) => {
       return item.state == "2";
     });
+    setReviewActive.value = val;
+    setAwaitActive.value = val;
   }
 };
 </script>
@@ -250,6 +255,7 @@ const changeReviewState = async (val: number) => {
   flex-direction: column;
   justify-content: flex-start;
   position: relative;
+
   .reviewOption {
     height: 8vh;
     left: 0;
@@ -296,6 +302,7 @@ const changeReviewState = async (val: number) => {
     flex-direction: column;
     justify-content: space-around;
     overflow: hidden;
+
     .shenhe {
       width: 100vw;
       display: flex;
@@ -303,6 +310,7 @@ const changeReviewState = async (val: number) => {
       align-items: center;
       flex-direction: column;
       overflow: hidden;
+
       .card {
         left: 0;
         right: 0;
@@ -346,6 +354,7 @@ const changeReviewState = async (val: number) => {
       }
     }
   }
+
   .translate {
     height: 90vh;
   }

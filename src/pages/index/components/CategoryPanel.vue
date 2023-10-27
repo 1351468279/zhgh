@@ -1,15 +1,20 @@
 <script setup lang="ts">
 //category数据
-import { hotelData } from '@/composible/hotel'
-import { computed } from 'vue';
+import { hotelData } from "@/composible/hotel";
+import { computed } from "vue";
 const category = computed(() => {
-  return hotelData.value.filter((i) => i.mine === true)
-})
+  return hotelData.value.filter((i) => i.mine === true);
+});
 </script>
 
 <template>
   <view class="category">
-    <navigator class="category-item" :url="item.url" v-for="item in category" :key="item.id">
+    <navigator
+      class="category-item"
+      :url="item.url"
+      v-for="item in category"
+      :key="item.id"
+    >
       <image class="icon" :src="item.src"></image>
       <text class="text">{{ item.name }}</text>
     </navigator>
@@ -47,6 +52,5 @@ const category = computed(() => {
       color: #666666;
     }
   }
-
 }
 </style>
