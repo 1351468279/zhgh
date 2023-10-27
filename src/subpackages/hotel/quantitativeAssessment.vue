@@ -7,7 +7,7 @@ import {
   getTogetherEvaluationApi,
   getinviteData,
 } from "@/services/quantitativeAssessment";
-import type { myDataResType } from "@/types/quantitativeAssessment";
+import type { myDataResItemsType, myDataResType } from "@/types/quantitativeAssessment";
 const memberStore = useMemberStore();
 const self_state = ref(1);
 const peer_state = ref(0);
@@ -58,6 +58,19 @@ const onScroll = () => {
 };
 // 获取评论列表
 const evaluateList = ref<myDataResType>();
+const personalEvaluate = (obj: myDataResItemsType) => {
+  let item = JSON.stringify(obj);
+  console.log("654654165");
+  uni.navigateTo({
+    url: "/subpackages/hotel/selfAssessment/index?item=" + item,
+  });
+};
+const togetherEvalyate = (obj: myDataResItemsType) => {
+  let item = JSON.stringify(obj);
+  uni.navigateTo({
+    url: "/subpackages/hotel/selfAssessment/index?item=" + item + "&id=1",
+  });
+};
 onShow(async () => {
   //  获取用户状态，判断用户身份
   userState.value = (await getReviewStatus()).data;
@@ -132,6 +145,7 @@ onUnload(() => {
       </view> -->
       {{ evaluateList?.length }}
     </view>
+    <view class="evaluateCatagory"> 231 </view>
     <scroll-view
       class="scrollY"
       scroll-y
@@ -143,15 +157,15 @@ onUnload(() => {
         <view class="left">
           <image
             class="img"
-            src="http://cloud.zhgn.cn:808/phone/icon/1-3.png"
+            src="https://cloud.zhgn.cn:8092/cdgh/static/phone/icon/1-3.png"
             mode="aspectFit"
           />
         </view>
         <view class="right">
-          <view class="assessTheme"> 考评主题:{{ item.messageTitle }} </view>
+          <view class="assessTheme"> {{ item.messageTitle }} </view>
           <view class="bottom">
-            <view class="personalEvaluate"> 自评 </view>
-            <view class="togetherEvaluate"> 互评 </view>
+            <view class="personalEvaluate" @click="personalEvaluate(item)"> 自评 </view>
+            <view class="togetherEvaluate" @click="togetherEvalyate(item)"> 互评 </view>
           </view>
         </view>
       </view>
@@ -227,13 +241,26 @@ onUnload(() => {
     }
     margin-bottom: 1vh;
   }
+  .evaluateCatagory {
+    right: 0;
+    left: 0;
+    margin: 0 auto;
+    width: 90vw;
+    height: 7vh;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: pink;
+    border: 1px solid #ccc;
+    border-radius: 2vw;
+  }
   .scrollY {
     right: 0;
     left: 0;
     margin: 0 auto;
     overflow-y: auto;
     width: 90vw;
-    max-height: 90vh;
+    max-height: 82vh;
     // background-color: skyblue;
     border: 1px solid #ccc;
     border-radius: 2vw;
@@ -273,8 +300,35 @@ onUnload(() => {
         flex-direction: column;
         justify-content: space-around;
         align-items: center;
+        .assessTheme {
+          font-size: 4vw;
+          font-weight: bold;
+          color: #d81e06;
+        }
         .bottom {
           display: flex;
+          width: 72vw;
+          justify-content: space-around;
+          .personalEvaluate {
+            width: 8vw;
+            height: 8vw;
+            border: 1px solid #2e2e2e;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            color: #2e2e2e;
+          }
+          .togetherEvaluate {
+            width: 8vw;
+            height: 8vw;
+            border: 1px solid #2e2e2e;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            color: #2e2e2e;
+          }
         }
       }
     }

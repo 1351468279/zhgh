@@ -48,14 +48,7 @@ export const submitMyInfoApi=(data:{
     return request<myDataResItemsType>({
         url:'/lhkpMem/api/joinEvaluation',
         method:'POST',
-        data:{
-            type:0,
-            limit:1000,
-            page:1,
-            messageTitle:'',
-            self:1,
-            orgId:''
-        }
+        data
     })
 }
 // 获取互评人

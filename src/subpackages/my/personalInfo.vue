@@ -1,13 +1,17 @@
 <script lang="ts" setup>
-import OptionsTab from '@/components/OptionsTab.vue';
-import { ref } from 'vue';
+import OptionsTab from "@/components/OptionsTab.vue";
+import { ref } from "vue";
 const systemInfo = ref(uni.getSystemInfoSync());
 </script>
 
 <template>
   <view class="box">
     <view class="personal">
-      <OptionsTab :leftTittle="'头像'" :image="'http://cloud.zhgn.cn:8092/cdgh/phone/tabs/xinwen_selected.png'" rightTag />
+      <OptionsTab
+        :leftTittle="'头像'"
+        :image="'http://cloud.zhgn.cn:808/phone/tabs/xinwen_selected.png'"
+        rightTag
+      />
       <OptionsTab :leftTittle="'工号'" :rightTittle="19160102525" />
       <OptionsTab :leftTittle="'会员姓名'" :rightTittle="'李星云'" rightTag />
     </view>
