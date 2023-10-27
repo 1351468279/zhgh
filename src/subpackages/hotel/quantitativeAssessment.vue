@@ -4,6 +4,7 @@ import { onHide, onShow, onUnload } from "@dcloudio/uni-app";
 import { getReviewStatus } from "@/services/applyUnion";
 import { useMemberStore } from "@/store/index";
 import { getinviteData } from "@/services/quantitativeAssessment";
+import type { myDataResType } from "@/types/quantitativeAssessment";
 const memberStore = useMemberStore();
 const self_state = ref(1);
 const peer_state = ref(0);
@@ -20,8 +21,10 @@ const onClick = (val: number) => {
     url: "/subpackages/hotel/selfAssessment/index?id=" + val,
   });
 };
-// 他人邀请我的评价
+// 他人邀请我的评价总条数
 const inviteDataTotal = ref();
+// 接收需要评价的列表
+const evauateList = ref<myDataResType>();
 // 接收下拉框
 const self_assessmentParams = ref();
 // 定义定时器模拟心跳包
@@ -87,11 +90,10 @@ onShow(async () => {
     if (memberStore.profile?.userVo?.roleType?.includes("member") == true) {
       isUser.value = true;
       console.log("普通会员 ");
-      timer = setInterval(async () => {
-        const res = await getinviteData();
-        inviteDataTotal.value = res.total;
-        console.log(res.rows);
-      }, 3000);
+      const res = await getinviteData();
+      inviteDataTotal.value = res.total;
+      console.log(res.rows);
+      evauateList.value = res.rows;
     }
     return;
   }
@@ -109,14 +111,15 @@ onUnload(() => {
 <template>
   <view class="wrape">
     <view class="evaluateCatagoryList">
-      <view
+      {{ inviteDataTotal }}
+      <!-- <view
         class="listItem"
         :class="{ active: activeId == item.id }"
         v-for="item in evaluateCatagoryList"
         :key="item.id"
         @click="transfrom(item.id)"
         >{{ item.text }}
-      </view>
+      </view> -->
     </view>
     <scroll-view
       class="scrollY"
@@ -125,7 +128,7 @@ onUnload(() => {
       scroll-with-animation
       @scroll="onScroll"
     >
-      <view class="cardItem" v-for="item in 10">
+      <view class="cardItem" v-for="item in evauateList" :key="item.id">
         <view class="left">
           <image
             class="img"
@@ -133,7 +136,13 @@ onUnload(() => {
             mode="aspectFit"
           />
         </view>
-        <view class="right"> </view>
+        <view class="right">
+          <view class="assessTheme"> 考核主题：{{ item.messageTitle }} </view>
+          <view class="bottom">
+            <view class="pesonalEvaluate"> 自评</view>
+            <view class="togetherEvaluate"> 互评</view>
+          </view>
+        </view>
       </view>
     </scroll-view>
   </view>
@@ -213,7 +222,7 @@ onUnload(() => {
     margin: 0 auto;
     overflow-y: auto;
     width: 90vw;
-    height: 90vh;
+    max-height: 90vh;
     // background-color: skyblue;
     border: 1px solid #ccc;
     border-radius: 2vw;
@@ -227,7 +236,11 @@ onUnload(() => {
       display: flex;
       justify-content: space-around;
       align-items: center;
-
+      &:last-child {
+        .right {
+          border-bottom: none;
+        }
+      }
       .left {
         width: 11vh;
         height: 11vh;
@@ -244,6 +257,40 @@ onUnload(() => {
         width: 72vw;
         height: 11vh;
         border-bottom: 1px solid #ccc;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+
+        .assessTheme {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        .bottom {
+          width: 70vw;
+          display: flex;
+          justify-content: space-around;
+          align-items: center;
+          .pesonalEvaluate {
+            width: 10vw;
+            height: 10vw;
+            border: 1px solid #ccc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+          }
+          .togetherEvaluate {
+            width: 10vw;
+            height: 10vw;
+            border: 1px solid #ccc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+          }
+        }
       }
     }
   }
