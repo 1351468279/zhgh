@@ -3,31 +3,31 @@ import { ref } from "vue";
 const systemInfo = uni.getSystemInfoSync();
 const submitAppList = ref([
   {
-    src: "http://cloud.zhgn.cn:808/phone/index/renzheng.png",
+    src: "http://cloud.zhgn.cn:8092/cdgh/phone/index/renzheng.png",
     url: "/subpackages/hotel/writeProposal",
     name: "撰写提案",
     id: 1,
   },
   {
-    src: "http://cloud.zhgn.cn:808/phone/index/shenling.png",
+    src: "http://cloud.zhgn.cn:8092/cdgh/phone/index/shenling.png",
     url: "/subpackages/hotel/myProposal",
     name: "我的提案",
     id: 2,
   },
   {
-    src: "http://cloud.zhgn.cn:808/phone/hotel/1-17.png",
+    src: "http://cloud.zhgn.cn:8092/cdgh/phone/hotel/1-17.png",
     url: "/subpackages/hotel/sanYuReview",
     name: "邀我附议",
     id: 3,
   },
   {
-    src: "http://cloud.zhgn.cn:808/phone/hotel/1-10.png",
+    src: "http://cloud.zhgn.cn:8092/cdgh/phone/hotel/1-10.png",
     url: "/subpackages/hotel/thirtyYearsReview",
     name: "他人提案",
     id: 4,
   },
   {
-    src: "http://cloud.zhgn.cn:808/phone/hotel/1-8.png",
+    src: "http://cloud.zhgn.cn:8092/cdgh/phone/hotel/1-8.png",
     url: "/subpackages/hotel/provincialPersonReview",
     name: "提案汇总",
     id: 5,
@@ -35,25 +35,25 @@ const submitAppList = ref([
 ]);
 const completeAppList = ref([
   {
-    src: "http://cloud.zhgn.cn:808/phone/hotel/1-15.png",
+    src: "http://cloud.zhgn.cn:8092/cdgh/phone/hotel/1-15.png",
     url: "/subpackages/hotel/provincialTeamReview",
     name: "领导审阅",
     id: 1,
   },
   {
-    src: "http://cloud.zhgn.cn:808/phone/hotel/1-2.png",
+    src: "http://cloud.zhgn.cn:8092/cdgh/phone/hotel/1-2.png",
     url: "/subpackages/hotel/difficultyHelper",
     name: "承办部门办理",
     id: 2,
   },
   {
-    src: "http://cloud.zhgn.cn:808/phone/icon/1-10.png",
+    src: "http://cloud.zhgn.cn:8092/cdgh/phone/icon/1-10.png",
     url: "/subpackages/hotel/diseaseTreatment",
     name: "发给提案人",
     id: 3,
   },
   {
-    src: "http://cloud.zhgn.cn:808/phone/icon/1-3.png",
+    src: "http://cloud.zhgn.cn:8092/cdgh/phone/icon/1-3.png",
     url: "/subpackages/hotel/legalAid",
     name: "待转交提案",
     id: 4,

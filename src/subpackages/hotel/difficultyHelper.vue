@@ -167,7 +167,7 @@ onShow(async () => {
   display: flex;
   flex-direction: column;
   .head {
-    background: no-repeat right bottom url("http://cloud.zhgn.cn:808/phone/hotel/1-2.png"),
+    background: no-repeat right bottom url("http://cloud.zhgn.cn:8092/cdgh/phone/hotel/1-2.png"),
       linear-gradient(to right, white, red);
     background-size: 100%;
     height: 30%;

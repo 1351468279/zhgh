@@ -72,7 +72,7 @@ onShow(async () => {
         <view class="left">
           <image
             class="img"
-            src="http://cloud.zhgn.cn:808/phone/hotel/1-8.png"
+            src="http://cloud.zhgn.cn:8092/cdgh/phone/hotel/1-8.png"
             mode="aspectFit"
           />
         </view>

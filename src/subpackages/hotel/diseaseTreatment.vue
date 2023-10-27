@@ -114,7 +114,7 @@ onShow(async () => {
           @click="viewDetail(item.id)"
         >
           <view class="itemImg"
-            ><img class="image" src="http://cloud.zhgn.cn:808/phone/icon/question.png"
+            ><img class="image" src="http://cloud.zhgn.cn:8092/cdgh/phone/icon/question.png"
           /></view>
           <view class="itemContent">
             <view class="contentTittle">{{ item.title }}</view>
@@ -138,7 +138,7 @@ onShow(async () => {
   flex-direction: column;
   position: relative;
   .head {
-    background: no-repeat right bottom url("http://cloud.zhgn.cn:808/phone/icon/1-10.png"),
+    background: no-repeat right bottom url("http://cloud.zhgn.cn:8092/cdgh/phone/icon/1-10.png"),
       linear-gradient(to right, white, red);
     background-size: 100%;
     height: 30%;

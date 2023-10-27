@@ -24,24 +24,24 @@ const changeIndicatorDots = (a: any) => {
       </swiper-item>
       <!-- <swiper-item class="swiperItem">
         <navigator url="" hover-class="none" class="navigator">
-          <image mode="aspectFill" class="image" src="http://cloud.zhgn.cn:808/phone/unionpicture/campusview.jpg"></image>
+          <image mode="aspectFill" class="image" src="http://cloud.zhgn.cn:8092/cdgh/phone/unionpicture/campusview.jpg"></image>
         </navigator>
       </swiper-item> -->
       <!-- <swiper-item class="swiperItem">
         <navigator url="" hover-class="none" class="navigator">
-          <image mode="aspectFill" class="image" src="http://cloud.zhgn.cn:808/phone/unionpicture/synodmeetings.png">
+          <image mode="aspectFill" class="image" src="http://cloud.zhgn.cn:8092/cdgh/phone/unionpicture/synodmeetings.png">
           </image>
         </navigator>
       </swiper-item> -->
       <!-- <swiper-item class="swiperItem">
         <navigator url="" hover-class="none" class="navigator">
-          <image mode="aspectFill" class="image" src="http://cloud.zhgn.cn:808/phone/unionpicture/teachermetting.png">
+          <image mode="aspectFill" class="image" src="http://cloud.zhgn.cn:8092/cdgh/phone/unionpicture/teachermetting.png">
           </image>
         </navigator>
       </swiper-item> -->
       <!-- <swiper-item class="swiperItem">
         <navigator url="" hover-class="none" class="navigator">
-          <image mode="aspectFill" class="image" src="http://cloud.zhgn.cn:808/phone/unionpicture/valleyball.jpeg">
+          <image mode="aspectFill" class="image" src="http://cloud.zhgn.cn:8092/cdgh/phone/unionpicture/valleyball.jpeg">
           </image>
         </navigator>
       </swiper-item> -->

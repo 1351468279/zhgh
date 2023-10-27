@@ -85,7 +85,7 @@ const onScrollTopLower = () => {
     newsList.value?.push(...(res.rows as newsItem[]))
     console.log(newsList.value)
   })
-  // listTotalData.value[activeValue.value - 1].data.push({ id: 6, image: 'http://cloud.zhgn.cn:808/phone/unionpicture/synodmeetings.png', area: '新郑市总工会', viewNum: 1212, content: '文章内容', tittle: '文章标题', time: '2023-01-02' })
+  // listTotalData.value[activeValue.value - 1].data.push({ id: 6, image: 'http://cloud.zhgn.cn:8092/cdgh/phone/unionpicture/synodmeetings.png', area: '新郑市总工会', viewNum: 1212, content: '文章内容', tittle: '文章标题', time: '2023-01-02' })
   loadingStatus.value = false;
 };
 const newsCategory = ref<categoryItemType[]>();
@@ -102,7 +102,17 @@ const quickLog = async () => {
 
 };
 onShow(async () => {
+  console.log('onshow')
   if (memberStore.profile?.token) {
+    code.value = (await wx.login()).code
+    console.log(code.value)
+    const userInfo = await postLoginWxMinAPI({ code: code.value });
+    console.log('获取到token了')
+    // await memberStore.clearProfile()
+    if (memberStore.profile.token != userInfo.data.token) {
+      await memberStore.clearProfile()
+      memberStore.profile=userInfo.data
+    }
     console.log("已登录");
     page.value = 1
     getNewsCategoryList().then((res) => {
@@ -127,13 +137,6 @@ onShow(async () => {
   }
 
 });
-onLoad(async ()=>{
-  await memberStore.clearProfile()
-  console.log('刷新token')
-  code.value = (await wx.login()).code
-  console.log(code);
-  await quickLog()
-})
 </script>
 
 <template>

@@ -3,7 +3,11 @@ import { ref, computed } from "vue";
 import { onHide, onShow, onUnload } from "@dcloudio/uni-app";
 import { getReviewStatus } from "@/services/applyUnion";
 import { useMemberStore } from "@/store/index";
-import { getinviteData } from "@/services/quantitativeAssessment";
+import {
+  getTogetherEvaluationApi,
+  getinviteData,
+} from "@/services/quantitativeAssessment";
+import type { myDataResType } from "@/types/quantitativeAssessment";
 const memberStore = useMemberStore();
 const self_state = ref(1);
 const peer_state = ref(0);
@@ -37,9 +41,14 @@ const evaluateCatagoryList = ref([
     id: 2,
   },
 ]);
+// 接收个人评论信息
+const personEvaluate = ref();
 // 切换评论分类
-const transfrom = (id: number) => {
+const transfrom = async (id: number) => {
   activeId.value = id;
+  if (id == 2) {
+    // await getTogetherEvaluationApi();
+  }
 };
 // 滚动条位置
 const scrollY = ref(0);
@@ -47,6 +56,8 @@ const scrollY = ref(0);
 const onScroll = () => {
   console.log("发生滚动");
 };
+// 获取评论列表
+const evaluateList = ref<myDataResType>();
 onShow(async () => {
   //  获取用户状态，判断用户身份
   userState.value = (await getReviewStatus()).data;
@@ -87,11 +98,13 @@ onShow(async () => {
     if (memberStore.profile?.userVo?.roleType?.includes("member") == true) {
       isUser.value = true;
       console.log("普通会员 ");
-      timer = setInterval(async () => {
-        const res = await getinviteData();
-        inviteDataTotal.value = res.total;
-        console.log(res.rows);
-      }, 3000);
+      const res = await getinviteData();
+      evaluateList.value = res.rows;
+      // timer = setInterval(async () => {
+      //   const res = await getinviteData();
+      //   inviteDataTotal.value = res.total;
+      //   console.log(res.rows);
+      // }, 3000);
     }
     return;
   }
@@ -109,14 +122,15 @@ onUnload(() => {
 <template>
   <view class="wrape">
     <view class="evaluateCatagoryList">
-      <view
+      <!-- <view
         class="listItem"
         :class="{ active: activeId == item.id }"
         v-for="item in evaluateCatagoryList"
         :key="item.id"
         @click="transfrom(item.id)"
         >{{ item.text }}
-      </view>
+      </view> -->
+      {{ evaluateList?.length }}
     </view>
     <scroll-view
       class="scrollY"
@@ -125,7 +139,7 @@ onUnload(() => {
       scroll-with-animation
       @scroll="onScroll"
     >
-      <view class="cardItem" v-for="item in 10">
+      <view class="cardItem" v-for="item in evaluateList" :key="item.id">
         <view class="left">
           <image
             class="img"
@@ -133,7 +147,13 @@ onUnload(() => {
             mode="aspectFit"
           />
         </view>
-        <view class="right"> </view>
+        <view class="right">
+          <view class="assessTheme"> 考评主题:{{ item.messageTitle }} </view>
+          <view class="bottom">
+            <view class="personalEvaluate"> 自评 </view>
+            <view class="togetherEvaluate"> 互评 </view>
+          </view>
+        </view>
       </view>
     </scroll-view>
   </view>
@@ -213,7 +233,7 @@ onUnload(() => {
     margin: 0 auto;
     overflow-y: auto;
     width: 90vw;
-    height: 90vh;
+    max-height: 90vh;
     // background-color: skyblue;
     border: 1px solid #ccc;
     border-radius: 2vw;
@@ -227,6 +247,11 @@ onUnload(() => {
       display: flex;
       justify-content: space-around;
       align-items: center;
+      &:last-child {
+        .right {
+          border-bottom: none;
+        }
+      }
 
       .left {
         width: 11vh;
@@ -244,6 +269,13 @@ onUnload(() => {
         width: 72vw;
         height: 11vh;
         border-bottom: 1px solid #ccc;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        .bottom {
+          display: flex;
+        }
       }
     }
   }

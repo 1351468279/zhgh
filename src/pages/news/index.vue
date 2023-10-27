@@ -56,7 +56,7 @@ const onScrollTopLower = () => {
         newsList.value?.push(...(res.rows as newsItem[]))
         console.log(newsList.value)
     })
-    // listTotalData.value[activeValue.value - 1].data.push({ id: 6, image: 'http://cloud.zhgn.cn:808/phone/unionpicture/synodmeetings.png', area: '新郑市总工会', viewNum: 1212, content: '文章内容', tittle: '文章标题', time: '2023-01-02' })
+    // listTotalData.value[activeValue.value - 1].data.push({ id: 6, image: 'http://cloud.zhgn.cn:8092/cdgh/phone/unionpicture/synodmeetings.png', area: '新郑市总工会', viewNum: 1212, content: '文章内容', tittle: '文章标题', time: '2023-01-02' })
     loadingStatus.value = false;
 };
 

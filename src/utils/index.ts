@@ -7,7 +7,7 @@ export const listTotalData = ref<newsListData>([
         articleId: 1, name: '工作动态', data: [
             {
                 id: 1,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/1-1.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/1-1.jpg',
                 area: '工会',
                 viewNum: 18,
                 tittle: '我校工会承办“青春有约·会聚良缘”青年干部职工联谊活动暨青年干部职工联谊交友系列活动启动仪式',
@@ -16,7 +16,7 @@ export const listTotalData = ref<newsListData>([
             },
             {
                 id: 2,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/1-2.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/1-2.jpg',
                 area: '工会',
                 viewNum: 102,
                 tittle: '夏日送清凉，关爱润心田！校工会慰问暑期坚守一线岗位的教职工',
@@ -25,7 +25,7 @@ export const listTotalData = ref<newsListData>([
             },
             {
                 id: 3,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/1-3.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/1-3.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '校工会联合河南新纪元别克为教职工车主开展免费汽车检测服务活动',
@@ -34,7 +34,7 @@ export const listTotalData = ref<newsListData>([
             },
             {
                 id: 4,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/1-4.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/1-4.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '河南省教科文卫体系统“奋进新征程、建功新时代”教学巡讲活动在我校举行',
@@ -43,7 +43,7 @@ export const listTotalData = ref<newsListData>([
             },
             {
                 id: 5,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/1-5.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/1-5.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '万水千山“粽”是情！学校开展师生包粽子过端午活动',
@@ -52,7 +52,7 @@ export const listTotalData = ref<newsListData>([
             },
             {
                 id: 6,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/1-6.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/1-6.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '增强联络，加深友谊！商丘师范学院排球协会到我校交流',
@@ -61,7 +61,7 @@ export const listTotalData = ref<newsListData>([
             },
             {
                 id: 7,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/1-7.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/1-7.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '我校召开二届四次教代会提案工作交办会',
@@ -70,7 +70,7 @@ export const listTotalData = ref<newsListData>([
             },
             {
                 id: 8,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/1-8.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/1-8.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '我校选手参加“建功十四五 奋进新征程”河南省教科文卫体工会高校职工乒乓球比赛并取得好成绩',
@@ -79,7 +79,7 @@ export const listTotalData = ref<newsListData>([
             },
             {
                 id: 9,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/1-9.png',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/1-9.png',
                 area: '工会',
                 viewNum: 100,
                 tittle: '校工会成功举办《关爱女性健康 关注盆底康复》专题科普讲座',
@@ -88,7 +88,7 @@ export const listTotalData = ref<newsListData>([
             },
             {
                 id: 10,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/1-10.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/1-10.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '校领导“六一”儿童节深入幼儿园看望慰问师生',
@@ -101,7 +101,7 @@ export const listTotalData = ref<newsListData>([
         articleId: 2, name: '民主管理', data: [
             {
                 id: 1,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/2-1.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/2-1.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '我校第二届教职工代表大会暨工会会员代表大会第三次会议胜利召开',
@@ -110,7 +110,7 @@ export const listTotalData = ref<newsListData>([
             },
             {
                 id: 2,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/2-2.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/2-2.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '学校第二届教职工代表大会暨工会会员代表大会第二次会议胜利召开',
@@ -119,7 +119,7 @@ export const listTotalData = ref<newsListData>([
             },
             {
                 id: 3,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/2-3.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/2-3.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '我校第二届教职工代表大会暨第二次工会会员代表大会胜利召开',
@@ -128,7 +128,7 @@ export const listTotalData = ref<newsListData>([
             },
             {
                 id: 4,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/2-4.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/2-4.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '学校召开第一届教职工代表大会暨工会会员代表大会第七次会议',
@@ -137,7 +137,7 @@ export const listTotalData = ref<newsListData>([
             },
             {
                 id: 5,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/2-5.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/2-5.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '学校召开第一届教职工代表大会暨工会会员代表大会第六次会议',
@@ -146,7 +146,7 @@ export const listTotalData = ref<newsListData>([
             },
             {
                 id: 6,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/2-6.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/2-6.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '我校召开第一届教职工代表大会暨工会会员代表大会第五次会议',
@@ -155,7 +155,7 @@ export const listTotalData = ref<newsListData>([
             },
             {
                 id: 7,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/2-7.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/2-7.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '我校召开第一届教职工代表大会暨工会会员代表大会第四次会议',
@@ -164,7 +164,7 @@ export const listTotalData = ref<newsListData>([
             },
             {
                 id: 8,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/2-8.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/2-8.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '我校召开第一届教职工代表大会暨工会会员代表大会第三次会议',
@@ -173,7 +173,7 @@ export const listTotalData = ref<newsListData>([
             },
             {
                 id: 9,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/2-9.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/2-9.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '我校召开第一届教职工代表大会暨工会会员代表大会第二次会议',
@@ -182,7 +182,7 @@ export const listTotalData = ref<newsListData>([
             },
             {
                 id: 10,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/2-10.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/2-10.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '我校召开第一届教职工代表大会暨工会会员代表大会第一次会议',
@@ -195,7 +195,7 @@ export const listTotalData = ref<newsListData>([
         articleId: 3, name: '女工工作', data: [
             {
                 id: 1,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/3-1.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/3-1.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '图书馆工会荣获省教育工会颁发的“女职工先进集体”荣誉称号',
@@ -204,7 +204,7 @@ export const listTotalData = ref<newsListData>([
             },
             {
                 id: 2,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/3-2.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/3-2.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '外国语言文学系荣获“全国三八红旗集体”荣誉称号',
@@ -213,7 +213,7 @@ export const listTotalData = ref<newsListData>([
             },
             {
                 id: 3,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/3-3.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/3-3.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '我校会计学院荣获河南省“巾帼文明岗”荣誉称号',
@@ -222,7 +222,7 @@ export const listTotalData = ref<newsListData>([
             },
             {
                 id: 4,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/1-1.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/1-1.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '关于组织开展“书香三八”读书活动的通知',
@@ -231,7 +231,7 @@ export const listTotalData = ref<newsListData>([
             },
             {
                 id: 5,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/1-2.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/1-2.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '2023年“三八”国际劳动妇女节慰问信',
@@ -240,7 +240,7 @@ export const listTotalData = ref<newsListData>([
             },
             {
                 id: 6,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/1-3.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/1-3.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '关于开展2023年“三八”国际劳动妇女节庆祝活动的通知',
@@ -249,7 +249,7 @@ export const listTotalData = ref<newsListData>([
             },
             {
                 id: 7,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/1-4.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/1-4.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '关于2022年“书香三八”读书活动获奖情况的通报',
@@ -258,7 +258,7 @@ export const listTotalData = ref<newsListData>([
             },
             {
                 id: 8,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/1-5.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/1-5.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '机关第一分工会开展“三八”妇女节慰问活动',
@@ -267,7 +267,7 @@ export const listTotalData = ref<newsListData>([
             },
             {
                 id: 9,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/1-6.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/1-6.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '机关第一分工会开展“三八”妇女节慰问活动',
@@ -276,7 +276,7 @@ export const listTotalData = ref<newsListData>([
             },
             {
                 id: 10,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/1-7.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/1-7.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '巾帼花开别样红：致全校女教职工“三八”妇女节慰问信',
@@ -289,7 +289,7 @@ export const listTotalData = ref<newsListData>([
         articleId: 4, name: '政策法规', data: [
             {
                 id: 1,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/2-1.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/2-1.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '教育部关于建立健全高校师德建设长效机制的意见 （教师〔2014〕10号）',
@@ -298,7 +298,7 @@ export const listTotalData = ref<newsListData>([
             },
             {
                 id: 2,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/2-2.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/2-2.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '中华全国总工会《工会基层组织选举工作条例》（总工发〔2016〕27号）',
@@ -307,7 +307,7 @@ export const listTotalData = ref<newsListData>([
             },
             {
                 id: 3,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/2-3.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/2-3.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '河南财经政法大学分工会工作量化考核实施办法',
@@ -316,7 +316,7 @@ export const listTotalData = ref<newsListData>([
             },
             {
                 id: 4,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/2-4.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/2-4.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '河南财经政法大学工会关于建设分工会教工活动室的实施意见',
@@ -325,7 +325,7 @@ export const listTotalData = ref<newsListData>([
             },
             {
                 id: 5,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/2-5.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/2-5.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '河南财经政法大学工会工作先进单位和先进个人评选办法',
@@ -334,7 +334,7 @@ export const listTotalData = ref<newsListData>([
             },
             {
                 id: 6,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/2-6.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/2-6.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '中国工会章程（修正案）',
@@ -351,7 +351,7 @@ export const welfareData = ref<newsListData>([
         articleId: 1, name: '可参与', data: [
             {
                 id: 1,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/3-1.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/3-1.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '图书馆工会荣获省教育工会颁发的“女职工先进集体”荣誉称号',
@@ -360,7 +360,7 @@ export const welfareData = ref<newsListData>([
             },
             {
                 id: 2,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/3-2.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/3-2.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '外国语言文学系荣获“全国三八红旗集体”荣誉称号',
@@ -369,7 +369,7 @@ export const welfareData = ref<newsListData>([
             },
             {
                 id: 3,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/3-3.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/3-3.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '我校会计学院荣获河南省“巾帼文明岗”荣誉称号',
@@ -378,7 +378,7 @@ export const welfareData = ref<newsListData>([
             },
             {
                 id: 4,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/1-1.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/1-1.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '关于组织开展“书香三八”读书活动的通知',
@@ -387,7 +387,7 @@ export const welfareData = ref<newsListData>([
             },
             {
                 id: 5,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/1-2.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/1-2.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '2023年“三八”国际劳动妇女节慰问信',
@@ -396,7 +396,7 @@ export const welfareData = ref<newsListData>([
             },
             {
                 id: 6,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/1-3.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/1-3.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '关于开展2023年“三八”国际劳动妇女节庆祝活动的通知',
@@ -405,7 +405,7 @@ export const welfareData = ref<newsListData>([
             },
             {
                 id: 7,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/1-4.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/1-4.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '关于2022年“书香三八”读书活动获奖情况的通报',
@@ -414,7 +414,7 @@ export const welfareData = ref<newsListData>([
             },
             {
                 id: 8,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/1-5.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/1-5.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '机关第一分工会开展“三八”妇女节慰问活动',
@@ -423,7 +423,7 @@ export const welfareData = ref<newsListData>([
             },
             {
                 id: 9,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/1-6.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/1-6.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '机关第一分工会开展“三八”妇女节慰问活动',
@@ -432,7 +432,7 @@ export const welfareData = ref<newsListData>([
             },
             {
                 id: 10,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/1-7.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/1-7.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '巾帼花开别样红：致全校女教职工“三八”妇女节慰问信',
@@ -445,7 +445,7 @@ export const welfareData = ref<newsListData>([
         articleId: 2, name: '全部', data: [
             {
                 id: 1,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/2-1.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/2-1.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '我校第二届教职工代表大会暨工会会员代表大会第三次会议胜利召开',
@@ -454,7 +454,7 @@ export const welfareData = ref<newsListData>([
             },
             {
                 id: 2,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/2-2.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/2-2.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '学校第二届教职工代表大会暨工会会员代表大会第二次会议胜利召开',
@@ -463,7 +463,7 @@ export const welfareData = ref<newsListData>([
             },
             {
                 id: 3,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/2-3.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/2-3.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '我校第二届教职工代表大会暨第二次工会会员代表大会胜利召开',
@@ -472,7 +472,7 @@ export const welfareData = ref<newsListData>([
             },
             {
                 id: 4,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/2-4.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/2-4.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '学校召开第一届教职工代表大会暨工会会员代表大会第七次会议',
@@ -481,7 +481,7 @@ export const welfareData = ref<newsListData>([
             },
             {
                 id: 5,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/2-5.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/2-5.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '学校召开第一届教职工代表大会暨工会会员代表大会第六次会议',
@@ -490,7 +490,7 @@ export const welfareData = ref<newsListData>([
             },
             {
                 id: 6,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/2-6.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/2-6.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '我校召开第一届教职工代表大会暨工会会员代表大会第五次会议',
@@ -499,7 +499,7 @@ export const welfareData = ref<newsListData>([
             },
             {
                 id: 7,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/2-7.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/2-7.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '我校召开第一届教职工代表大会暨工会会员代表大会第四次会议',
@@ -508,7 +508,7 @@ export const welfareData = ref<newsListData>([
             },
             {
                 id: 8,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/2-8.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/2-8.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '我校召开第一届教职工代表大会暨工会会员代表大会第三次会议',
@@ -517,7 +517,7 @@ export const welfareData = ref<newsListData>([
             },
             {
                 id: 9,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/2-9.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/2-9.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '我校召开第一届教职工代表大会暨工会会员代表大会第二次会议',
@@ -526,7 +526,7 @@ export const welfareData = ref<newsListData>([
             },
             {
                 id: 10,
-                image: 'http://cloud.zhgn.cn:808/phone/tzgs/2-10.jpg',
+                image: 'http://cloud.zhgn.cn:8092/cdgh/phone/tzgs/2-10.jpg',
                 area: '工会',
                 viewNum: 100,
                 tittle: '我校召开第一届教职工代表大会暨工会会员代表大会第一次会议',
@@ -541,54 +541,54 @@ export const categoryData = ref<categoryType>(
         {
             id: 1,
             name: '申请入会',
-            src: 'http://cloud.zhgn.cn:808/phone/index/renzheng.png',
+            src: 'http://cloud.zhgn.cn:8092/cdgh/phone/index/renzheng.png',
             url: '/subpackages/hotel/applyUnion',
         },
         {
             id: 2,
             name: '入会审核',
-            src: 'http://cloud.zhgn.cn:808/phone/index/shenling.png',
+            src: 'http://cloud.zhgn.cn:8092/cdgh/phone/index/shenling.png',
             url: '/subpackages/hotel/membershipReview',
         },
         {
             id: 3,
             name: '评优评先',
-            src: 'http://cloud.zhgn.cn:808/phone/index/zhaostudent.png',
+            src: 'http://cloud.zhgn.cn:8092/cdgh/phone/index/zhaostudent.png',
             url: 'string',
         },
         {
             id: 4,
             name: '困难帮扶',
-            src: 'http://cloud.zhgn.cn:808/phone/index/yuyue.png',
+            src: 'http://cloud.zhgn.cn:8092/cdgh/phone/index/yuyue.png',
             url: 'string',
         },
         {
             id: 5,
             name: '新闻专题',
-            src: 'http://cloud.zhgn.cn:808/phone/index/xiaoqing.png',
+            src: 'http://cloud.zhgn.cn:8092/cdgh/phone/index/xiaoqing.png',
             url: 'string',
         }
     ])
 import type { swiperDataType } from '@/types/index.d.ts'
 export const swiperData = ref<swiperDataType>([
     {
-        src: 'http://cloud.zhgn.cn:808/phone/unionpicture/meeting.jpg',
+        src: 'http://cloud.zhgn.cn:8092/cdgh/phone/unionpicture/meeting.jpg',
         id: 1
     },
     {
-        src: 'http://cloud.zhgn.cn:808/phone/unionpicture/campusview.jpg',
+        src: 'http://cloud.zhgn.cn:8092/cdgh/phone/unionpicture/campusview.jpg',
         id: 2
     },
     {
-        src: 'http://cloud.zhgn.cn:808/phone/unionpicture/synodmeetings.png',
+        src: 'http://cloud.zhgn.cn:8092/cdgh/phone/unionpicture/synodmeetings.png',
         id: 3
     },
     {
-        src: 'http://cloud.zhgn.cn:808/phone/unionpicture/teachermetting.png',
+        src: 'http://cloud.zhgn.cn:8092/cdgh/phone/unionpicture/teachermetting.png',
         id: 4
     },
     {
-        src: 'http://cloud.zhgn.cn:808/phone/unionpicture/valleyball.jpeg',
+        src: 'http://cloud.zhgn.cn:8092/cdgh/phone/unionpicture/valleyball.jpeg',
         id: 5
     }
 ])
