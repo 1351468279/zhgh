@@ -39,7 +39,11 @@ const onClick = (id: string) => {
     <view class="itemImg"
       ><img
         class="image"
-        :src="baseURL + '/dbylAndKnbf/sltPath.interface?url=' + item.slt"
+        :src="
+          item.slt != ''
+            ? baseURL + '/dbylAndKnbf/sltPath.interface?url=' + item.slt
+            : 'https://cloud.zhgn.cn:8092/phone/index/logo1.png'
+        "
     /></view>
     <view class="itemContent">
       <view class="contentTittle">{{ item.bt }}</view>

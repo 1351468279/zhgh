@@ -3,226 +3,186 @@ import { getReviewStatus } from "@/services/applyUnion";
 import { useMemberStore } from "@/store/modules/member";
 import { onShow } from "@dcloudio/uni-app";
 import { ref } from "vue";
-const memberStore = useMemberStore();
 
-const scrollTop = ref(0);
-// 触底
-const scrollToLower = (e: any) => {
-  console.log(e);
-};
-const time = ref();
-// 接收时间段
-const timeNodes = ref();
-// 时间段改变、
-const ChangeTime = (e: any) => {
-  console.log(e.detail.value);
-  date.value = e.detail.value;
-};
-const date = ref();
-const getDate = () => {
-  const date = new Date();
-  let year = date.getFullYear();
-  let month = date.getMonth() + 1;
-  // let day = date.getDate();
-  // if (type === "start") {
-  //   year = year - 60;
-  // } else if (type === "end") {
-  //   year = year + 2;
-  // }
-  // month = month > 9 ? month : "0" + month;
-  // day = day > 9 ? day : "0" + day;
-  return `${year}-${month} `;
-};
-// 接收用户审核状态
+const dataList = ref([
+  {
+    id: 1,
+    date: "2023-05-27",
+    part: "上午",
+    content:
+      "使用微信小程序简单实现时间轴界面，代码简洁，逻辑清楚，适合刚入手准备学习微信小程序的伙伴们，简单分享下。一共分为以下四大步骤。",
+  },
+  {
+    id: 2,
+    date: "2023-05-28",
+    part: "下午",
+    content:
+      '第一步：使用一个标签<view class="box"></view>，设置好内边距，以及在后续调整其他布局的时候，便于编写代码。如果喜欢将两边铺满屏幕的友友们，可以忽略此步骤。',
+  },
+  {
+    id: 3,
+    date: "2023-05-29",
+    part: "晚上",
+    content:
+      '第二步：循环读取需要现实的数据内容，并再次使用一个标签<view class="box-line"></view>，此标签主要设置左边的竖线，使用左边框属性设置即可，并设置好内边距。',
+  },
+  {
+    id: 4,
+    date: "2023-05-30",
+    part: "凌晨",
+    content:
+      '第三步：在标签<view class="box-line"></view>上方，加入标签<view class="point"></view>，用于编写圆点，并将其左边距(margin-left)属性设为负值，调整好自己喜欢的样式。',
+  },
+  {
+    id: 5,
+    date: "2023-05-31",
+    part: "天黑",
+    content:
+      '第四步：在标签<view class="box-line"></view>内部，包入一个新的标签<view class="box-data"></view>，在这个标签里面设置好样式后，便可将循环出的数据，按照需求摆放，随意布局啦，想学习更多微信小程序的友友们，请至我的主页，分享界面示例，共同学习哦！',
+  },
+]);
+const memberStore = useMemberStore();
+//接收用户状态
 const userState = ref();
-// 接收管理员身份标识
 const isAdmin = ref(false);
-// 接收工会委员身份标识
-const isCommissioner = ref(false);
-// 接收工会管理员身份标识
-const isGhAdmin = ref(false);
-// 接收会员身份标识
-const isUser = ref(false);
+
 onShow(async () => {
-  //  获取用户状态，判断用户身份
+  // 获取用户实时审核状态
   userState.value = (await getReviewStatus()).data;
-  // 如果用户是游客，显示一些提示并跳转到申请入会页面
-  if (userState.value == "0") {
-    uni.showModal({
-      title: "提示",
-      content: "您还未入会，请先申请入会",
-      showCancel: false,
-      success: function (res) {
-        if (res.confirm) {
-          uni.navigateTo({
-            url: "/subpackages/hotel/applyUnion",
-          });
-        }
+  // 如果是游客
+  if (userState.value == 0) {
+    // 游客且未绑定手机号
+    if (!memberStore.profile?.phoneNum) {
+      uni.navigateTo({ url: "/pages/login/index?actions=tapPhone" });
+    }
+  }
+  // 如果是会员，并且已经提交审核了,但是还没通过
+  else if (userState.value == 1) {
+    // 但是是通过卡片进来的
+    console.log("您已经提交过审核了，请耐心等待");
+    uni.showToast({
+      title: "您已经提交过审核了，请耐心等待",
+      icon: "none",
+      duration: 1000,
+      success: () => {
+        setTimeout(() => {
+          uni.navigateBack();
+        }, 1000);
       },
     });
   }
-  // 如果是审核中，显示提示
-  else if (userState.value == "1") {
-    uni.showModal({
-      title: "提示",
-      content: "您的入会申请正在审核中，请耐心等待审核成功后再来操作",
-      showCancel: false,
-      success: function (res) {
-        if (res.confirm) {
-          uni.switchTab({
-            url: "/pages/index/index",
-          });
-        }
-      },
-    });
-  }
-  // 如果用户是会员
-  else if (userState.value == "2") {
-    // 获取当前时间并显示
-    date.value = getDate();
+  // 如果是会员，并且已经通过审核了
+  else if (userState.value == 2) {
     // 如果是管理员
-    if (memberStore.profile?.userVo?.roleType?.includes("SystemAdmin") == true) {
-      isAdmin.value = true;
-      console.log("管理员");
-    }
-    // 如果是工会委员
-    else if (memberStore.profile?.userVo?.roleType?.includes("UnionMembers") == true) {
-      isCommissioner.value = true;
-      console.log("工会委员");
-    }
-    // 如果是工会管理员
-    else if (memberStore.profile?.userVo?.roleType?.includes("ghAdmin") == true) {
-      isGhAdmin.value = true;
-      console.log("工会管理员");
-    }
-    // 如果是普通会员
-    else if (memberStore.profile?.userVo?.roleType?.includes("member") == true) {
-      isUser.value = true;
-      console.log("普通会员 ");
-    }
+    // 如果是
   }
 });
 </script>
 
 <template>
-  <view class="body">
-    <view class="selectTime">
-      <picker class="timePicker" fields="month" mode="date" @change="ChangeTime">
-        <view class="uni-input time">{{ date }}</view>
-      </picker>
-    </view>
-    <scroll-view
-      class="scrollY"
-      scroll-y
-      :scroll-top="scrollTop"
-      @scrolltolower="scrollToLower"
-    >
-      <view class="timeNodes" v-for="item in 5">
-        <view class="left">
-          <view class="yuanquan"> </view>
-          <view class="line" v-if="item != 5"> </view>
-        </view>
-        <view class="right">
-          <!-- <view class="line"> </view> -->
-          <view class="content"> 内容 </view>
+  <view class="box">
+    <view v-for="(item, index) in dataList" :key="item.id">
+      <!-- 圆点 -->
+      <view class="point">
+        <view class="dot">{{ index + 1 }}</view>
+        <view class="title">{{ item.date + " " + item.part }}</view>
+      </view>
+      <!-- 容器二 -->
+      <view class="box-line">
+        <!-- 容器三 -->
+        <view class="box-data">
+          <view class="row-info">{{ item.content }}</view>
+          <!-- <view class="row-button">
+            <view>按钮A</view>
+            <view>按钮B</view>
+            <view>按钮C</view>
+          </view> -->
         </view>
       </view>
-    </scroll-view>
+    </view>
   </view>
 </template>
 
 <style lang="scss" scoped>
-.body {
-  background-color: #f1f1f1;
-  width: 100vw;
-  height: 100vh;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  overflow: hidden;
-  .selectTime {
-    margin: 20rpx 0 0;
-    width: 30vw;
-    height: 5vh;
-    background-color: f1f1f1;
+/* 容器一 */
+.box {
+  padding: 10rpx 20rpx 10rpx 40rpx;
+
+  .point {
     display: flex;
-    justify-content: center;
+    flex-direction: row;
     align-items: center;
-    .timePicker {
-      height: 5vh;
-      display: flex;
-      align-items: center;
-      .time {
-        height: 5vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
+    margin: 15rpx 0;
+    .dot {
+      margin-left: -22rpx;
+      background-color: #19be6b;
+      box-shadow: 0 0 5rpx 5rpx #71d5a1;
+      color: white;
+      width: 36rpx;
+      padding: 5rpx;
+      font-size: 28rpx;
+      text-align: center;
+      border-radius: 50rpx;
+    }
+
+    .title {
+      font-size: 30rpx;
+      margin-left: 15rpx;
+      background-color: white;
+      padding: 12rpx 25rpx;
+      border-radius: 50rpx;
+      color: #909399;
     }
   }
-  .scrollY {
-    width: 100vw;
-    height: 92vh;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    .timeNodes {
-      width: 80vw;
-      height: 13vh;
-      // background-color: white;
-      left: 0;
-      right: 0;
-      margin: auto;
-      padding: 10vw 0;
-
-      // margin-bottom: 100rpx; /* Add time line using ::after pseudo-element */
-      display: flex;
-      position: relative;
-      .left {
-        height: 13vh;
-        width: 10vw;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: #f1f1f1;
-
-        .yuanquan {
-          height: 3vw;
-          width: 3vw;
-          background-color: red;
-          box-shadow: 0 0 11px 1px red;
-          border-radius: 50%;
-        }
-        .line {
-          position: absolute;
-          width: 2px;
-          height: 26vw;
-          background-color: #f69292;
-          top: 30vw;
-          left: 5vw;
-        }
+  .box-line {
+    border-left: 3rpx solid #c8c9cc;
+    padding: 15rpx 10rpx 15rpx 35rpx;
+    .box-data {
+      background-color: white;
+      padding: 30rpx 15rpx;
+      border-radius: 15rpx;
+      .row-info {
+        font-size: 28rpx;
+        color: gray;
+        line-height: 45rpx;
+        padding: 0 15rpx;
+        text-indent: 2rem;
       }
-      .right {
+
+      .row-button {
         display: flex;
+        flex-direction: row;
         justify-content: space-around;
         align-items: center;
-        .line {
-          width: 30vw;
-          height: 2px;
-          background-color: #f69292;
-          margin-left: 5vw;
-        }
-        .content {
-          width: 30vw;
-          height: 30vw;
-          background-color: #fff;
-          border-radius: 2vw;
-        }
+        border-top: 1rpx solid #f1f1f1;
+        margin-top: 20rpx;
+        padding-top: 20rpx;
+      }
+      .row-button view {
+        padding: 12rpx 30rpx;
+        font-size: 30rpx;
+        color: white;
+        border-radius: 10rpx;
+      }
+
+      .row-button view:nth-child(1) {
+        background-color: #ff9900;
+      }
+
+      .row-button view:nth-child(2) {
+        background-color: #19be6b;
+      }
+
+      .row-button view:nth-child(3) {
+        background-color: #2979ff;
       }
     }
   }
 }
+
+/* 容器二 */
+
+/* 圆点 */
+
+/* 容器三 */
 </style>

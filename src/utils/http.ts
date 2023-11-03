@@ -2,8 +2,8 @@ import { useMemberStore } from "@/store/modules/member";
 
 // 请求基地址
 //export const baseURL = "http://cloud.zhgn.cn:8092/cdgh";
-export const baseURL = "http://192.168.0.53:8081";
-// export const baseURL = "https://cloud.zhgn.cn:8092/cdgh";
+// export const baseURL = "http://192.168.0.53:8081";
+export const baseURL = "https://cloud.zhgn.cn:8092/cdgh";
 
 // 拦截器配置
 const httpInterceptor = {

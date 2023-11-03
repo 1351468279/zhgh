@@ -5,10 +5,21 @@ import { getReviewStatus } from "@/services/applyUnion";
 import { useMemberStore } from "@/store/index";
 import {
   getTogetherEvaluationApi,
-  getinviteData,
+  getinviteDataByAdmin,
+  getinviteDataByOther,
+  inviteotherEvaluateApi,
 } from "@/services/quantitativeAssessment";
-import type { myDataResItemsType, myDataResType } from "@/types/quantitativeAssessment";
+import type {
+  getTogethorEvaluator,
+  myDataResItemsType,
+  myDataResType,
+} from "@/types/quantitativeAssessment";
 import type { SwiperOnChangeEvent } from "@uni-helper/uni-app-types";
+import type {
+  UniEasyinputOnBlurEvent,
+  UniEasyinputOnFocusEvent,
+  UniEasyinputOnInput,
+} from "@uni-helper/uni-ui-types";
 const memberStore = useMemberStore();
 const self_state = ref(1);
 const peer_state = ref(0);
@@ -33,25 +44,10 @@ const evauateList = ref<myDataResType>();
 const self_assessmentParams = ref();
 
 const activeId = ref(1);
-const evaluateCatagoryList = ref([
-  {
-    text: "自评",
-    id: 1,
-  },
-  {
-    text: "互评",
-    id: 2,
-  },
-]);
+
 // 接收个人评论信息
 const personEvaluate = ref();
-// 切换评论分类
-const transfrom = async (id: number) => {
-  activeId.value = id;
-  if (id == 2) {
-    // await getTogetherEvaluationApi();
-  }
-};
+
 // 滚动条位置
 const scrollY = ref(0);
 // 发生滚动
@@ -59,7 +55,8 @@ const onScroll = () => {
   console.log("发生滚动");
 };
 // 获取评论列表
-const evaluateList = ref<myDataResType>();
+const personalEvaluateList = ref<myDataResType>();
+const togetherEvaluateList = ref<myDataResType>();
 const personalEvaluate = (obj: myDataResItemsType) => {
   let item = JSON.stringify(obj);
   console.log("654654165");
@@ -73,6 +70,7 @@ const togetherEvalyate = (obj: myDataResItemsType) => {
     url: "/subpackages/hotel/selfAssessment/index?item=" + item + "&id=1",
   });
 };
+
 // 分类栏高亮
 const isShowCatagory = ref(0);
 //
@@ -94,8 +92,8 @@ const currentTab = ref(0);
 const flag = ref(false);
 // 切换tab栏
 const switchTab = (e: SwiperOnChangeEvent) => {
+  if (flag.value) return (flag.value = false);
   console.log(e.detail.current);
-  if (flag.value) return;
   currentTab.value = e.detail.current;
 };
 //点击切换tab栏
@@ -103,6 +101,108 @@ const changeTab = (id: number) => {
   console.log(id);
   flag.value = true;
   currentTab.value = id;
+};
+const isShow = ref(false);
+const showDialog = () => {
+  console.log("ok");
+  isShow.value = false;
+};
+// 定义待邀请人员列表
+const invitingList = ref<string[]>([]);
+// 点击添加实现多选
+const onCheck = (id: string) => {
+  if (invitingList.value.includes(id)) {
+    invitingList.value = invitingList.value.filter((i) => i != id);
+    return console.log(invitingList.value);
+  }
+  console.log(id);
+  invitingList.value.push(id);
+  console.log(invitingList.value);
+};
+
+// 如果待邀请人员列表里面有这个id，返回true
+const filterTrues = (id: string) => {
+  return invitingList.value.some((i) => i == id);
+};
+// 接收互评人员
+const togetherEvaluator = ref<getTogethorEvaluator>();
+// 全选
+const selectAll = () => {
+  if (!togetherEvaluator.value) return uni.showToast({ title: "数据不存在" });
+  if (togetherEvaluator.value?.every((i) => invitingList.value.includes(i.id))) {
+    return (invitingList.value = []);
+  }
+  invitingList.value = togetherEvaluator.value.map((i) => i.id);
+  console.log(invitingList.value);
+};
+// 如果待邀请人员列表里面有所有互评人员的id,返回true
+const filterTruesAll = () => {
+  return togetherEvaluator.value?.every((i) => invitingList.value.includes(i.id));
+};
+// 接收id
+const itemId = ref("");
+// 接收消息id
+const evaluateMessageId = ref("");
+// 点击邀评
+const inviteEvaluete = async (id: string, messageId: string) => {
+  itemId.value = id;
+  evaluateMessageId.value = messageId;
+  console.log("邀评");
+  isShow.value = true;
+  // 获取互评人员
+  const res = await getTogetherEvaluationApi(itemId.value);
+  console.log(res.body?.memberBean);
+  togetherEvaluator.value = res.body?.userList;
+};
+
+// 定义互评人列表的显示与否
+const isShowTogetherList = ref(true);
+const onFocus = (e: UniEasyinputOnFocusEvent) => {
+  console.log("聚焦");
+  isShowTogetherList.value = true;
+};
+// 输入框失焦
+const onBlur = (e: UniEasyinputOnBlurEvent) => {
+  console.log("失焦");
+  isShowTogetherList.value = false;
+};
+const scrollCheckY = ref(0);
+const onCheckScroll = () => {
+  console.log("在滚动");
+};
+let timer: any;
+// 输入事件
+const onInput = async (e: any) => {
+  if (timer) {
+    clearInterval(timer);
+  }
+  timer = setTimeout(async () => {
+    togetherEvaluator.value = (
+      await getTogetherEvaluationApi(itemId.value)
+    ).body?.userList?.filter((i) => i.name.includes(e));
+  }, 500);
+};
+// 点击取消
+const cancel = () => {
+  isShow.value = false;
+};
+// 点击确认
+const confirm = async () => {
+  const invitingParams = invitingList.value.map(async (i) => {
+    return await inviteotherEvaluateApi({
+      memberId: evaluateMessageId.value,
+      otherId: i,
+    });
+  });
+  // invitingParams
+  // for (let item of invitingParams) {
+  //   inviteotherEvaluateApi(item);
+  // }
+  uni.showToast({
+    title: "成功",
+    icon: "success",
+  });
+  isShow.value = false;
 };
 onShow(async () => {
   //  获取用户状态，判断用户身份
@@ -144,8 +244,9 @@ onShow(async () => {
     if (memberStore.profile?.userVo?.roleType?.includes("member") == true) {
       isUser.value = true;
       console.log("普通会员 ");
-      const res = await getinviteData();
-      evaluateList.value = res.rows;
+      personalEvaluateList.value = (await getinviteDataByAdmin()).rows;
+      togetherEvaluateList.value = (await getinviteDataByOther()).rows;
+      personalEvaluateList.value = (await getinviteDataByAdmin()).rows;
     }
     return;
   }
@@ -154,6 +255,52 @@ onShow(async () => {
 
 <template>
   <view class="mainBox">
+    <view class="dialog" v-if="isShow">
+      <view class="dialogBox">
+        <view class="title"> 选择互评人 </view>
+        <view class="wrap">
+          <uni-easyinput
+            class="inputBox"
+            type="text"
+            placeholder="请输入互评人姓名关键字"
+            @input="onInput"
+          />
+          <view class="checkBoxList">
+            <scroll-view
+              class="scrollCheck"
+              scroll-y
+              :scroll-top="scrollCheckY"
+              @scroll="onCheckScroll"
+            >
+              <view class="scrollCheckCategory">
+                <view class="yuan" @click="selectAll">
+                  <view class="round" :class="{ active: filterTruesAll() }"></view>
+                  <text>全选</text>
+                </view>
+                <view class="name">姓名 </view>
+                <view class="address"> 所属工会</view>
+              </view>
+              <view
+                class="scrollCheckItem"
+                v-for="item in togetherEvaluator"
+                :key="item.id"
+                @click="onCheck(item.id)"
+              >
+                <view class="yuan">
+                  <view class="round" :class="{ active: filterTrues(item.id) }"> </view>
+                </view>
+                <view class="name"> {{ item.name }}</view>
+                <view class="address">{{ item.orgid }} </view>
+              </view>
+            </scroll-view>
+          </view>
+          <view class="functionItem">
+            <view class="cancel" @click="cancel">取消 </view>
+            <view class="confirm" @click="confirm">确认 </view>
+          </view>
+        </view>
+      </view>
+    </view>
     <view class="wrape">
       <view class="evaluateCatagory">
         <view
@@ -179,7 +326,7 @@ onShow(async () => {
             scroll-with-animation
             @scroll="onScroll"
           >
-            <view class="cardItem" v-for="item in evaluateList" :key="item.id">
+            <view class="cardItem" v-for="item in personalEvaluateList" :key="item.id">
               <view class="left">
                 <image
                   class="img"
@@ -193,6 +340,30 @@ onShow(async () => {
                   <view class="personalEvaluate" @click="personalEvaluate(item)">
                     自评
                   </view>
+                </view>
+              </view>
+            </view>
+          </scroll-view>
+        </swiper-item>
+        <swiper-item class="">
+          <scroll-view
+            class="scrollY"
+            scroll-y
+            :scroll-top="scrollY"
+            scroll-with-animation
+            @scroll="onScroll"
+          >
+            <view class="cardItem" v-for="item in togetherEvaluateList" :key="item.id">
+              <view class="left">
+                <image
+                  class="img"
+                  src="https://cloud.zhgn.cn:8092/cdgh/static/phone/icon/1-3.png"
+                  mode="aspectFit"
+                />
+              </view>
+              <view class="right">
+                <view class="assessTheme"> {{ item.messageTitle }} </view>
+                <view class="bottom">
                   <view class="togetherEvaluate" @click="togetherEvalyate(item)">
                     互评
                   </view>
@@ -209,7 +380,7 @@ onShow(async () => {
             scroll-with-animation
             @scroll="onScroll"
           >
-            <view class="cardItem" v-for="item in evaluateList" :key="item.id">
+            <view class="cardItem" v-for="item in personalEvaluateList" :key="item.id">
               <view class="left">
                 <image
                   class="img"
@@ -220,41 +391,8 @@ onShow(async () => {
               <view class="right">
                 <view class="assessTheme"> {{ item.messageTitle }} </view>
                 <view class="bottom">
-                  <view class="personalEvaluate" @click="personalEvaluate(item)">
-                    自评
-                  </view>
-                  <view class="togetherEvaluate" @click="togetherEvalyate(item)">
-                    互评
-                  </view>
-                </view>
-              </view>
-            </view>
-          </scroll-view>
-        </swiper-item>
-        <swiper-item class="">
-          <scroll-view
-            class="scrollY"
-            scroll-y
-            :scroll-top="scrollY"
-            scroll-with-animation
-            @scroll="onScroll"
-          >
-            <view class="cardItem" v-for="item in evaluateList" :key="item.id">
-              <view class="left">
-                <image
-                  class="img"
-                  src="https://cloud.zhgn.cn:8092/cdgh/static/phone/icon/1-3.png"
-                  mode="aspectFit"
-                />
-              </view>
-              <view class="right">
-                <view class="assessTheme"> {{ item.messageTitle }} </view>
-                <view class="bottom">
-                  <view class="personalEvaluate" @click="personalEvaluate(item)">
-                    自评
-                  </view>
-                  <view class="togetherEvaluate" @click="togetherEvalyate(item)">
-                    互评
+                  <view class="inviteEvaluate" @click="inviteEvaluete(item.id, item.id)">
+                    邀评
                   </view>
                 </view>
               </view>
@@ -315,7 +453,7 @@ onShow(async () => {
   width: 100vw;
   height: 97vh;
   background-color: #fff;
-
+  position: relative;
   .wrape {
     width: 100vw;
     height: 90vh;
@@ -401,18 +539,32 @@ onShow(async () => {
             .personalEvaluate {
               width: 8vw;
               height: 8vw;
-              border: 1px solid #2e2e2e;
+              font-size: 4vw;
+              border-radius: 50%;
+              border: 1px solid;
+              color: #2e2e2e;
               display: flex;
               justify-content: center;
               align-items: center;
-              border-radius: 50%;
-              color: #2e2e2e;
             }
 
             .togetherEvaluate {
               width: 8vw;
               height: 8vw;
               border: 1px solid #2e2e2e;
+              font-size: 4vw;
+
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              border-radius: 50%;
+              color: #2e2e2e;
+            }
+            .inviteEvaluate {
+              width: 8vw;
+              height: 8vw;
+              border: 1px solid #2e2e2e;
+              font-size: 4vw;
               display: flex;
               justify-content: center;
               align-items: center;
@@ -425,6 +577,197 @@ onShow(async () => {
     }
     .swiperList {
       height: 89vh;
+    }
+  }
+  .dialog {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 98vh;
+    background: rgba(102, 102, 102, 0.5);
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .dialogBox {
+      width: 70vw;
+      height: 70vh;
+      background-color: #fff;
+      padding: 2vw;
+      border-radius: 2vw;
+      .title {
+        font-size: 4vw;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 700;
+      }
+      .wrap {
+        width: 60vw;
+        height: 60vh;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        margin-top: 2vh;
+        // background-color: skyblue;
+        border-radius: 2vw;
+        .inputBox {
+          width: 60vw;
+          height: 1vh;
+        }
+        .checkBoxList {
+          width: 59vw;
+          height: 48vh;
+          border: 1px solid #ebeef5;
+          border-top: none;
+          background-color: white;
+          // border-radius: 1vw;
+          border-radius: 0 1vw 1vw 0;
+          .scrollCheck {
+            width: 59.5vw;
+            max-height: 48vh;
+            overflow-y: auto;
+            .scrollCheckCategory {
+              margin-top: 2vw;
+              display: grid;
+              grid-template-columns: 1fr 1fr 2fr;
+              color: #909399;
+              font-size: 3.5vw;
+              font-weight: 700;
+              .yuan {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                .round {
+                  width: 3vw;
+                  height: 3vw;
+                  border: 1px solid #dcdfe6;
+                  border-radius: 50%;
+                  &::after {
+                    box-sizing: content-box;
+                    content: "";
+                    border: 1px solid #fff;
+                    border-left: 0;
+                    border-top: 0;
+                    height: 7px;
+                    left: 4px;
+                    position: absolute;
+                    top: 1px;
+                    transform: rotate(45deg) scaleY(0);
+                    width: 3px;
+                    transition: transform 0.15s ease-in 0.05s;
+                    transform-origin: center;
+                  }
+                }
+                .active {
+                  border: 1px solid #f78989;
+                  background-color: #f78989;
+                  position: relative;
+                  &::after {
+                    transform: rotate(45deg) scaleY(1);
+                  }
+                }
+              }
+              .name {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              }
+              .address {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              }
+            }
+            .scrollCheckItem {
+              left: 0;
+              right: 0;
+              margin: 0 auto;
+              width: 55vw;
+              height: 5vh;
+              display: grid;
+              grid-template-columns: 1fr 1fr 2fr;
+              border-bottom: 1px solid #ebeef5;
+              color: #606266;
+              font-size: 3vw;
+              &:last-child {
+                border-bottom: none;
+              }
+              .yuan {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                .round {
+                  width: 3vw;
+                  height: 3vw;
+                  border: 1px solid #dcdfe6;
+                  border-radius: 50%;
+                  &::after {
+                    box-sizing: content-box;
+                    content: "";
+                    border: 1px solid #fff;
+                    border-left: 0;
+                    border-top: 0;
+                    height: 7px;
+                    left: 4px;
+                    position: absolute;
+                    top: 1px;
+                    transform: rotate(45deg) scaleY(0);
+                    width: 3px;
+                    transition: transform 0.15s ease-in 0.05s;
+                    transform-origin: center;
+                  }
+                }
+                .active {
+                  border: 1px solid #f78989;
+                  background-color: #f78989;
+                  position: relative;
+                  &::after {
+                    transform: rotate(45deg) scaleY(1);
+                  }
+                }
+              }
+              .name {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              }
+              .address {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              }
+            }
+          }
+        }
+        .functionItem {
+          display: flex;
+          justify-content: flex-end;
+          padding: 5vw;
+          font-size: 3vw;
+          color: white;
+          .cancel {
+            background-color: #f78989;
+            margin-right: 5vw;
+            width: 9vw;
+            height: 7vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 1vw;
+          }
+          .confirm {
+            background-color: #f78989;
+            width: 9vw;
+            height: 7vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 1vw;
+          }
+        }
+      }
     }
   }
 }

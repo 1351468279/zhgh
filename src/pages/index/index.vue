@@ -6,12 +6,13 @@ import FunctionCard from "./components/FunctionCard.vue";
 import TabBar from "@/components/TabBar.vue";
 // import ArticleRead from './components/ArticleRead.vue'
 import { onLoad, onPullDownRefresh, onShow } from "@dcloudio/uni-app";
-import { computed, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { listTotalData } from "@/utils/index";
 import { useMemberStore } from "@/store";
-import { getNewsCategoryList, type categoryItemType, getNewsListById, type newsItem } from "@/services/indexNews";
+import { getNewsCategoryList, type categoryItemType, getNewsListById, getSwiperImage, type newsItem, type swiperImageList } from "@/services/indexNews";
 import NewsList from "@/components/NewsList.vue";
 import { postLoginWxMinAPI } from "@/services/login";
+import type { ScrollViewOnScrollEvent } from "@uni-helper/uni-app-types";
 const systemInfo = uni.getSystemInfoSync();
 // 下拉刷新
 onPullDownRefresh(() => {
@@ -34,12 +35,20 @@ const ceshi = computed(() => {
 // 进度条位置
 const scrollLeft = ref(0);
 const scrollTop = ref(0);
+const swiperHeight = ref()
+const showColor=ref(false)
 // 滚动事件
-const onScrollLeft = (e: any) => {
+const onScrollLeft = (e:any) => {
   console.log(e);
 };
-const onScrollTop = (e: any) => {
-  console.log(e);
+const onScrollTop = (e: ScrollViewOnScrollEvent) => {
+  console.log(e.detail.scrollTop);
+  if (swiperHeight.value < e.detail.scrollTop) {
+    showColor.value = true
+    return console.log(showColor.value)
+  }else{
+    showColor.value = false
+  }
 };
 // 定义页数
 const page = ref(1)
@@ -99,10 +108,24 @@ const quickLog = async () => {
   const userInfo = await postLoginWxMinAPI({ code: code.value });
   console.log(userInfo);
   memberStore.profile = userInfo.data;
-
 };
+// 接收轮播图列表
+const swiperList = ref<swiperImageList>()
+onLoad(async () => {
+  swiperList.value = (await getSwiperImage()).body
+})
+onMounted(() => {
+  const query = uni.createSelectorQuery();
+  query.select('#swiper').boundingClientRect(data => {
+    console.log(data);
+    console.log("节点离页面顶部的距离为" + data.top);
+    swiperHeight.value=data.top
+    console.log(swiperHeight.value)
+  }).exec();
+})
 onShow(async () => {
   console.log('onshow')
+
   if (memberStore.profile?.token) {
     code.value = (await wx.login()).code
     console.log(code.value)
@@ -111,7 +134,7 @@ onShow(async () => {
     // await memberStore.clearProfile()
     if (memberStore.profile.token != userInfo.data.token) {
       await memberStore.clearProfile()
-      memberStore.profile=userInfo.data
+      memberStore.profile = userInfo.data
     }
     console.log("已登录");
     page.value = 1
@@ -135,13 +158,12 @@ onShow(async () => {
       url: "/pages/login/index",
     });
   }
-
 });
 </script>
 
 <template>
-  <view class="home" :style="{ height: 88 + 'vh' }">
-    <!-- <CustomNavBar class="navbar" :tittle="'首页'"></CustomNavBar> -->
+  <view class="home">
+    <CustomNavBar class="navbar" :tittle="'首页'" :showColor="showColor"></CustomNavBar>
 
     <scroll-view
       class="indexScrollTop"
@@ -151,15 +173,19 @@ onShow(async () => {
       lower-threshold="100"
       @scrolltolower="onScrollTopLower"
     >
-      <ClassSwiper></ClassSwiper>
+      <view class="backgroundtop"> </view>
+      <view class="backgroundbottom"> </view>
+      <!-- <view>2121</view> -->
+      <ClassSwiper class="swiperImg" id="swiper"></ClassSwiper>
       <CategoryPanel></CategoryPanel>
-      <FunctionCard></FunctionCard>
+      <FunctionCard class="functionCard"></FunctionCard>
       <scroll-view
         class="newsScrollLeft"
         scroll-x
         :scroll-left="scrollLeft"
         scroll-with-animation
         @scroll="onScrollLeft"
+        :showScrollbar="false"
       >
         <view
           class="newsItem"
@@ -190,7 +216,28 @@ onShow(async () => {
   flex-direction: column;
   align-items: center;
   width: 100vw;
-  height: 60vh;
+  height: 90vh;
+  position: relative;
+
+  .navbar {
+    width: 100vw;
+    z-index: 9999999;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .backgroundtop {
+    width: 100vw;
+    height: 30vh;
+    background-color: red;
+  }
+
+  .backgroundbottom {
+    width: 100vw;
+    height: 11vh;
+    background-color: white;
+  }
 
   .indexScrollTop {
     width: 100vw;
@@ -199,6 +246,20 @@ onShow(async () => {
     flex-direction: column;
     align-items: center;
     overflow-y: auto;
+    max-height: 90vh;
+    position: relative;
+
+    .swiperImg {
+      width: 100vw;
+      position: absolute;
+      z-index: 999999;
+      top: 11vh;
+      border-radius: 4vw;
+    }
+
+    .functionCard {
+      height: 16vh;
+    }
 
     .newsScrollLeft {
       width: 100vw;
@@ -209,7 +270,7 @@ onShow(async () => {
       .newsItem {
         display: inline-block;
         width: 20vw;
-        height: 6vh;
+        height: 7vh;
         line-height: 70rpx;
         text-align: center;
         font-size: 28rpx;
@@ -217,10 +278,21 @@ onShow(async () => {
       }
 
       .active {
-        border-bottom: 3px solid #ff0000;
         font-weight: bold;
         font-size: 35rpx;
         color: black;
+
+        &::after {
+          display: block;
+          content: "";
+          width: 15vw;
+          height: 5rpx;
+          border-radius: 10rpx;
+          background-color: red;
+          left: 0;
+          right: 0;
+          margin: 0 auto;
+        }
       }
     }
 

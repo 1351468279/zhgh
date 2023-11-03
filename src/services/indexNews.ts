@@ -56,3 +56,18 @@ export const getNewsDetailById = (id:string) => {
  
   });
 };
+export type swiperItem={
+  id:string,
+  slt:string
+}
+export type swiperImageList=swiperItem[]
+// 获取轮播图
+export const getSwiperImage=()=>{
+  return request<swiperImageList>({
+    url:'/wechatRotation.ignore',
+    method:'GET',
+    data:{
+      nums:5
+    }
+  })
+}

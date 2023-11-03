@@ -1,46 +1,72 @@
-<script lang="ts" setup>
-
-</script>
+<script lang="ts" setup></script>
 
 <template>
-    <view class="functioncard">
-        <!-- <navigator class="funcarditem" url="/pages/index/loopdown" open-type="navigate" hover-class="navigator-hover"
-            v-for="item in 6">
-            <image class="icon" src="https://pcapi-xiaotuxian-front-devtest.itheima.net/miniapp/images/nav_icon_1.png">
-            </image>
-            <text class="text">爱心驿站 </text>
-        </navigator> -->
-        <navigator class="advertiser" url="" open-type="navigate" hover-class="navigator-hover">
-            <image class="advericon" src="@\static\images\index\xuanchuan.png">
-            </image>
-        </navigator>
-    </view>
+  <view class="functioncard">
+    <swiper class="advertiser">
+      <swiper-item class="advertiserItem">
+        <view class="advericon"> </view>
+        <view class="adverImg"> </view>
+        <image
+          class="img"
+          src="https://cloud.zhgn.cn:8092/phone/index/Waistline.jpg"
+          mode="aspectFit"
+        />
+      </swiper-item>
+    </swiper>
+  </view>
 </template>
 
 <style lang="scss" scoped>
 .functioncard {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  width: 100vw;
+  height: 12vh;
+  border-bottom: 1.6vh solid white;
+  border-top: 1.4vh solid white;
+  position: relative;
+  .advertiser {
+    height: 12vh;
+    width: 100vw;
     display: flex;
-    justify-content: space-around;
-    background-color: white;
-    width: 100%;
-    border-bottom: 20rpx solid #e5e5e5;
-    border-top: 20rpx solid #e5e5e5;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-    .advertiser {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 20rpx 0;
+    .advertiserItem {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 12vh;
+      .img {
+        width: 100vw;
+      }
 
-        .advericon {
-            transform: scale(1.1);
-            border-radius: 10rpx;
-            height: 120rpx;
-        }
+      // .advericon {
+      //   // transform: scale(1.2);
+      //   width: 95vw;
+      //   height: 16vh;
+      //   border-radius: 1vw;
+      //   background: center url(https://cloud.zhgn.cn:8092/phone/index/Waistline.jpg)
+      //     no-repeat;
+      //   background-size: contain;
+      // }
+
+      // .adverImg {
+      //   width: 16vh;
+      //   height: 3vh;
+      //   transform: scale(1.5);
+      //   position: absolute;
+      //   background: center
+      //     url(https://cloud.zhgn.cn:8092/phone/indexImage/tetx.png) no-repeat;
+      //   background-size: contain;
+      //   bottom: 0;
+      // }
     }
-
-    // height:;
-
+  }
 }
 </style>

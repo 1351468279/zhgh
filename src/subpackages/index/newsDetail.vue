@@ -6,9 +6,16 @@ import { ref } from "vue";
 const props = defineProps(["id"]);
 console.log(props.id);
 const newsData = ref<newsInfo>();
-onShow(() => {
-  getNewsDetailById(props.id).then((res)=>{
-    newsData.value=res.body
+// 获取设备屏幕宽度
+ onShow(() => {
+  const screenWidth = uni.getSystemInfoSync().windowWidth;
+
+  getNewsDetailById(props.id).then((res) => {
+    newsData.value = res.body
+    if (!newsData.value) return
+    newsData.value.context = newsData.value.context.replace(/\<img/gi,
+    '<img style="max-width:100%;height:auto;display:block;margin-top:0;margin-bottom:0;"'
+  );
   })
 });
 </script>
@@ -31,17 +38,20 @@ onShow(() => {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: flex-start;
-  padding: 20rpx;
+  align-items: center;
+  width: 100vw;
 
   .infoTittle {
-    width: 100%;
+    width: 90vw;
     font-size: 40rpx;
     font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .infoTag {
-    width: 100%;
+    width: 90vw;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -60,32 +70,23 @@ onShow(() => {
   }
 
   .infoContent {
-    width: 100%;
-    height: 100%;
+    width: 90vw;
+    height: 90vw;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
 
     .infoContentText {
-      width: 95%;
-      height: 100%;
+      width: 90vw;
+      height: 90vw;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
       font-size: 30rpx;
       line-height: 50rpx;
       text-align: justify;
       text-indent: 2em;
-    }
-
-    .infoContentImg {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      .image {
-        width: 100%;
-      }
     }
   }
 }

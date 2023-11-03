@@ -3,9 +3,9 @@ import type { applySanYuListType } from "@/types/hotel";
 import type { UploadFileType } from "@/types/sanYu";
 import type { UniFilePickerTempFile } from "@uni-helper/uni-ui-types";
 import type { lawerItem } from "@/types/legalAid";
-import type { myDataResItemsType, myDataResType } from "@/types/quantitativeAssessment";
+import type { getTogethorEvaluator, getTogethorEvaluatorRes, myDataResItemsType, myDataResType } from "@/types/quantitativeAssessment";
 // 获取个人数据
-export const getinviteData=()=>{
+export const getinviteDataByAdmin=()=>{
     return requestRows<myDataResType>({
         url:'/lhkpMem/api/getMyListData',
         method:'GET',
@@ -20,21 +20,21 @@ export const getinviteData=()=>{
     })
 }
 // 获取他人邀请我评价的数据api
-export const getMyInfoApi=()=>{
-    return requestRows({
+export const getinviteDataByOther=()=>{
+    return requestRows<myDataResType>({
         url:'/lhkpMem/api/getMyListData',
         method:'GET',
         data:{
-            type:0,
+            type:1,
             limit:1000,
             page:1,
             messageTitle:'',
-            self:1,
+            self:0,
             orgId:''
         }
     })
 }
-// 提交互评
+// 提交评价
 export const submitMyInfoApi=(data:{
     id:string,
     messageId:string,
@@ -43,7 +43,7 @@ export const submitMyInfoApi=(data:{
     memberUsername:string,
     evaluate:string,
     describe:string,
-    self:string
+    self:number
 })=>{
     return request<myDataResItemsType>({
         url:'/lhkpMem/api/joinEvaluation',
@@ -53,7 +53,7 @@ export const submitMyInfoApi=(data:{
 }
 // 获取互评人
 export const getTogetherEvaluationApi=(id:string)=>{
-    return request<any>({
+    return request<getTogethorEvaluatorRes>({
         url:'/lhkpMem/api/getTogetherEvaluationPage',
         method:'GET',
         data:{
@@ -62,13 +62,10 @@ export const getTogetherEvaluationApi=(id:string)=>{
     })
 }
 // 邀请互评人
-export const inviteotherEvaluateApi=(memberId:string,otherId:string)=>{
+export const inviteotherEvaluateApi=(data:{memberId:string,otherId:string})=>{
     return request({
         url:'/lhkpMem/api/invite',
         method:'POST',
-        data:{
-            memberId,
-            otherId
-        }
+        data
     })
 }

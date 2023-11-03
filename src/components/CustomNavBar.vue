@@ -2,10 +2,13 @@
 import { ref } from "vue";
 import type { unionType } from "@/types/index";
 import { defineProps } from "vue";
-const { safeAreaInsets } = uni.getSystemInfoSync();
+const systemInfo = uni.getSystemInfoSync();
 const props = defineProps({
   tittle: {
     type: String,
+  },
+  showColor: {
+    type: Boolean,
   },
 });
 const popup = ref();
@@ -23,26 +26,34 @@ const closeDialog = (item: unionType) => {
 <template>
   <!-- 顶部占位 -->
   <view class="navbar">
-    <view class="tittle" :style="{ paddingTop: safeAreaInsets?.top + 'px' }">{{
-      props.tittle
-    }}</view>
+    <view
+      class="tittle"
+      :class="{ active: showColor }"
+      :style="{ paddingTop: systemInfo.safeAreaInsets?.top + 'px' }"
+      >{{ props.tittle }}</view
+    >
   </view>
 </template>
 
 <style lang="scss" scoped>
 .navbar {
-  background-color: red;
+  background-color: transparent;
   display: flex;
   justify-content: space-around;
   align-items: center;
   overflow: hidden;
+  width: 100vw;
 
   .tittle {
     display: flex;
     justify-content: center;
     align-items: center;
     color: white;
-    margin: 20rpx;
+    height: 6vh;
+  }
+  .active {
+    background-color: red;
+    width: 100vw;
   }
 }
 </style>

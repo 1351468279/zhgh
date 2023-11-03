@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { swiperData } from "@/utils/index";
+import { onLoad } from "@dcloudio/uni-app";
+import { getSwiperImage, type swiperImageList } from "@/services/indexNews";
+import { baseURL } from "@/utils/http";
 // 轮播图数据
 
 const activeIndex = ref(0);
@@ -10,6 +13,16 @@ const changeIndicatorDots = (a: any) => {
   // console.log(a)
   activeIndex.value = a.detail.current;
 };
+const onClick = (id: string) => {
+  uni.navigateTo({
+    url: "/subpackages/index/newsDetail?id=" + id,
+  });
+};
+// 接收轮播图列表
+const swiperList = ref<swiperImageList>();
+onLoad(async () => {
+  swiperList.value = (await getSwiperImage()).body;
+});
 </script>
 
 <template>
@@ -24,34 +37,20 @@ const changeIndicatorDots = (a: any) => {
       :interval="3000"
       @change="changeIndicatorDots"
     >
-      <swiper-item class="swiperItem" v-for="item in swiperData" :key="item.id">
+      <swiper-item
+        class="swiperItem"
+        v-for="item in swiperList"
+        :key="item.id"
+        @click="onClick(item.id)"
+      >
         <navigator url="" hover-class="none" class="navigator">
-          <image mode="aspectFill" class="image" :src="item.src"></image>
+          <image
+            mode="aspectFill"
+            class="image"
+            :src="baseURL + '/dbylAndKnbf/sltPath.interface?url=' + item.slt"
+          ></image>
         </navigator>
       </swiper-item>
-      <!-- <swiper-item class="swiperItem">
-        <navigator url="" hover-class="none" class="navigator">
-          <image mode="aspectFill" class="image" src="http://cloud.zhgn.cn:808/phone/unionpicture/campusview.jpg"></image>
-        </navigator>
-      </swiper-item> -->
-      <!-- <swiper-item class="swiperItem">
-        <navigator url="" hover-class="none" class="navigator">
-          <image mode="aspectFill" class="image" src="http://cloud.zhgn.cn:808/phone/unionpicture/synodmeetings.png">
-          </image>
-        </navigator>
-      </swiper-item> -->
-      <!-- <swiper-item class="swiperItem">
-        <navigator url="" hover-class="none" class="navigator">
-          <image mode="aspectFill" class="image" src="http://cloud.zhgn.cn:808/phone/unionpicture/teachermetting.png">
-          </image>
-        </navigator>
-      </swiper-item> -->
-      <!-- <swiper-item class="swiperItem">
-        <navigator url="" hover-class="none" class="navigator">
-          <image mode="aspectFill" class="image" src="http://cloud.zhgn.cn:808/phone/unionpicture/valleyball.jpeg">
-          </image>
-        </navigator>
-      </swiper-item> -->
     </swiper>
   </view>
 </template>
@@ -60,29 +59,32 @@ const changeIndicatorDots = (a: any) => {
 /* 轮播图 */
 .carousel {
   margin: auto;
-  width: 100%;
-  overflow: hidden;
+  width: 90vw;
+  height: 30vh;
   background-color: white;
+  border-radius: 4vw;
+  overflow: hidden;
 
   .swiper {
-    width: 100%;
+    width: 90vw;
+    height: 30vh;
     background-color: white;
 
     .swiperItem {
-      width: 100%;
-      height: 100%;
+      width: 90%;
+      height: 90%;
 
       .navigator {
-        width: 100%;
-        height: 100%;
+        width: 90vw;
+        height: 30vh;
         display: flex;
         justify-content: center;
         align-items: center;
 
         .image {
-          width: 90%;
-          height: 90%;
-          border-radius: 10rpx;
+          width: 90vw;
+          height: 30vh;
+          // border-radius: 4vw;
         }
       }
     }

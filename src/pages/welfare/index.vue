@@ -29,6 +29,8 @@ const activityList = ref<activityItem[]>();
 // 定义活动总项数
 const totalNum = ref()
 const onClick = async (id: string) => {
+  isShowEmpty.value=false
+
   activeTag.value = id;
   console.log(id);
   pageNum.value = 1;
@@ -36,6 +38,9 @@ const onClick = async (id: string) => {
   // 默认显示第一页未开始活动列表
   const res = await getUnactivityListApi(pageNum.value, activityStatus.value);
   console.log(res.rows);
+  if(res.rows?.length==0){
+    isShowEmpty.value=true
+  }
   activityList.value = res.rows
   totalNum.value = res.total
   scrollTop.value = 0
@@ -85,13 +90,18 @@ const viewDetail = (id: string) => {
     url: "/subpackages/hotel/recuperationDetail" + "?id=" + id,
   });
 };
+const isShowEmpty=ref(false)
 onShow(async () => {
+  isShowEmpty.value=false
   console.log(4121)
   pageNum.value = 1;
   activityStatus.value = activeTag.value;
   // 默认显示第一页未开始活动列表
   const res = await getUnactivityListApi(pageNum.value, activityStatus.value);
   console.log(res.rows);
+  if(res.rows?.length==0){
+    isShowEmpty.value=true
+  }
   activityList.value = res.rows
   totalNum.value = res.total
 
@@ -110,7 +120,11 @@ onShow(async () => {
         >{{ item.text }}</view
       >
     </view>
+    <view class="emptyImg" v-if="isShowEmpty == true">
+      <img class="image" src="https://cloud.zhgn.cn:8092/phone/icon/emty.png" alt="" />
+    </view>
     <scroll-view
+      v-if="isShowEmpty == false"
       class="newsScrollTop"
       scroll-y
       :scroll-top="scrollTop"
@@ -173,10 +187,30 @@ onShow(async () => {
     .active {
       font-size: large;
       font-weight: bold;
-      border-bottom: 1px solid red;
+      &::after {
+        display: block;
+        content: "";
+        width: 18vw;
+        height: 5rpx;
+        border-radius: 10rpx;
+        background-color: red;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+      }
     }
   }
-
+  .emptyImg {
+    width: 100vw;
+    height: 82vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .image {
+      width: 70vw;
+      height: 70vw;
+    }
+  }
   .newsScrollTop {
     flex: 1;
     width: 100%;

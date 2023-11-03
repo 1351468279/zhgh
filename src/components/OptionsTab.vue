@@ -1,82 +1,63 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
-
-const systemInfo = ref(uni.getSystemInfoSync());
-const props = defineProps([
-    'leftTittle',
-    'rightTittle',
-    'image',
-    'rightTag'
-])
+const props = defineProps(["leftText", "src", "rightText", "rightRow"]);
 </script>
 
 <template>
-    <view class="box" :style="{ width: (systemInfo.windowWidth - 40) + 'px' }">
-        <view class="leftBox">
-            <view class="leftContent" v-if="props.leftTittle">{{ props.leftTittle }}</view>
-        </view>
-        <view class="rightBox">
-            <view class="rightContent">
-                <view class="content" v-if="props.rightTittle"> {{ props.rightTittle }}</view>
-                <image v-if="props.image" class="img" :src="props.image" mode="scaleToFill" />
-            </view>
-            <view class="icon iconfont " v-if="rightTag">&#xe637;</view>
-        </view>
+  <button class="avatarBox">
+    <view class="left"> {{ props.leftText }}</view>
+    <view class="right">
+      <image v-if="props.src" class="img" :src="props.src" mode="aspectFit" />
+      <view class="rightText">{{ props.rightText }} </view>
+      <text v-if="props.rightRow" class="icon iconfont">&#xe637;</text>
     </view>
+  </button>
 </template>
 
 <style lang="scss" scoped>
-.box {
-    height: 100rpx;
-    background-color: white;
+.avatarBox {
+  max-width: 100vw;
+  min-height: 7vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  background-color: #fff;
+  padding: 0 5vw;
+
+  &::after {
+    border: none;
+  }
+  .left {
+    font-size: 4vw;
+    color: #2a2a2a;
+  }
+  .right {
     display: flex;
-    justify-content: space-around;
     align-items: center;
-    border-radius: 20rpx;
-
-    .leftBox {
-        width: 30%;
-        height: 100%;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        margin-left: 20rpx;
+    .img {
+      height: 10vh;
+      width: 10vh;
+      margin: 2vw 0;
+      border-radius: 2vw;
+      background-color: skyblue;
     }
+    .rightText {
+      font-size: 4vw;
 
-    .rightBox {
-        width: 70%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-
-        .rightContent {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-
-            .content {
-                margin-right: 20rpx;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
-
-            .img {
-                height: 70rpx;
-                width: 70rpx;
-                margin-right: 20rpx;
-            }
-
-            .icon {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
-        }
+      color: #757575;
     }
-
-
+    &::after {
+      display: block;
+      content: "";
+      position: absolute;
+      bottom: 0;
+      width: 90vw;
+      height: 1px;
+      background-color: #ededed;
+      right: 0;
+      left: 0;
+      margin: 0 auto;
+    }
+  }
 }
 </style>

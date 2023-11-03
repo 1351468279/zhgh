@@ -1,9 +1,5 @@
 <script lang="ts" setup>
-import {
-  getTogetherEvaluationApi,
-  getinviteData,
-  submitMyInfoApi,
-} from "@/services/quantitativeAssessment";
+import { submitMyInfoApi } from "@/services/quantitativeAssessment";
 import type { myDataResItemsType } from "@/types/quantitativeAssessment";
 import { onShow } from "@dcloudio/uni-app";
 import type {
@@ -55,7 +51,6 @@ const onClick = async () => {
   submitParams.value.describe = baseFormData.value.describes;
   console.log("待提交表单信息", submitParams.value);
   await submitMyInfoApi(submitParams.value);
-
   uni.navigateBack({ delta: 1 });
 };
 const isShow = ref(false);
@@ -67,7 +62,7 @@ const submitParams = ref({
   memberUserId: "",
   evaluate: "",
   describe: "",
-  self: "",
+  self: 1,
 });
 // 接收互评人信息
 const togetherPeople = ref();
@@ -121,14 +116,14 @@ onShow(async () => {
         <view class="label"> 选择互评人 </view>
         <input class="inputBox" type="text" placeholder="请输入互评人姓名关键字" />
       </view> -->
-      <view class="TogetherList" v-show="isShowTogetherList">
+      <!-- <view class="TogetherList" v-show="isShowTogetherList">
         <scroll-view scroll-y>
           <view class="scroll_selector">
             <text>姓名</text>
             <text></text>
           </view>
         </scroll-view>
-      </view>
+      </view> -->
       <uni-forms
         class="formBox"
         :model="baseFormData"
@@ -136,7 +131,7 @@ onShow(async () => {
         label-width="80px"
         ref="customForm"
       >
-        <uni-forms-item class="togetherBox" required label="选择互评人">
+        <!-- <uni-forms-item class="togetherBox" required label="选择互评人">
           <uni-easyinput
             v-model="togetherPeople"
             type="text"
@@ -144,8 +139,8 @@ onShow(async () => {
             @focus="onFocus"
             @blur="onBlur"
           />
-          <!-- <uni-data-select>121</uni-data-select> -->
-        </uni-forms-item>
+            <uni-data-select>121</uni-data-select>  
+        </uni-forms-item> -->
         <uni-forms-item required label="评价分级">
           <uni-data-select v-model="baseFormData.evaluate" :localdata="selfAssessData" />
         </uni-forms-item>

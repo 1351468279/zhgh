@@ -57,7 +57,7 @@ const code = ref("");
 // 加载页面的时候自动获取code
 onShow(async () => {
   code.value = (await wx.login()).code;
-  console.log(code);
+  console.log(code.value);
 });
 /* 构造登录参数 */
 const loginParams = ref({
@@ -114,11 +114,12 @@ const getPhoneNumber: UniHelper.ButtonOnGetphonenumber = async (ev) => {
 };
 // 快捷登录
 const quickLog = async () => {
+  if (!code.value) return uni.showToast({ title: "code不存在" });
   const userInfo = await postLoginWxMinAPI({ code: code.value });
   console.log(userInfo);
   memberStore.profile = userInfo.data;
   if (!memberStore.profile) {
-    return uni.showToast({ title: "个人数据请求失败，请右上角刷新重新进行快捷登录" });
+    return uni.showToast({ title: " 数据请求失败 " });
   }
   // 成功提示
   uni.showToast({
